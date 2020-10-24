@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1006103009042",
+    "firebase_url": "https://do-good-app1.firebaseio.com",
+    "project_id": "do-good-app1",
+    "storage_bucket": "do-good-app1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006103009042:android:506d6cff16c52fc3cb05cb",
+        "android_client_info": {
+          "package_name": "com.example.dogood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1006103009042-niiagd5nbgb3dr9ajmhh3g1poue33lds.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dogood",
+            "certificate_hash": "66aaa370e336f8faf0818514aa30db28accb72c1"
+          }
+        },
+        {
+          "client_id": "1006103009042-3b4528u067i2js9ql2nhiad7je75ujku.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlxg2Gb8SVH6jopQ8pbRt13DX_5tZJH5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1006103009042-3b4528u067i2js9ql2nhiad7je75ujku.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
