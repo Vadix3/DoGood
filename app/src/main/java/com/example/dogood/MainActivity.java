@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.d(TAG, "onCreate: Ya gever");
 
         findViews();
+        addSide();
     }
 
     private void findViews() {
@@ -41,19 +42,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         main_LAY_main = findViewById(R.id.main_LAY_main);
         main_NGV_side = findViewById(R.id.main_NGV_side);
 
-        main_TLB_title.setOnClickListener(openMenu);
+
 
     }
 
-    View.OnClickListener openMenu = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            addSide();
-        }
-    };
-
-
-
+    // open side menu
     private void addSide() {
         Log.d(TAG, "addSide: ");
         main_NGV_side.bringToFront();
@@ -64,18 +57,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         main_NGV_side.setNavigationItemSelectedListener(this);
     }
 
+    // side menu action and move to fragment when bottom press
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.d(TAG, "onNavigationItemSelected: ");
-        switch (item.getItemId()) {
-            case R.id.menu_logout:
-
-            case R.id.menu_rate:
-        }
-
+       if (item.getItemId() == R.id.menu_profile) {
+           Log.d(TAG, "onNavigationItemSelected: profile press");
+       }else if(item.getItemId() == R.id.menu_logout) {
+           Log.d(TAG, "onNavigationItemSelected: logout press");
+       }else if(item.getItemId() == R.id.menu_rate) {
+           Log.d(TAG, "onNavigationItemSelected: rate press");
+       }else if(item.getItemId() == R.id.menu_share) {
+           Log.d(TAG, "onNavigationItemSelected: share press");
+       }
         return true;
     }
-
+    // creation of the side menu
     @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,19 +83,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onCreateOptionsMenu(menu);
     }
 
+    // Used we side menu is open you can close and stay in application
     @Override
     public void onBackPressed() {
+        Log.d(TAG, "onBackPressed: ");
         if (main_LAY_main.isDrawerOpen(GravityCompat.START)) {
             main_LAY_main.closeDrawer(GravityCompat.START);
         } else {
-            FragmentManager fm = getFragmentManager();
-            if (fm.getBackStackEntryCount() > 0) {
-                Log.i(TAG, "onBackPressed: popping backstack");
-                fm.popBackStack();
-            } else {
-                Log.i(TAG, "onBackPressed: nothing on backstack, calling super");
                 super.onBackPressed();
-            }
         }
     }
 }

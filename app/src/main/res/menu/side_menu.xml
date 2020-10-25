@@ -19,7 +19,6 @@
 
 
     <item android:title="@string/profile">
-
         <menu>
             <group android:checkableBehavior="single">
                 <item
@@ -39,6 +38,7 @@
     <item android:title="@string/communicate">
 
         <menu>
+            <group android:checkableBehavior="single">
             <item
                 android:id="@+id/menu_share"
                 android:icon="@drawable/ic_share"
@@ -49,6 +49,7 @@
                 android:icon="@drawable/ic_rate"
                 android:title="@string/rate" />
 
+            </group>
         </menu>
 
     </item>
