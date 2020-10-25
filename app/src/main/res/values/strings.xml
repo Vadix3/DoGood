@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">DoGood</string>
-    <string name="Dogood">Do good</string>
+    <string name="Dogood">Do Good</string>
+    <string name="home">Home</string>
+    <string name="object_to_give">Object to give</string>
+    <string name="object_to_ask">Object to ask</string>
+    <string name="profile">Profile</string>
+    <string name="logout">Logout</string>
+    <string name="communicate">Communicate</string>
+    <string name="share">Share</string>
+    <string name="rate">Rate</string>
+
+    <string name="navigation_drawer_open">Navigation drawer open</string>
+    <string name="navigation_drawer_close">Navigation drawer close</string>
+    <string name="menu">Menu</string>
 </resources>

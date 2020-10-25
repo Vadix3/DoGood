@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/menu_give"
+            android:icon="@drawable/ic_gift"
+            android:title="@string/object_to_give" />
+        <item
+            android:id="@+id/menu_ask"
+            android:icon="@drawable/ic_post"
+            android:title="@string/object_to_ask" />
+
+    </group>
+
+
+    <item android:title="@string/profile">
+
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_profile"
+                    android:icon="@drawable/ic_profile"
+                    android:title="@string/profile" />
+                <item
+                    android:id="@+id/menu_logout"
+                    android:icon="@drawable/ic_logout"
+                    android:title="@string/logout" />
+            </group>
+        </menu>
+
+    </item>
+
+
+    <item android:title="@string/communicate">
+
+        <menu>
+            <item
+                android:id="@+id/menu_share"
+                android:icon="@drawable/ic_share"
+                android:title="@string/share" />
+
+            <item
+                android:id="@+id/menu_rate"
+                android:icon="@drawable/ic_rate"
+                android:title="@string/rate" />
+
+        </menu>
+
+    </item>
+
+</menu>
