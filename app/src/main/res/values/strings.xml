@@ -13,4 +13,15 @@
     <string name="navigation_drawer_open">Navigation drawer open</string>
     <string name="navigation_drawer_close">Navigation drawer close</string>
     <string name="menu">Menu</string>
+
+
+
+    <!-- add item -->
+    <string name="item_name">Item name</string>
+    <string name="item_description">Item description</string>
+    <string name="item_price">Item price</string>
+    <string name="submit">Submit</string>
+
+
+
 </resources>
