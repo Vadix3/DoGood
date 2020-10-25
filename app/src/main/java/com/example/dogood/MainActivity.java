@@ -1,16 +1,22 @@
 package com.example.dogood;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,13 +30,16 @@ import com.example.dogood.objects.User;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.navigation.NavigationView;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private static final String TAG = "Dogood";
 
-    private MaterialToolbar main_TLB_title;
+    //private MaterialToolbar main_TLB_title;
+    private Toolbar main_TLB_head;
+    private MaterialSearchView main_SRC_search;
     private BottomAppBar main_BAB_menu;
     private DrawerLayout main_LAY_main;
     private NavigationView main_NGV_side;
@@ -53,11 +62,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         initItemsFragment();
+
+        searchAction();
     }
 
     private void findViews() {
         Log.d(TAG, "findViews: ");
-        main_TLB_title = findViewById(R.id.main_TLB_title);
+
+        main_TLB_head = findViewById(R.id.main_TLB_head);
+        main_SRC_search = findViewById(R.id.main_SRC_search);
         main_BAB_menu = findViewById(R.id.main_BAB_menu);
         main_LAY_main = findViewById(R.id.main_LAY_main);
         main_NGV_side = findViewById(R.id.main_NGV_side);
@@ -68,8 +81,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void addSide() {
         Log.d(TAG, "addSide: ");
         main_NGV_side.bringToFront();
-        setSupportActionBar(main_TLB_title);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, main_LAY_main, main_TLB_title, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        setSupportActionBar(main_TLB_head);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, main_LAY_main, main_TLB_head, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         main_LAY_main.addDrawerListener(toggle);
         toggle.syncState();
         main_NGV_side.setNavigationItemSelectedListener(this);
@@ -94,13 +107,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "onCreateOptionsMenu: ");
-        if (menu instanceof MenuBuilder) {
-            ((MenuBuilder) menu).setOptionalIconsVisible(true);
-        }
 
         getMenuInflater().inflate(R.menu.top_app_bar, menu);
 
-        return super.onCreateOptionsMenu(menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        main_SRC_search.setMenuItem(item);
+
+        return true;
+
     }
 
     // Used we side menu is open you can close and stay in application
@@ -114,6 +128,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void searchAction(){
+        Log.d(TAG, "searchAction: ");
+        String[] sug = new String[giveItems.size()];
+        for(int i = 0 ; i < giveItems.size() ; i++){
+            sug[i] = giveItems.get(i).getName();
+        }
+
+        main_SRC_search.setSuggestions(sug);
+
+        main_SRC_search.setVoiceSearch(true);
+        
+        main_SRC_search.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //Do some magic
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Do some magic
+                return false;
+            }
+        });
+
+        main_SRC_search.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                //Do some magic
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                //Do some magic
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d(TAG, "onActivityResult: ");
+        if (requestCode == MaterialSearchView.REQUEST_VOICE && resultCode == RESULT_OK) {
+            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (matches != null && matches.size() > 0) {
+                String searchWrd = matches.get(0);
+                if (!TextUtils.isEmpty(searchWrd)) {
+                    main_SRC_search.setQuery(searchWrd, false);
+                }
+            }
+
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     /**
      * A method to create test arrays
