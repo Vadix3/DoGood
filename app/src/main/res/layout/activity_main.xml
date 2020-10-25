@@ -18,7 +18,6 @@
         app:menu="@menu/side_menu"
         android:layout_gravity="start" />
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,9 +36,27 @@
     <FrameLayout
         android:id="@+id/main_LAY_recyclerFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/main_BAB_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_add"
+        app:layout_anchor="@id/main_BAB_menu" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
     </LinearLayout>
-
 </androidx.drawerlayout.widget.DrawerLayout>
 
