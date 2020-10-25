@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     tools:openDrawer="start"
     android:layout_gravity="start">
 
@@ -23,14 +23,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/main_TLB_title"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="@string/Dogood"
-        app:menu="@menu/top_app_bar"
-        app:showAsAction="ifRoom"
-        style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/main_TLB_title"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/app_name"
+            android:background="@color/colorPrimary"
+            app:menu="@menu/top_app_bar"
+            app:showAsAction="ifRoom"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
     <FrameLayout
         android:id="@+id/main_LAY_recyclerFrame"
