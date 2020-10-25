@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (menu instanceof MenuBuilder) {
             ((MenuBuilder) menu).setOptionalIconsVisible(true);
         }
+
         getMenuInflater().inflate(R.menu.top_app_bar, menu);
         return super.onCreateOptionsMenu(menu);
     }
