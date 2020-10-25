@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         getMenuInflater().inflate(R.menu.top_app_bar, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
