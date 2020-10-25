@@ -23,18 +23,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.dogood.activities.NewGiveItemActivity;
 import com.example.dogood.fragments.MainListFragment;
 import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.RequestItem;
 import com.example.dogood.objects.User;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "Dogood";
 
     //private MaterialToolbar main_TLB_title;
@@ -43,9 +45,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private BottomAppBar main_BAB_menu;
     private DrawerLayout main_LAY_main;
     private NavigationView main_NGV_side;
+    private FloatingActionButton addItem;
 
-    private ArrayList<GiveItem>giveItems;
-    private ArrayList<RequestItem>requestItems;
+    private ArrayList<GiveItem> giveItems;
+    private ArrayList<RequestItem> requestItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         /**TESTING ARRAYS*/
         initTestArrays();
-
 
 
         initItemsFragment();
@@ -74,7 +76,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         main_BAB_menu = findViewById(R.id.main_BAB_menu);
         main_LAY_main = findViewById(R.id.main_LAY_main);
         main_NGV_side = findViewById(R.id.main_NGV_side);
+        addItem = findViewById(R.id.main_BTN_addItemButton);
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openAddItemActivity();
+            }
+        });
 
+    }
+
+    /**
+     * A method to move to add item activity
+     */
+    private void openAddItemActivity() {
+        Log.d(TAG, "openAddItemActivity: ");
+        startActivityForResult(new Intent(MainActivity.this, NewGiveItemActivity.class), 101);
     }
 
     // open side menu
@@ -93,15 +110,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_profile) {
             Log.d(TAG, "onNavigationItemSelected: profile press");
-        }else if(item.getItemId() == R.id.menu_logout) {
+        } else if (item.getItemId() == R.id.menu_logout) {
             Log.d(TAG, "onNavigationItemSelected: logout press");
-        }else if(item.getItemId() == R.id.menu_rate) {
+        } else if (item.getItemId() == R.id.menu_rate) {
             Log.d(TAG, "onNavigationItemSelected: rate press");
-        }else if(item.getItemId() == R.id.menu_share) {
+        } else if (item.getItemId() == R.id.menu_share) {
             Log.d(TAG, "onNavigationItemSelected: share press");
         }
         return true;
     }
+
     // creation of the side menu
     @SuppressLint("RestrictedApi")
     @Override
@@ -208,8 +226,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 , "Free", "LG 50' tv", "Photo URL", "11/01/20", testUser));
         giveItems.add(new GiveItem("123123", "Coffee Maker", "Electronics", "New"
                 , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
-        giveItems.add(new GiveItem("123123", "Testing branch", "Electronics", "New"
+        giveItems.add(new GiveItem("123123", "Testing 1", "Electronics", "New"
                 , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
+        giveItems.add(new GiveItem("123123", "Testing 2", "Electronics", "New"
+                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
+        giveItems.add(new GiveItem("123123", "Testing 3", "Electronics", "New"
+                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
+        giveItems.add(new GiveItem("123123", "Testing 4", "Electronics", "New"
+                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
+        giveItems.add(new GiveItem("123123", "Testing 5", "Electronics", "New"
+                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
+        giveItems.add(new GiveItem("123123", "Testing 6", "Electronics", "New"
+                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
+        giveItems.add(new GiveItem("123123", "Testing 7", "Electronics", "New"
+                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
+        giveItems.add(new GiveItem("123123", "Testing 8", "Electronics", "New"
+                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
+        giveItems.add(new GiveItem("123123", "Testing 9", "Electronics", "New"
+                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
+        giveItems.add(new GiveItem("123123", "Testing 10", "Electronics", "New"
+                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
+
 
     }
 

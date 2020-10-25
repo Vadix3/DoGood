@@ -5,67 +5,76 @@
     android:id="@+id/main_LAY_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start"
-    android:layout_gravity="start">
+    android:layout_gravity="start"
+    android:fitsSystemWindows="false"
+    tools:context=".MainActivity">
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/main_NGV_side"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/main_NGV_side"
+        android:layout_gravity="start"
         app:headerLayout="@layout/header_side"
-        app:menu="@menu/side_menu"
-        android:layout_gravity="start" />
+        app:menu="@menu/side_menu" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <FrameLayout
-            android:id="@+id/toolbar_container"
+            android:id="@+id/main_LAY_recyclerFrame"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_TLB_title" />
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/main_TLB_head"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/main_LAY_recyclerFrame">
+
+            <com.google.android.material.bottomappbar.BottomAppBar
+                android:id="@+id/main_BAB_menu"
+                style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary" />
+                android:layout_height="45dp"
+                android:layout_gravity="bottom"
+                android:background="@color/colorPrimary"
+                android:backgroundTint="@color/colorPrimary" />
 
-            <com.miguelcatalan.materialsearchview.MaterialSearchView
-                android:id="@+id/main_SRC_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </FrameLayout>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/main_BTN_addItemButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:layout_anchor="@id/main_BAB_menu"
+                app:srcCompat="@drawable/ic_add" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/main_TLB_title"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:menu="@menu/top_app_bar"
+            app:showAsAction="ifRoom"
+            app:title="@string/app_name" />
 
-
-    <FrameLayout
-        android:id="@+id/main_LAY_recyclerFrame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/main_BAB_menu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
-        />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_add"
-        app:layout_anchor="@id/main_BAB_menu" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.drawerlayout.widget.DrawerLayout>
 
