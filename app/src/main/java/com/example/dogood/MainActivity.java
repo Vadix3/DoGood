@@ -22,6 +22,7 @@ import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.RequestItem;
 import com.example.dogood.objects.User;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final String TAG = "Dogood";
 
     private MaterialToolbar main_TLB_title;
+    private BottomAppBar main_BAB_menu;
     private DrawerLayout main_LAY_main;
     private NavigationView main_NGV_side;
 
@@ -55,8 +57,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void findViews() {
         Log.d(TAG, "findViews: ");
-
-        main_TLB_title  = findViewById(R.id.main_TLB_title);
+        main_TLB_title = findViewById(R.id.main_TLB_title);
+        main_BAB_menu = findViewById(R.id.main_BAB_menu);
         main_LAY_main = findViewById(R.id.main_LAY_main);
         main_NGV_side = findViewById(R.id.main_NGV_side);
 
