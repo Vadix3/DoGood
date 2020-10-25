@@ -34,6 +34,7 @@
             style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
     <FrameLayout
+        android:id="@+id/main_LAY_recyclerFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
