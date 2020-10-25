@@ -138,6 +138,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 , "Free", "LG 50' tv", "Photo URL", "11/01/20", testUser));
         giveItems.add(new GiveItem("123123", "Coffee Maker", "Electronics", "New"
                 , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
+        giveItems.add(new GiveItem("123123", "Testing branch", "Electronics", "New"
+                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
 
     }
 
