@@ -24,14 +24,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/main_TLB_title"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="@string/Dogood"
-        app:menu="@menu/top_app_bar"
-        app:showAsAction="ifRoom"
-        style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Do Good!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <FrameLayout
         android:layout_width="match_parent"
