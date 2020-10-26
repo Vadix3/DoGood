@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         giveItems.add(new GiveItem("123123", "Computer", "Computers", "New"
-                , "Free", "A 2 year old working computer", "Photo URL", "23/04/20", testUser));
+                , "Free", "old working computer", "Photo URL", "23/04/20", testUser));
         giveItems.add(new GiveItem("123123", "Oven", "Appliances", "New"
                 , "Free", "De Longhi oven", "Photo URL", "13/05/20", testUser));
         giveItems.add(new GiveItem("123123", "Television", "Electronics", "New"
