@@ -10,8 +10,11 @@
         android:id="@+id/addgiveitem_IMG_itemPhoto"
         android:layout_width="204dp"
         android:layout_height="199dp"
-        android:background="@drawable/round_edt_border_edges"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/photo_empty_frame"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintBottom_toTopOf="@+id/addgiveitem_EDT_itemName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,12 +34,13 @@
         android:hint="@string/item_name"
         android:inputType="textEmailAddress"
         android:padding="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/addgiveitem_EDT_itemDescription"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.655"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addgiveitem_IMG_itemPhoto"
         app:layout_constraintVertical_bias="0.035" />
+
 
     <EditText
         android:id="@+id/addgiveitem_EDT_itemDescription"
@@ -51,47 +55,50 @@
         android:hint="@string/item_description"
         android:inputType="textEmailAddress"
         android:padding="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/addgiveitem_LST_conditionSpinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addgiveitem_EDT_itemName"
-        app:layout_constraintVertical_bias="0.049" />
+        app:layout_constraintVertical_bias="0.029" />
 
-    <EditText
-        android:id="@+id/addgiveitem_EDT_itemPrice"
-        android:layout_width="282dp"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/round_edt_border_edges"
-        android:drawablePadding="10dp"
-        android:elevation="10dp"
-        android:gravity="center"
-        android:hint="@string/item_price"
-        android:inputType="textEmailAddress"
-        android:padding="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/addgiveitem_BTN_submitBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.038"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addgiveitem_EDT_itemDescription"
-        app:layout_constraintVertical_bias="0.051" />
+        app:layout_constraintTop_toBottomOf="@+id/addgiveitem_LST_categorySpinner"
+        app:layout_constraintVertical_bias="0.06">
 
-    <CheckBox
-        android:id="@+id/addgiveitem_CHK_priceCheckbox"
-        android:layout_width="104dp"
-        android:layout_height="53dp"
-        android:checked="true"
-        android:text="Free"
-        android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/addgiveitem_EDT_itemPrice"
-        app:layout_constraintTop_toBottomOf="@+id/addgiveitem_EDT_itemDescription"
-        app:layout_constraintVertical_bias="0.054" />
+        <EditText
+            android:id="@+id/addgiveitem_EDT_itemPrice"
+            android:layout_width="259dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/round_edt_border_edges"
+            android:drawablePadding="10dp"
+            android:elevation="10dp"
+            android:gravity="center"
+            android:hint="@string/item_price"
+            android:inputType="textEmailAddress"
+            android:padding="15dp" />
+
+        <CheckBox
+            android:id="@+id/addgiveitem_CHK_priceCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="53dp"
+            android:checked="true"
+            android:text="Free"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/addgiveitem_LST_conditionSpinner"
@@ -101,12 +108,12 @@
         android:layout_marginRight="10dp"
         android:background="@drawable/round_edt_border_edges"
         android:padding="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/addgiveitem_LST_categorySpinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.448"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addgiveitem_EDT_itemPrice"
-        app:layout_constraintVertical_bias="0.093" />
+        app:layout_constraintTop_toBottomOf="@+id/addgiveitem_EDT_itemDescription"
+        app:layout_constraintVertical_bias="0.037" />
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/addgiveitem_LST_categorySpinner"
@@ -116,27 +123,27 @@
         android:layout_marginRight="10dp"
         android:background="@drawable/round_edt_border_edges"
         android:padding="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.793"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addgiveitem_LST_conditionSpinner"
-        app:layout_constraintVertical_bias="0.145" />
+        app:layout_constraintVertical_bias="0.041" />
 
     <Button
         android:id="@+id/addgiveitem_BTN_submitBtn"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:backgroundTint="@color/colorPrimary"
         android:layout_marginRight="10dp"
+        android:background="@drawable/round_button_backgroud"
         android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addgiveitem_LST_categorySpinner"
-        app:layout_constraintVertical_bias="0.392" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.446" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
