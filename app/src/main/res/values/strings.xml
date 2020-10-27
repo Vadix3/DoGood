@@ -51,7 +51,10 @@
     <!--Error messages-->
     <string name="please_enter_item_name">Please enter item name</string>
     <string name="please_enter_item_decription">Please enter item description</string>
-
+    <string name="user_name">User name</string>
+    <string name="user_city">User city</string>
+    <string name="user_phone">User phone</string>
+    <string name="user_mail">User mail</string>
 
 
 </resources>

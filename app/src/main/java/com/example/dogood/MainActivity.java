@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.dogood.activities.Activity_profile;
 import com.example.dogood.activities.NewGiveItemActivity;
 import com.example.dogood.fragments.MainListFragment;
 import com.example.dogood.objects.GiveItem;
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_profile) {
             Log.d(TAG, "onNavigationItemSelected: profile press");
+            startActivityForResult(new Intent(MainActivity.this, Activity_profile.class), 101);
         } else if (item.getItemId() == R.id.menu_logout) {
             Log.d(TAG, "onNavigationItemSelected: logout press");
         } else if (item.getItemId() == R.id.menu_rate) {
