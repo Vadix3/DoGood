@@ -8,6 +8,7 @@ public class Myapp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //TODO: Make global toast
         Log.d(TAG, "onCreate: ");
     }
 }

@@ -83,8 +83,9 @@
             android:drawablePadding="10dp"
             android:elevation="10dp"
             android:gravity="center"
-            android:hint="@string/item_price"
-            android:inputType="textEmailAddress"
+            android:hint="@string/free_item"
+            android:inputType="number"
+            android:enabled="false"
             android:padding="15dp" />
 
         <CheckBox
@@ -92,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="53dp"
             android:checked="true"
-            android:text="Free"
+            android:text="@string/free_item"
             android:textColor="@color/colorPrimary"
             android:textSize="15sp" />
 
@@ -109,6 +110,7 @@
         android:padding="15dp"
         app:layout_constraintBottom_toTopOf="@+id/addgiveitem_LST_categorySpinner"
         app:layout_constraintEnd_toEndOf="parent"
+        android:dropDownVerticalOffset="40dp"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addgiveitem_EDT_itemDescription"
@@ -124,6 +126,7 @@
         android:padding="15dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        android:dropDownVerticalOffset="40dp"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addgiveitem_LST_conditionSpinner"

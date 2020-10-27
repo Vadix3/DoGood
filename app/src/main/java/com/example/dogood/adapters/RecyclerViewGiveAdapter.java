@@ -9,10 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogood.R;
 import com.example.dogood.objects.GiveItem;
+import com.google.android.material.card.MaterialCardView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewGiveAdapter.ViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: Got item: "+items.get(position).toString());
+        Log.d(TAG, "onBindViewHolder: Got item: " + items.get(position).toString());
         GiveItem temp = items.get(position);
         holder.itemName.setText(temp.getName());
         holder.itemState.setText(temp.getState());
@@ -59,6 +61,7 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
 
         TextView itemName, itemState, itemPrice, itemDescription, postDate;
         ImageView itemPhoto;
+        MaterialCardView rowCard;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +72,7 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
          * A method to initialize the views
          */
         private void initViews() {
+            rowCard = itemView.findViewById(R.id.row_giveitem_row);
             itemName = itemView.findViewById(R.id.row_LBL_itemName);
             itemState = itemView.findViewById(R.id.row_LBL_itemState);
             itemPrice = itemView.findViewById(R.id.row_LBL_itemPrice);

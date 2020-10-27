@@ -32,12 +32,19 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "Dogood";
+    private static final String NEW_GIVE_ITEM = "111";
+    private static final int NEW_GIVE_ITEM_RESULT_CODE = 101;
+
 
     //private MaterialToolbar main_TLB_title;
     private Toolbar main_TLB_head;
@@ -146,17 +153,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void searchAction(){
+    private void searchAction() {
         Log.d(TAG, "searchAction: ");
         String[] sug = new String[giveItems.size()];
-        for(int i = 0 ; i < giveItems.size() ; i++){
+        for (int i = 0; i < giveItems.size(); i++) {
             sug[i] = giveItems.get(i).getName();
         }
 
         main_SRC_search.setSuggestions(sug);
 
         main_SRC_search.setVoiceSearch(true);
-        
+
         main_SRC_search.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -187,18 +194,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.d(TAG, "onActivityResult: ");
-        if (requestCode == MaterialSearchView.REQUEST_VOICE && resultCode == RESULT_OK) {
-            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            if (matches != null && matches.size() > 0) {
-                String searchWrd = matches.get(0);
-                if (!TextUtils.isEmpty(searchWrd)) {
-                    main_SRC_search.setQuery(searchWrd, false);
-                }
-            }
-
-            return;
-        }
         super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+
+            /** We got from voice listener*/
+            case MaterialSearchView.REQUEST_VOICE:
+                if (resultCode == RESULT_OK) {
+                    ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    if (matches != null && matches.size() > 0) {
+                        String searchWrd = matches.get(0);
+                        if (!TextUtils.isEmpty(searchWrd)) {
+                            main_SRC_search.setQuery(searchWrd, false);
+                        }
+                    }
+                    return;
+                }
+                break;
+            case NEW_GIVE_ITEM_RESULT_CODE:
+                Log.d(TAG, "onActivityResult: Got new item from activity");
+                String gotNewItem = data.getStringExtra(NEW_GIVE_ITEM);
+                Log.d(TAG, "onActivityResult: Got new item after intent: " + gotNewItem);
+                Toast.makeText(this, "Item added successfully!", Toast.LENGTH_SHORT).show();
+                Gson gson = new Gson();
+                Type eventType = new TypeToken<GiveItem>() {
+                }.getType();
+                GiveItem temp = gson.fromJson(gotNewItem, eventType);
+                Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
+                giveItems.add(temp);
+                initItemsFragment();
+                break;
+        }
     }
 
     /**
@@ -246,8 +271,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
         giveItems.add(new GiveItem("123123", "Testing 10", "Electronics", "New"
                 , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
-
-
     }
 
     /**
@@ -260,4 +283,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.replace(R.id.main_LAY_recyclerFrame, mainListFragment);
         transaction.commit();
     }
+
+
 }

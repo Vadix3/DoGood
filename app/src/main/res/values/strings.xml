@@ -15,12 +15,42 @@
     <string name="menu">Menu</string>
 
 
-
-    <!-- add item -->
+    <!-- add items -->
     <string name="item_name">Item name</string>
     <string name="item_description">Item description</string>
     <string name="item_price">Item price</string>
+    <string name="free_item">Free</string>
     <string name="submit">Submit</string>
+
+
+    <!-- spinner items-->
+    <!-- categories-->
+    <string name="select_categories">Select category</string>
+    <string name="clothes">Clothes</string>
+    <string name="office_supplies">Office supplies</string>
+    <string name="medical_equipment">Medical equipment</string>
+    <string name="gaming">Gaming</string>
+    <string name="electronics">Electronics</string>
+    <string name="appliances">Appliances</string>
+    <string name="gift_cards">Gift cards</string>
+    <string name="lighting">Lighting</string>
+    <string name="games_and_toys">Games and Toys</string>
+    <string name="cellular">Cellular</string>
+    <string name="books">Books</string>
+    <string name="baby_supplies">Baby Supplies</string>
+    <string name="computers">Computers</string>
+
+
+    <!-- conditions-->
+    <string name="select_condition">Select condition</string>
+    <string name="new_item">New</string>
+    <string name="used_item">Used</string>
+    <string name="opened_item">Opened but not used</string>
+
+
+    <!--Error messages-->
+    <string name="please_enter_item_name">Please enter item name</string>
+    <string name="please_enter_item_decription">Please enter item description</string>
 
 
 

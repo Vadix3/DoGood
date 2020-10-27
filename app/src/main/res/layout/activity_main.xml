@@ -44,6 +44,7 @@
                     android:id="@+id/main_LAY_recyclerFrame"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="40dp"
                     android:layout_below="@id/main_TLB_head"/>
 
                 <com.miguelcatalan.materialsearchview.MaterialSearchView
