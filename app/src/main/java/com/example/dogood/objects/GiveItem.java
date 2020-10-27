@@ -1,6 +1,8 @@
 package com.example.dogood.objects;
 
 
+import android.graphics.Bitmap;
+
 public class GiveItem {
     String id;
     String name;
@@ -8,12 +10,12 @@ public class GiveItem {
     String state;
     String price;
     String description;
-    String pictures;
+    Bitmap pictures;
     String date; //TODO: solve date issue
     User giver;
 
     public GiveItem(String id, String name, String category, String state, String price
-            , String description, String pictures, String date, User giver) {
+            , String description, Bitmap pictures, String date, User giver) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -73,11 +75,11 @@ public class GiveItem {
         this.description = description;
     }
 
-    public String getPictures() {
+    public Bitmap getPictures() {
         return pictures;
     }
 
-    public void setPictures(String pictures) {
+    public void setPictures(Bitmap pictures) {
         this.pictures = pictures;
     }
 
