@@ -46,6 +46,7 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
         holder.itemPrice.setText(temp.getPrice());
         holder.itemDescription.setText(temp.getDescription());
         holder.postDate.setText(temp.getDate());
+        holder.itemPhoto.setImageBitmap(temp.getPictures());
     }
 
     @Override

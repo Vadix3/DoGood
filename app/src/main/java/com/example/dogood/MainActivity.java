@@ -43,7 +43,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
-    private static final int NEW_GIVE_ITEM_RESULT_CODE = 101;
+    private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
+    private static final int PROFILE_PAGE_RESULT_CODE = 1012;
 
 
     //private MaterialToolbar main_TLB_title;
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void openAddItemActivity() {
         Log.d(TAG, "openAddItemActivity: ");
-        startActivityForResult(new Intent(MainActivity.this, NewGiveItemActivity.class), 101);
+        startActivityForResult(new Intent(MainActivity.this, NewGiveItemActivity.class), NEW_GIVE_ITEM_RESULT_CODE);
     }
 
     // open side menu
@@ -212,17 +213,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case NEW_GIVE_ITEM_RESULT_CODE:
                 Log.d(TAG, "onActivityResult: Got new item from activity");
-                String gotNewItem = data.getStringExtra(NEW_GIVE_ITEM);
-                Log.d(TAG, "onActivityResult: Got new item after intent: " + gotNewItem);
-                Toast.makeText(this, "Item added successfully!", Toast.LENGTH_SHORT).show();
-                Gson gson = new Gson();
-                Type eventType = new TypeToken<GiveItem>() {
-                }.getType();
-                GiveItem temp = gson.fromJson(gotNewItem, eventType);
-                Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
-                giveItems.add(temp);
-                initItemsFragment();
+
+                if (data != null) {
+                    String gotNewItem = data.getStringExtra(NEW_GIVE_ITEM);
+                    Log.d(TAG, "onActivityResult: Got data from activity");
+                    Log.d(TAG, "onActivityResult: Got new item after intent: " + gotNewItem);
+                    Toast.makeText(this, "Item added successfully!", Toast.LENGTH_SHORT).show();
+                    Gson gson = new Gson();
+                    Type itemType = new TypeToken<GiveItem>() {
+                    }.getType();
+                    GiveItem temp = gson.fromJson(gotNewItem, itemType);
+                    Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
+                    giveItems.add(temp);
+                    initItemsFragment();
+                }else{
+                    Log.d(TAG, "onActivityResult: User canceled new item input");
+                }
                 break;
+
+            //TODO: Add switch for profile page
         }
     }
 
@@ -242,35 +251,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         requestItems.add(new RequestItem("12345", "Microwave", "Appliances", "Petah Tikva"
                 , "A simple white microwave", "21/09/2020", testUser, false));
 
-
-        giveItems.add(new GiveItem("123123", "Computer", "Computers", "New"
-                , "Free", "old working computer", "Photo URL", "23/04/20", testUser));
-        giveItems.add(new GiveItem("123123", "Oven", "Appliances", "New"
-                , "Free", "De Longhi oven", "Photo URL", "13/05/20", testUser));
-        giveItems.add(new GiveItem("123123", "Television", "Electronics", "New"
-                , "Free", "LG 50' tv", "Photo URL", "11/01/20", testUser));
-        giveItems.add(new GiveItem("123123", "Coffee Maker", "Electronics", "New"
-                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
-        giveItems.add(new GiveItem("123123", "Testing 1", "Electronics", "New"
-                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
-        giveItems.add(new GiveItem("123123", "Testing 2", "Electronics", "New"
-                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
-        giveItems.add(new GiveItem("123123", "Testing 3", "Electronics", "New"
-                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
-        giveItems.add(new GiveItem("123123", "Testing 4", "Electronics", "New"
-                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
-        giveItems.add(new GiveItem("123123", "Testing 5", "Electronics", "New"
-                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
-        giveItems.add(new GiveItem("123123", "Testing 6", "Electronics", "New"
-                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
-        giveItems.add(new GiveItem("123123", "Testing 7", "Electronics", "New"
-                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
-        giveItems.add(new GiveItem("123123", "Testing 8", "Electronics", "New"
-                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
-        giveItems.add(new GiveItem("123123", "Testing 9", "Electronics", "New"
-                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
-        giveItems.add(new GiveItem("123123", "Testing 10", "Electronics", "New"
-                , "Free", "Nespresso", "Photo URL", "11/01/20", testUser));
     }
 
     /**
