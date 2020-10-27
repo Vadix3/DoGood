@@ -3,7 +3,9 @@ package com.example.dogood.objects;
 
 import android.graphics.Bitmap;
 
-public class GiveItem {
+import java.io.Serializable;
+
+public class GiveItem implements Serializable {
     String id;
     String name;
     String category;

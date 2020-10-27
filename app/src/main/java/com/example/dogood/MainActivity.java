@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dogood.activities.NewGiveItemActivity;
@@ -28,17 +29,25 @@ import com.example.dogood.fragments.MainListFragment;
 import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.RequestItem;
 import com.example.dogood.objects.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "Dogood";
@@ -58,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ArrayList<GiveItem> giveItems;
     private ArrayList<RequestItem> requestItems;
 
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initTestArrays();
 
 
-        initItemsFragment();
+        fetchItemsFromFirestore();
 
         searchAction();
     }
@@ -92,6 +104,63 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+    }
+
+    /**
+     * A method to upload items array to firestore
+     */
+    private void saveItemsToFirestore() {
+        Log.d(TAG, "saveItemsToFirestore: Saving items to firestore");
+
+        HashMap<String, ArrayList<GiveItem>> myObject = new HashMap<>();
+        myObject.put("giveItems", giveItems);
+
+
+        db.collection("testing")
+                .document("itemsArray")
+                .set(myObject)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "onSuccess: User saved successfully!");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: Exception: " + e.getMessage());
+            }
+        });
+    }
+
+
+    /**
+     * A method to download items array from firestore
+     */
+    private void fetchItemsFromFirestore() {
+        Log.d(TAG, "fetchItemsFromFirestore: Fetching items from firestore");
+
+
+        DocumentReference docRef = db.document("testing/testing");
+
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    Log.d(TAG, "onSuccess: document exists!");
+
+                    giveItems = (ArrayList<GiveItem>) documentSnapshot.get("itemsArray");
+                    initItemsFragment();
+                } else {
+                    Log.d(TAG, "onSuccess: Document does not exist!");
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: Exception: " + e.getMessage());
+            }
+        });
     }
 
     /**
@@ -225,8 +294,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     GiveItem temp = gson.fromJson(gotNewItem, itemType);
                     Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
                     giveItems.add(temp);
+                    saveItemsToFirestore();
                     initItemsFragment();
-                }else{
+                } else {
                     Log.d(TAG, "onActivityResult: User canceled new item input");
                 }
                 break;
