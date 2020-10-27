@@ -7,11 +7,14 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/row_giveitem_row"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_margin="3dp"
         android:backgroundTint="#E0F2F1"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
         app:cardElevation="5dp"
         app:cardMaxElevation="0dp">
 
