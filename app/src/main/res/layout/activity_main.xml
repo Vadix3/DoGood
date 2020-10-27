@@ -17,9 +17,6 @@
         app:headerLayout="@layout/header_side"
         app:menu="@menu/side_menu" />
 
-
-
-
         <FrameLayout
             android:id="@+id/toolbar_container"
             android:layout_width="match_parent"

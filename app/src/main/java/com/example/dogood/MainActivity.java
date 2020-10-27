@@ -44,8 +44,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
-    private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
-    private static final int PROFILE_PAGE_RESULT_CODE = 1012;
+    private static final int NEW_GIVE_ITEM_RESULT_CODE = 101;
 
 
     //private MaterialToolbar main_TLB_title;
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void openAddItemActivity() {
         Log.d(TAG, "openAddItemActivity: ");
-        startActivityForResult(new Intent(MainActivity.this, NewGiveItemActivity.class), NEW_GIVE_ITEM_RESULT_CODE);
+        startActivityForResult(new Intent(MainActivity.this, NewGiveItemActivity.class), 101);
     }
 
     // open side menu
@@ -119,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_profile) {
             Log.d(TAG, "onNavigationItemSelected: profile press");
-            startActivityForResult(new Intent(MainActivity.this, Activity_profile.class), PROFILE_PAGE_RESULT_CODE);
         } else if (item.getItemId() == R.id.menu_logout) {
             Log.d(TAG, "onNavigationItemSelected: logout press");
         } else if (item.getItemId() == R.id.menu_rate) {
@@ -215,25 +213,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case NEW_GIVE_ITEM_RESULT_CODE:
                 Log.d(TAG, "onActivityResult: Got new item from activity");
-
-                if (data != null) {
-                    String gotNewItem = data.getStringExtra(NEW_GIVE_ITEM);
-                    Log.d(TAG, "onActivityResult: Got data from activity");
-                    Log.d(TAG, "onActivityResult: Got new item after intent: " + gotNewItem);
-                    Toast.makeText(this, "Item added successfully!", Toast.LENGTH_SHORT).show();
-                    Gson gson = new Gson();
-                    Type eventType = new TypeToken<GiveItem>() {
-                    }.getType();
-                    GiveItem temp = gson.fromJson(gotNewItem, eventType);
-                    Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
-                    giveItems.add(temp);
-                    initItemsFragment();
-                }else{
-                    Log.d(TAG, "onActivityResult: User canceled new item input");
-                }
+                String gotNewItem = data.getStringExtra(NEW_GIVE_ITEM);
+                Log.d(TAG, "onActivityResult: Got new item after intent: " + gotNewItem);
+                Toast.makeText(this, "Item added successfully!", Toast.LENGTH_SHORT).show();
+                Gson gson = new Gson();
+                Type eventType = new TypeToken<GiveItem>() {
+                }.getType();
+                GiveItem temp = gson.fromJson(gotNewItem, eventType);
+                Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
+                giveItems.add(temp);
+                initItemsFragment();
                 break;
-
-            //TODO: Add switch for profile page
         }
     }
 
