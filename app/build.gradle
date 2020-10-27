@@ -45,4 +45,8 @@ dependencies {
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'com.google.code.gson:gson:2.8.6'
 
+    implementation 'com.github.AraujoJordan:ExcuseMe:0.9.5'
+    implementation 'com.karumi:dexter:6.2.1'
+
+
 }

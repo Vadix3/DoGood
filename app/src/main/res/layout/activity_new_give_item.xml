@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp">
-    <ImageView
+
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/addgiveitem_IMG_itemPhoto"
         android:layout_width="204dp"
         android:layout_height="199dp"
         android:background="@drawable/photo_empty_frame"
         android:clickable="true"
+        android:scaleType="fitXY"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBottom_toTopOf="@+id/addgiveitem_EDT_itemName"
@@ -19,6 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.03" />
+
 
     <EditText
         android:id="@+id/addgiveitem_EDT_itemName"
@@ -82,10 +85,10 @@
             android:background="@drawable/round_edt_border_edges"
             android:drawablePadding="10dp"
             android:elevation="10dp"
+            android:enabled="false"
             android:gravity="center"
             android:hint="@string/free_item"
             android:inputType="number"
-            android:enabled="false"
             android:padding="15dp" />
 
         <CheckBox
@@ -107,10 +110,10 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/round_edt_border_edges"
+        android:dropDownVerticalOffset="40dp"
         android:padding="15dp"
         app:layout_constraintBottom_toTopOf="@+id/addgiveitem_LST_categorySpinner"
         app:layout_constraintEnd_toEndOf="parent"
-        android:dropDownVerticalOffset="40dp"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addgiveitem_EDT_itemDescription"
@@ -123,10 +126,10 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/round_edt_border_edges"
+        android:dropDownVerticalOffset="40dp"
         android:padding="15dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        android:dropDownVerticalOffset="40dp"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addgiveitem_LST_conditionSpinner"

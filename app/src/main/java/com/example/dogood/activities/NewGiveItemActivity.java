@@ -1,7 +1,13 @@
 package com.example.dogood.activities;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,20 +21,33 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.dogood.R;
 import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.User;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.gson.Gson;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.ArrayList;
 
 public class NewGiveItemActivity extends AppCompatActivity {
     private static final String TAG = "Dogood";
-    private static final String NEW_GIVE_ITEM="111";
+    private static final String NEW_GIVE_ITEM = "111";
+    private static final int CAMERA_PERMISSION_REQUSETCODE = 122;
+    private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
+    private static final int CAMERA_PICTURE_REQUEST = 124;
 
-    private ImageView itemPhoto;
+
+    private ShapeableImageView itemPhoto;
     private EditText itemName;
     private EditText itemPrice;
     private EditText itemDescription;
@@ -51,6 +70,18 @@ public class NewGiveItemActivity extends AppCompatActivity {
     private void initViews() {
         Log.d(TAG, "initViews: Creating views");
         itemPhoto = findViewById(R.id.addgiveitem_IMG_itemPhoto);
+        itemPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ContextCompat.checkSelfPermission(NewGiveItemActivity.this, Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "onClick: User already given permission, moving straight to camera");
+                    openCamera();
+                } else {
+                    checkingForCameraPermissions();
+                }
+            }
+        });
         itemName = findViewById(R.id.addgiveitem_EDT_itemName);
         itemDescription = findViewById(R.id.addgiveitem_EDT_itemDescription);
         itemPrice = findViewById(R.id.addgiveitem_EDT_itemPrice);
@@ -81,6 +112,62 @@ public class NewGiveItemActivity extends AppCompatActivity {
                 checkForValidInput();
             }
         });
+    }
+
+
+    /**
+     * A method to open the camera
+     */
+    private void openCamera() {
+        Log.d(TAG, "openCamera: opening camera");
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_PICTURE_REQUEST);
+    }
+
+    /**
+     * A method to check for camera permissions
+     */
+    private void checkingForCameraPermissions() {
+        Log.d(TAG, "addPhotoToPage: checking for users permissions");
+
+        Dexter.withContext(this)
+                .withPermission(Manifest.permission.CAMERA)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        Log.d(TAG, "onPermissionGranted: User given permission");
+                        openCamera();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            Log.d(TAG, "onPermissionDenied: User denied permission permanently!");
+                            AlertDialog.Builder builder = new AlertDialog.Builder(NewGiveItemActivity.this);
+                            builder.setTitle("Permission Denied")
+                                    .setMessage("Camera permission is required to take a photo of your item.\n" +
+                                            "Please allow camera permissions in app settings.")
+                                    .setNegativeButton("Cancel", null)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Log.d(TAG, "onClick: Opening settings activity");
+                                            Intent intent = new Intent();
+                                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                            intent.setData(Uri.fromParts("package", getPackageName(), null));
+                                            startActivityForResult(intent, CAMERA_PERMISSION_SETTINGS_REQUSETCODE);
+                                        }
+                                    }).show();
+                        } else {
+                            Log.d(TAG, "onPermissionDenied: User denied permission!");
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
     }
 
     /**
@@ -214,5 +301,22 @@ public class NewGiveItemActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult: Im im activity result");
+        switch (requestCode) {
+            case CAMERA_PERMISSION_SETTINGS_REQUSETCODE:
+                Log.d(TAG, "onActivityResult: I came from app settings");
+                break;
+
+            case CAMERA_PICTURE_REQUEST:
+                Log.d(TAG, "onActivityResult: I came from camera");
+                Bitmap image = (Bitmap) data.getExtras().get("data");
+                itemPhoto.setImageBitmap(image);
+                break;
+        }
     }
 }
