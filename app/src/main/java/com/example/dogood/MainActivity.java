@@ -23,7 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.dogood.activities.Activity_profile;
 import com.example.dogood.activities.NewGiveItemActivity;
 import com.example.dogood.fragments.MainListFragment;
 import com.example.dogood.objects.GiveItem;
