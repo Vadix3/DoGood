@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dogood.activities.NewGiveItemActivity;
+import com.example.dogood.fragments.Fragment_profile;
 import com.example.dogood.fragments.MainListFragment;
 import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.RequestItem;
@@ -187,6 +188,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_profile) {
             Log.d(TAG, "onNavigationItemSelected: profile press");
+
+            Fragment_profile fragment_profile = new Fragment_profile(giveItems, requestItems);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_LAY_recyclerFrame, fragment_profile);
+            transaction.commit();
+
         } else if (item.getItemId() == R.id.menu_logout) {
             Log.d(TAG, "onNavigationItemSelected: logout press");
         } else if (item.getItemId() == R.id.menu_rate) {

@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_anchor="@id/main_BAB_menu"
-                    app:srcCompat="@drawable/ic_add" />
+                    android:src="@drawable/ic_add" />
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

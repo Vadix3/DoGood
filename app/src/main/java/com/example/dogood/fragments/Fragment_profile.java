@@ -1,9 +1,12 @@
 package com.example.dogood.fragments;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,27 +15,38 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.dogood.R;
+import com.example.dogood.adapters.RecyclerViewGiveAdapter;
+import com.example.dogood.objects.GiveItem;
+import com.example.dogood.objects.RequestItem;
+import com.example.dogood.objects.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 
 public class Fragment_profile extends Fragment {
     private static final String TAG = "Fragment_profile";
+
+    protected View view;
+
     private ImageView profile_IMG_picture;
     private TextView profile_LBL_name;
     private TextView profile_LBL_city;
     private TextView profile_LBL_phone;
     private TextView profile_LBL_mail;
-    private FrameLayout profile_LAY_post;
-    private FloatingActionButton profile_BTN_post;
+    private RecyclerView profile_RCV_post;
 
-    public Fragment_profile() { }
+    private ArrayList<GiveItem> giveItems;
+    private ArrayList<RequestItem> requestItems;
 
-    public static Fragment_profile newInstance() {
-        Fragment_profile fragment = new Fragment_profile();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+    public Fragment_profile(){}
+
+    public Fragment_profile(ArrayList<GiveItem> giveItems, ArrayList<RequestItem> requestItems) {
+        this.giveItems = giveItems;
+        this.requestItems = requestItems;
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +55,43 @@ public class Fragment_profile extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        Log.d(TAG, "onCreateView");
+
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_profile, container, false);
+        }
+        findViews();
+        addTolistTest();
+        populateEventList();
+        return view;
+    }
+
+    private void addTolistTest() {
+        Log.d(TAG, "addTolistTest: ");
+        Bitmap userCustomImage = null;
+        User nathan = new User("nathan","email","passord","netanya","054","photo");
+        giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+        giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+        giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+        giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+        giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+        giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+
+    }
+
+    private void findViews() {
+        profile_IMG_picture = view.findViewById(R.id.profile_IMG_picture);
+        profile_LBL_name = view.findViewById(R.id.profile_LBL_name);
+        profile_LBL_city = view.findViewById(R.id.profile_LBL_city);
+        profile_LBL_phone = view.findViewById(R.id.profile_LBL_phone);
+        profile_LBL_mail = view.findViewById(R.id.profile_LBL_mail);
+        profile_RCV_post = view.findViewById(R.id.profile_RCV_post);
+
+    }
+
+    private void populateEventList() {
+        Log.d(TAG, "populateEventList: Populating list");
+        RecyclerViewGiveAdapter recyclerViewGiveAdapter = new RecyclerViewGiveAdapter(getContext(), giveItems);
+        profile_RCV_post.setAdapter(recyclerViewGiveAdapter);
     }
 }
