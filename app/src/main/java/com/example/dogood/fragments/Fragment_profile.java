@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -93,5 +94,13 @@ public class Fragment_profile extends Fragment {
         Log.d(TAG, "populateEventList: Populating list");
         RecyclerViewGiveAdapter recyclerViewGiveAdapter = new RecyclerViewGiveAdapter(getContext(), giveItems);
         profile_RCV_post.setAdapter(recyclerViewGiveAdapter);
+    }
+
+    private void initItemsFragment() {
+        Log.d(TAG, "initItemsFragment: Initing main list");
+        MainListFragment mainListFragment = new MainListFragment(giveItems, requestItems);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_LAY_recyclerFrame, mainListFragment);
+        transaction.commit();
     }
 }
