@@ -14,11 +14,7 @@ import android.widget.TextView;
 import com.example.dogood.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Fragment_profile#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Fragment_profile extends Fragment {
     private static final String TAG = "Fragment_profile";
     private ImageView profile_IMG_picture;
@@ -29,10 +25,7 @@ public class Fragment_profile extends Fragment {
     private FrameLayout profile_LAY_post;
     private FloatingActionButton profile_BTN_post;
 
-    public Fragment_profile() {
-        // Required empty public constructor
-    }
-
+    public Fragment_profile() { }
 
     public static Fragment_profile newInstance() {
         Fragment_profile fragment = new Fragment_profile();
