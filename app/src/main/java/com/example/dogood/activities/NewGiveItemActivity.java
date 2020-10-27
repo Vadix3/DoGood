@@ -45,6 +45,8 @@ public class NewGiveItemActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_REQUSETCODE = 122;
     private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
     private static final int CAMERA_PICTURE_REQUEST = 124;
+    private static final int RETURN_NEW_USER = 125;
+
 
 
     private ShapeableImageView itemPhoto;
@@ -55,6 +57,8 @@ public class NewGiveItemActivity extends AppCompatActivity {
     private Spinner condition;
     private Spinner category;
     private Button submitBtn;
+
+    private Bitmap userCustomImage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -200,17 +204,18 @@ public class NewGiveItemActivity extends AppCompatActivity {
             itemPrice.setError("Please enter price (Be reasonable!)");
             return;
         }
+        if (userCustomImage == null) {
+            Log.d(TAG, "checkForValidInput: User did not upload item photo");
+            return;
+        }
 
         Log.d(TAG, "checkForValidInput: Passed all checks!");
         User testUser = new User("Vadim", "dogoodapp1@gmail.com", "123456"
                 , "Netanya", "0541234567", "Photo URL");
 
-//    public GiveItem(String id, String name, String category, String state, String price
-//                , String description, String pictures, String date, User giver) {
-
         GiveItem temp = new GiveItem("12", itemName.getText().toString(), category.getSelectedItem().toString()
                 , condition.getSelectedItem().toString(), itemPrice.getText().toString(), itemDescription.getText().toString()
-                , "PicURL", "test-date-27/10", testUser);
+                , userCustomImage, "test-date-27/10", testUser);
         returnGivenItem(temp);
     }
 
@@ -223,9 +228,8 @@ public class NewGiveItemActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String jsonEvents = gson.toJson(temp);
         resultIntent.putExtra(NEW_GIVE_ITEM, jsonEvents);
-        setResult(52, resultIntent);
+        setResult(RETURN_NEW_USER, resultIntent);
         finish();
-
     }
 
     /**
@@ -281,6 +285,8 @@ public class NewGiveItemActivity extends AppCompatActivity {
         categories.add(getString(R.string.books));
         categories.add(getString(R.string.baby_supplies));
         categories.add(getString(R.string.computers));
+        categories.add(getString(R.string.other));
+
 
         //create an ArrayAdapter from the String Array
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
@@ -314,8 +320,10 @@ public class NewGiveItemActivity extends AppCompatActivity {
 
             case CAMERA_PICTURE_REQUEST:
                 Log.d(TAG, "onActivityResult: I came from camera");
-                Bitmap image = (Bitmap) data.getExtras().get("data");
-                itemPhoto.setImageBitmap(image);
+                userCustomImage = (Bitmap) data.getExtras().get("data");
+                itemPhoto.setStrokeWidth(30);
+                itemPhoto.setStrokeColor(getColorStateList(R.color.colorPrimary));
+                itemPhoto.setImageBitmap(userCustomImage);
                 break;
         }
     }
