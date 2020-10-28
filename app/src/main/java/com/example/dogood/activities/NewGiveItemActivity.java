@@ -47,7 +47,7 @@ public class NewGiveItemActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_REQUSETCODE = 122;
     private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
     private static final int CAMERA_PICTURE_REQUEST = 124;
-    private static final int RETURN_NEW_USER = 125;
+    private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
 
 
     private ShapeableImageView itemPhoto;
@@ -243,7 +243,7 @@ public class NewGiveItemActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String jsonEvents = gson.toJson(temp);
         resultIntent.putExtra(NEW_GIVE_ITEM, jsonEvents);
-        setResult(RETURN_NEW_USER, resultIntent);
+        setResult(NEW_GIVE_ITEM_RESULT_CODE, resultIntent);
         finish();
     }
 

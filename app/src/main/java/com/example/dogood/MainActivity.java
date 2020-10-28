@@ -15,6 +15,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.dogood.fragments.AskItemFragment;
@@ -57,6 +59,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MaterialSearchView main_SRC_search;
     private ConstraintLayout main_LAY_main;
 
+    private FrameLayout mainFragment;
+    private FrameLayout giveFragment;
+    private FrameLayout askFragment;
+    private FrameLayout profileFragment;
+
+    private HomeTabFragment homeTabFragment;
+    private GiveItemFragment giveItemFragment;
+    private AskItemFragment askItemFragment;
+    private Fragment_profile fragment_profile;
+
+
     private ArrayList<GiveItem> giveItems;
     private ArrayList<RequestItem> requestItems;
 
@@ -75,11 +88,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         requestItems = new ArrayList<>();
 
 
-        fetchItemsFromFirestore();
-        initListChangeListener();
-        initBottomNavigationMenu();
+        fetchItemsFromFirestore(); // Get data from firestore and initialize the fragments
+        initListChangeListener(); // Init listener for item change detection
+        initBottomNavigationMenu(); // initialize bottom navigation menu
         searchAction();
+    }
+
+    /**
+     * A method to initialize the page fragments
+     */
+    private void initPageFragments() {
+        Log.d(TAG, "initPageFragments: Creating fragments");
+        mainFragment = findViewById(R.id.main_LAY_mainPageFragment);
+        giveFragment = findViewById(R.id.main_LAY_givePageFragment);
+        askFragment = findViewById(R.id.main_LAY_askPageFragment);
+        profileFragment = findViewById(R.id.main_LAY_profilePageFragment);
+
+        setProfileFragment();
+        setGiveFragment();
         setHomeFragment();
+        setAskFragment();
+
+
+        giveFragment.setVisibility(View.GONE);
+        askFragment.setVisibility(View.GONE);
+        profileFragment.setVisibility(View.GONE);
+
+
+    }
+
+    /**
+     * A method to update fragments after a change in lists has occured
+     */
+    private void updateFragments() {
+        Log.d(TAG, "updateFragments: Updating fragments");
+        setProfileFragment();
+        setGiveFragment();
+        setHomeFragment();
+        setAskFragment();
     }
 
     /**
@@ -93,16 +139,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.bottom_menu_home:
-                        setHomeFragment();
+                        showFragment(mainFragment);
                         break;
                     case R.id.bottom_menu_give:
-                        setGiveFragment();
+                        showFragment(giveFragment);
                         break;
                     case R.id.bottom_menu_ask:
-                        setAskFragment();
+                        showFragment(askFragment);
                         break;
                     case R.id.bottom_menu_profile:
-                        setProfileFragment();
+                        showFragment(profileFragment);
                         break;
                 }
                 return true;
@@ -111,13 +157,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
+     * A method to show the selected fragment and hide all the others
+     */
+    private void showFragment(FrameLayout fragment) {
+        Log.d(TAG, "showFragment: Showing fragment: " + fragment.toString());
+
+        mainFragment.setVisibility(View.GONE);
+        giveFragment.setVisibility(View.GONE);
+        askFragment.setVisibility(View.GONE);
+        profileFragment.setVisibility(View.GONE);
+
+        fragment.setVisibility(View.VISIBLE);
+    }
+
+    /**
      * A method to set the profile page fragment
      */
     private void setProfileFragment() {
         Log.d(TAG, "onNavigationItemSelected: profile");
-        Fragment_profile fragment_profile = new Fragment_profile(giveItems, requestItems);
+        fragment_profile = new Fragment_profile(giveItems, requestItems);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_LAY_mainFragmentsLayout, fragment_profile);
+        transaction.replace(R.id.main_LAY_profilePageFragment, fragment_profile);
         transaction.commit();
     }
 
@@ -126,9 +186,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void setAskFragment() {
         Log.d(TAG, "onNavigationItemSelected: ask");
-        AskItemFragment giveItemFragment = new AskItemFragment();
+        askItemFragment = new AskItemFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_LAY_mainFragmentsLayout, giveItemFragment);
+        transaction.replace(R.id.main_LAY_askPageFragment, askItemFragment);
         transaction.commit();
     }
 
@@ -136,8 +196,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * A method to set the Give fragment
      */
     private void setGiveFragment() {
-        Log.d(TAG, "onNavigationItemSelected: give");
-        initGiveItemsFragment();
+        Log.d(TAG, "initItemsFragment: Initing give list with: " + giveItems.toString());
+        giveItemFragment = new GiveItemFragment(giveItems);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_LAY_givePageFragment, giveItemFragment);
+        transaction.commit();
     }
 
     /**
@@ -145,9 +208,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void setHomeFragment() {
         Log.d(TAG, "onNavigationItemSelected: home");
-        HomeTabFragment giveItemFragment = new HomeTabFragment();
+        homeTabFragment = new HomeTabFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_LAY_mainFragmentsLayout, giveItemFragment);
+        transaction.replace(R.id.main_LAY_mainPageFragment, homeTabFragment);
         transaction.commit();
     }
 
@@ -169,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (snapshot != null && snapshot.exists()) {
                     Log.d(TAG, "Current data: HAS NEW DATA! " + snapshot.getData());
                     FirestoreDataContainer container = snapshot.toObject(FirestoreDataContainer.class);
-                    giveItems = container.getGiveItems();
+                    updateFragments();
                 } else {
                     Log.d(TAG, "Current data: null");
                 }
@@ -229,6 +292,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     FirestoreDataContainer container = documentSnapshot.toObject(FirestoreDataContainer.class);
                     giveItems = container.getGiveItems();
+                    initPageFragments();
                     Log.d(TAG, "onSuccess: GiveItems: " + giveItems);
                 } else {
                     Log.d(TAG, "onSuccess: Document does not exist!");
@@ -314,9 +378,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.d(TAG, "onActivityResult: ");
+        Log.d(TAG, "onActivityResult: request code: " + requestCode + " Result code: " + resultCode
+                + "\nData: " + data.toString());
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
+
+        switch (resultCode) {
 
             /** We got from voice listener*/
             case MaterialSearchView.REQUEST_VOICE:
@@ -353,17 +419,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //TODO: Add switch for profile page
         }
     }
-
-    /**
-     * A method to init the main list
-     */
-    private void initGiveItemsFragment() {
-        Log.d(TAG, "initItemsFragment: Initing main list with: " + giveItems.toString());
-        GiveItemFragment giveItemFragment = new GiveItemFragment(giveItems, requestItems);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_LAY_mainFragmentsLayout, giveItemFragment);
-        transaction.commit();
-    }
-
-
 }

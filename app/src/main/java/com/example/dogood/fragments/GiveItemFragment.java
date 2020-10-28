@@ -30,16 +30,14 @@ public class GiveItemFragment extends Fragment {
     protected View view;
     private RecyclerView recyclerView;
     private ArrayList<GiveItem> giveItems;
-    private ArrayList<RequestItem> requestItems;
     private FloatingActionButton addItem;
 
 
     public GiveItemFragment() {
     }
 
-    public GiveItemFragment(ArrayList<GiveItem> giveItems, ArrayList<RequestItem> requestItems) {
+    public GiveItemFragment(ArrayList<GiveItem> giveItems) {
         this.giveItems = giveItems;
-        this.requestItems = requestItems;
     }
 
     @Override
