@@ -69,7 +69,7 @@ public class Fragment_profile extends Fragment {
 
     private void addTolistTest() {
         Log.d(TAG, "addTolistTest: ");
-        Bitmap userCustomImage = null;
+        String userCustomImage = "null";
         User nathan = new User("nathan","email","passord","netanya","054","photo");
         giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
         giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
@@ -96,11 +96,4 @@ public class Fragment_profile extends Fragment {
         profile_RCV_post.setAdapter(recyclerViewGiveAdapter);
     }
 
-    private void initItemsFragment() {
-        Log.d(TAG, "initItemsFragment: Initing main list");
-        MainListFragment mainListFragment = new MainListFragment(giveItems, requestItems);
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_LAY_recyclerFrame, mainListFragment);
-        transaction.commit();
-    }
 }

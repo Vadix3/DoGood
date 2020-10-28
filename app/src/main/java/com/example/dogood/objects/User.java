@@ -9,6 +9,9 @@ public class User {
     private String phone;
     private String photo;
 
+    public User() {
+    }
+
     public User(String name, String email, String password, String city, String phone, String photo) {
         this.name = name;
         this.email = email;

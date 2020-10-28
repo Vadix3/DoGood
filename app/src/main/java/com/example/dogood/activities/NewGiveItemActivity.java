@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,6 +38,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class NewGiveItemActivity extends AppCompatActivity {
@@ -46,7 +48,6 @@ public class NewGiveItemActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
     private static final int CAMERA_PICTURE_REQUEST = 124;
     private static final int RETURN_NEW_USER = 125;
-
 
 
     private ShapeableImageView itemPhoto;
@@ -213,10 +214,24 @@ public class NewGiveItemActivity extends AppCompatActivity {
         User testUser = new User("Vadim", "dogoodapp1@gmail.com", "123456"
                 , "Netanya", "0541234567", "Photo URL");
 
+        String photosJson = bitMapToString(userCustomImage);
+
         GiveItem temp = new GiveItem("12", itemName.getText().toString(), category.getSelectedItem().toString()
                 , condition.getSelectedItem().toString(), itemPrice.getText().toString(), itemDescription.getText().toString()
-                , userCustomImage, "test-date-27/10", testUser);
+                , photosJson, "test-date-27/10", testUser);
         returnGivenItem(temp);
+    }
+
+    /**
+     * A method to convert bitmap to string
+     */
+    private String bitMapToString(Bitmap bitmap) {
+        Log.d(TAG, "bitMapToString: Converting bitmap to string");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
     }
 
     /**

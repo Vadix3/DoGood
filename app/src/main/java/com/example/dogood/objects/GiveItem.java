@@ -12,12 +12,15 @@ public class GiveItem implements Serializable {
     String state;
     String price;
     String description;
-    Bitmap pictures;
+    String pictures; // A JSON string representation of the images
     String date; //TODO: solve date issue
     User giver;
 
+    public GiveItem() {
+    }
+
     public GiveItem(String id, String name, String category, String state, String price
-            , String description, Bitmap pictures, String date, User giver) {
+            , String description, String pictures, String date, User giver) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -77,11 +80,11 @@ public class GiveItem implements Serializable {
         this.description = description;
     }
 
-    public Bitmap getPictures() {
+    public String getPictures() {
         return pictures;
     }
 
-    public void setPictures(Bitmap pictures) {
+    public void setPictures(String pictures) {
         this.pictures = pictures;
     }
 

@@ -1,6 +1,9 @@
 package com.example.dogood.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dogood.R;
 import com.example.dogood.objects.GiveItem;
 import com.google.android.material.card.MaterialCardView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGiveAdapter.ViewHolder> {
@@ -25,6 +31,7 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
     private ArrayList<GiveItem> items;
 
     public RecyclerViewGiveAdapter(Context context, ArrayList<GiveItem> items) {
+        Log.d(TAG, "RecyclerViewGiveAdapter: Im in adapter with: " + items.toString());
         this.context = context;
         this.items = items;
     }
@@ -43,10 +50,31 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
         GiveItem temp = items.get(position);
         holder.itemName.setText(temp.getName());
         holder.itemState.setText(temp.getState());
-        holder.itemPrice.setText(temp.getPrice());
+        if (!temp.getPrice().equalsIgnoreCase("")) {//Item not free
+            holder.itemPrice.setText(temp.getPrice() + " ILS");
+        } else {
+            holder.itemPrice.setText(R.string.free);
+        }
         holder.itemDescription.setText(temp.getDescription());
         holder.postDate.setText(temp.getDate());
-        holder.itemPhoto.setImageBitmap(temp.getPictures());
+        Bitmap photo = stringToBitMap(temp.getPictures());
+        holder.itemPhoto.setImageBitmap(photo);
+    }
+
+    /**
+     * This Function converts the String back to Bitmap
+     */
+    public Bitmap stringToBitMap(String encodedString) {
+        Log.d(TAG, "stringToBitMap: Converting string to bitmap");
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0,
+                    encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            Log.d(TAG, "stringToBitMap: Exception: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override

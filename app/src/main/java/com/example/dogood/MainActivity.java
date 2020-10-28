@@ -2,17 +2,12 @@ package com.example.dogood;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -20,50 +15,47 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.dogood.activities.NewGiveItemActivity;
+import com.example.dogood.fragments.AskItemFragment;
 import com.example.dogood.fragments.Fragment_profile;
-import com.example.dogood.fragments.MainListFragment;
+import com.example.dogood.fragments.GiveItemFragment;
+import com.example.dogood.fragments.HomeTabFragment;
+import com.example.dogood.objects.FirestoreDataContainer;
 import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.RequestItem;
-import com.example.dogood.objects.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
+    private static final String GIVE_ITEMS_ARRAY = "giveItems";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final int PROFILE_PAGE_RESULT_CODE = 1012;
+    private static final int CAMERA_PERMISSION_REQUSETCODE = 122;
+    private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
+    private static final int CAMERA_PICTURE_REQUEST = 124;
+    private static final int RETURN_NEW_USER = 125;
 
 
     //private MaterialToolbar main_TLB_title;
     private Toolbar main_TLB_head;
     private MaterialSearchView main_SRC_search;
-    private BottomAppBar main_BAB_menu;
-    private DrawerLayout main_LAY_main;
-    private NavigationView main_NGV_side;
-    private FloatingActionButton addItem;
+    private ConstraintLayout main_LAY_main;
 
     private ArrayList<GiveItem> giveItems;
     private ArrayList<RequestItem> requestItems;
@@ -77,16 +69,112 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         findViews();
-        addSide();
-
 
         /**TESTING ARRAYS*/
-        initTestArrays();
+        giveItems = new ArrayList<>();
+        requestItems = new ArrayList<>();
 
 
         fetchItemsFromFirestore();
-
+        initListChangeListener();
+        initBottomNavigationMenu();
         searchAction();
+        setHomeFragment();
+    }
+
+    /**
+     * A method to initialize bottom navigation menu
+     */
+    private void initBottomNavigationMenu() {
+        Log.d(TAG, "initBottomNavigationMenu: Bottom navigation init");
+        BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.bottom_menu_home:
+                        setHomeFragment();
+                        break;
+                    case R.id.bottom_menu_give:
+                        setGiveFragment();
+                        break;
+                    case R.id.bottom_menu_ask:
+                        setAskFragment();
+                        break;
+                    case R.id.bottom_menu_profile:
+                        setProfileFragment();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    /**
+     * A method to set the profile page fragment
+     */
+    private void setProfileFragment() {
+        Log.d(TAG, "onNavigationItemSelected: profile");
+        Fragment_profile fragment_profile = new Fragment_profile(giveItems, requestItems);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_LAY_mainFragmentsLayout, fragment_profile);
+        transaction.commit();
+    }
+
+    /**
+     * A method to set the Ask fragment
+     */
+    private void setAskFragment() {
+        Log.d(TAG, "onNavigationItemSelected: ask");
+        AskItemFragment giveItemFragment = new AskItemFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_LAY_mainFragmentsLayout, giveItemFragment);
+        transaction.commit();
+    }
+
+    /**
+     * A method to set the Give fragment
+     */
+    private void setGiveFragment() {
+        Log.d(TAG, "onNavigationItemSelected: give");
+        initGiveItemsFragment();
+    }
+
+    /**
+     * A method to set the Home fragment
+     */
+    private void setHomeFragment() {
+        Log.d(TAG, "onNavigationItemSelected: home");
+        HomeTabFragment giveItemFragment = new HomeTabFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_LAY_mainFragmentsLayout, giveItemFragment);
+        transaction.commit();
+    }
+
+    /**
+     * A method to create a list change listener
+     */
+    private void initListChangeListener() {
+        Log.d(TAG, "initListChangeListener: Creating list change listener");
+        final DocumentReference docRef = db.collection("data").document(GIVE_ITEMS_ARRAY);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.d(TAG, "onEvent: Exception: " + e.getMessage());
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: HAS NEW DATA! " + snapshot.getData());
+                    FirestoreDataContainer container = snapshot.toObject(FirestoreDataContainer.class);
+                    giveItems = container.getGiveItems();
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
+        });
     }
 
     private void findViews() {
@@ -94,16 +182,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         main_TLB_head = findViewById(R.id.main_TLB_head);
         main_SRC_search = findViewById(R.id.main_SRC_search);
-        main_BAB_menu = findViewById(R.id.main_BAB_menu);
         main_LAY_main = findViewById(R.id.main_LAY_main);
-        main_NGV_side = findViewById(R.id.main_NGV_side);
-        addItem = findViewById(R.id.main_BTN_addItemButton);
-        addItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openAddItemActivity();
-            }
-        });
+
 
     }
 
@@ -111,26 +191,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * A method to upload items array to firestore
      */
     private void saveItemsToFirestore() {
-        Log.d(TAG, "saveItemsToFirestore: Saving items to firestore");
+        Log.d(TAG, "saveItemsToFirestore: Saving items to firestore: " + giveItems.toString());
 
-        HashMap<String, ArrayList<GiveItem>> myObject = new HashMap<>();
-        myObject.put("giveItems", giveItems);
+        FirestoreDataContainer dataContainer = new FirestoreDataContainer(giveItems);
 
-
-        db.collection("testing")
-                .document("itemsArray")
-                .set(myObject)
+        db.collection("data").document(GIVE_ITEMS_ARRAY)
+                .set(dataContainer)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "onSuccess: User saved successfully!");
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure: Exception: " + e.getMessage());
-            }
-        });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
     }
 
 
@@ -139,18 +217,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void fetchItemsFromFirestore() {
         Log.d(TAG, "fetchItemsFromFirestore: Fetching items from firestore");
+        String path = "data/" + GIVE_ITEMS_ARRAY;
 
-
-        DocumentReference docRef = db.document("testing/testing");
+        DocumentReference docRef = db.document(path);
 
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    Log.d(TAG, "onSuccess: document exists!");
+                    Log.d(TAG, "onSuccess: document exists! " + documentSnapshot.getData().toString());
 
-                    giveItems = (ArrayList<GiveItem>) documentSnapshot.get("itemsArray");
-                    initItemsFragment();
+                    FirestoreDataContainer container = documentSnapshot.toObject(FirestoreDataContainer.class);
+                    giveItems = container.getGiveItems();
+                    Log.d(TAG, "onSuccess: GiveItems: " + giveItems);
                 } else {
                     Log.d(TAG, "onSuccess: Document does not exist!");
                 }
@@ -164,36 +243,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    /**
-     * A method to move to add item activity
-     */
-    private void openAddItemActivity() {
-        Log.d(TAG, "openAddItemActivity: ");
-        startActivityForResult(new Intent(MainActivity.this, NewGiveItemActivity.class), NEW_GIVE_ITEM_RESULT_CODE);
-    }
-
-    // open side menu
-    private void addSide() {
-        Log.d(TAG, "addSide: ");
-        main_NGV_side.bringToFront();
-        setSupportActionBar(main_TLB_head);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, main_LAY_main, main_TLB_head, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        main_LAY_main.addDrawerListener(toggle);
-        toggle.syncState();
-        main_NGV_side.setNavigationItemSelectedListener(this);
-    }
 
     // side menu action and move to fragment when bottom press
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_profile) {
             Log.d(TAG, "onNavigationItemSelected: profile press");
-
-            Fragment_profile fragment_profile = new Fragment_profile(giveItems, requestItems);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_LAY_recyclerFrame, fragment_profile);
-            transaction.commit();
-
         } else if (item.getItemId() == R.id.menu_logout) {
             Log.d(TAG, "onNavigationItemSelected: logout press");
         } else if (item.getItemId() == R.id.menu_rate) {
@@ -217,17 +272,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return true;
 
-    }
-
-    // Used we side menu is open you can close and stay in application
-    @Override
-    public void onBackPressed() {
-        Log.d(TAG, "onBackPressed: ");
-        if (main_LAY_main.isDrawerOpen(GravityCompat.START)) {
-            main_LAY_main.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     private void searchAction() {
@@ -302,42 +346,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
                     giveItems.add(temp);
                     saveItemsToFirestore();
-                    initItemsFragment();
                 } else {
                     Log.d(TAG, "onActivityResult: User canceled new item input");
                 }
                 break;
-
             //TODO: Add switch for profile page
         }
     }
 
     /**
-     * A method to create test arrays
-     */
-    private void initTestArrays() {
-        Log.d(TAG, "initTestArrays: Creating test arrays");
-        User testUser = new User("Vadim", "dogoodapp1@gmail.com", "123456"
-                , "Netanya", "0541234567", "Photo URL");
-
-        giveItems = new ArrayList<>();
-        requestItems = new ArrayList<>();
-
-        requestItems.add(new RequestItem("12345", "Refrigirator", "Appliances", "Tel Aviv"
-                , "A simple white fridge", "21/09/2020", testUser, false));
-        requestItems.add(new RequestItem("12345", "Microwave", "Appliances", "Petah Tikva"
-                , "A simple white microwave", "21/09/2020", testUser, false));
-
-    }
-
-    /**
      * A method to init the main list
      */
-    private void initItemsFragment() {
-        Log.d(TAG, "initItemsFragment: Initing main list");
-        MainListFragment mainListFragment = new MainListFragment(giveItems, requestItems);
+    private void initGiveItemsFragment() {
+        Log.d(TAG, "initItemsFragment: Initing main list with: " + giveItems.toString());
+        GiveItemFragment giveItemFragment = new GiveItemFragment(giveItems, requestItems);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_LAY_recyclerFrame, mainListFragment);
+        transaction.replace(R.id.main_LAY_mainFragmentsLayout, giveItemFragment);
         transaction.commit();
     }
 
