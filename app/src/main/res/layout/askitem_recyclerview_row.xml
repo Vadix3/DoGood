@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/askRow_LAY_mainLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/askRow_LAY_row"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_margin="3dp"
+        android:backgroundTint="#E0F2F1"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardElevation="5dp"
+        app:cardMaxElevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/askRow_IMG_itemCategoryPic"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@mipmap/ic_launcher"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/askRow_LBL_itemName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Microwave"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.056"
+                app:layout_constraintStart_toEndOf="@+id/askRow_IMG_itemCategoryPic"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.136" />
+
+            <TextView
+                android:id="@+id/askRow_LBL_itemDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A Samsung white microwave"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.088"
+                app:layout_constraintStart_toEndOf="@+id/askRow_IMG_itemCategoryPic"
+                app:layout_constraintTop_toBottomOf="@+id/askRow_LBL_itemName"
+                app:layout_constraintVertical_bias="0.102" />
+
+            <TextView
+                android:id="@+id/askRow_LBL_itemCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Appliances"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.043"
+                app:layout_constraintStart_toEndOf="@+id/askRow_IMG_itemCategoryPic"
+                app:layout_constraintTop_toBottomOf="@+id/askRow_LBL_itemDescription"
+                app:layout_constraintVertical_bias="0.3" />
+
+            <TextView
+                android:id="@+id/askRow_LBL_itemCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tel-Aviv"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.813"
+                app:layout_constraintStart_toEndOf="@+id/askRow_LBL_itemDescription"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.543" />
+
+            <TextView
+                android:id="@+id/askRow_LBL_postDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="14/10/20"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.338"
+                app:layout_constraintStart_toEndOf="@+id/askRow_LBL_itemCategory"
+                app:layout_constraintTop_toBottomOf="@+id/askRow_LBL_itemDescription"
+                app:layout_constraintVertical_bias="0.3" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</RelativeLayout>
