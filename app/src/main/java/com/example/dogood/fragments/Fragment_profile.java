@@ -1,11 +1,9 @@
 package com.example.dogood.fragments;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,11 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.dogood.R;
-import com.example.dogood.adapters.RecyclerViewGiveAdapter;
+import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.GiveItem;
-import com.example.dogood.objects.RequestItem;
 import com.example.dogood.objects.User;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -38,13 +34,13 @@ public class Fragment_profile extends Fragment {
     private FrameLayout profile_LAY_post;
 
     private ArrayList<GiveItem> giveItems;
-    private ArrayList<RequestItem> requestItems;
+    private ArrayList<AskItem> askItems;
 
     public Fragment_profile(){}
 
-    public Fragment_profile(ArrayList<GiveItem> giveItems, ArrayList<RequestItem> requestItems) {
+    public Fragment_profile(ArrayList<GiveItem> giveItems, ArrayList<AskItem> askItems) {
         this.giveItems = giveItems;
-        this.requestItems = requestItems;
+        this.askItems = askItems;
     }
 
 
@@ -71,7 +67,7 @@ public class Fragment_profile extends Fragment {
         Log.d(TAG, "addTolistTest: ");
         String userCustomImage = "null";
         ArrayList<GiveItem> mgiveItems = new ArrayList<>();
-        ArrayList<RequestItem>mrequestItems = new ArrayList<>();
+        ArrayList<AskItem>mrequestItems = new ArrayList<>();
 
         User nathan = new User("nathan","email","passord","netanya","054","photo");
         mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
@@ -94,7 +90,7 @@ public class Fragment_profile extends Fragment {
 
     }
 
-    private void addGiveItemsFragment(ArrayList<GiveItem> mgiveItems, ArrayList<RequestItem> mrequestItems) {
+    private void addGiveItemsFragment(ArrayList<GiveItem> mgiveItems, ArrayList<AskItem> mrequestItems) {
         Log.d(TAG, "initItemsFragment: Initing main list with: " + giveItems.toString());
         GiveItemFragment giveItemFragment = new GiveItemFragment(mgiveItems);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

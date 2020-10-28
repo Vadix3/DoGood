@@ -12,17 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogood.R;
 import com.example.dogood.objects.GiveItem;
 import com.google.android.material.card.MaterialCardView;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGiveAdapter.ViewHolder> {
@@ -40,7 +35,7 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
     @Override
     public RecyclerViewGiveAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.recyclerview_row, parent, false);
+        View view = inflater.inflate(R.layout.giveitem_recyclerview_row, parent, false);
         return new RecyclerViewGiveAdapter.ViewHolder(view);
     }
 
@@ -101,13 +96,13 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
          * A method to initialize the views
          */
         private void initViews() {
-            rowCard = itemView.findViewById(R.id.row_giveitem_row);
-            itemName = itemView.findViewById(R.id.row_LBL_itemName);
-            itemState = itemView.findViewById(R.id.row_LBL_itemState);
-            itemPrice = itemView.findViewById(R.id.row_LBL_itemPrice);
-            itemDescription = itemView.findViewById(R.id.row_LBL_itemDescription);
-            postDate = itemView.findViewById(R.id.row_LBL_postDate);
-            itemPhoto = itemView.findViewById(R.id.row_IMG_itemPicture);
+            rowCard = itemView.findViewById(R.id.giveRow_giveitem_row);
+            itemName = itemView.findViewById(R.id.giveRow_LBL_itemName);
+            itemState = itemView.findViewById(R.id.giveRow_LBL_itemState);
+            itemPrice = itemView.findViewById(R.id.giveRow_LBL_itemPrice);
+            itemDescription = itemView.findViewById(R.id.giveRow_LBL_itemDescription);
+            postDate = itemView.findViewById(R.id.giveRow_LBL_postDate);
+            itemPhoto = itemView.findViewById(R.id.giveRow_IMG_itemPicture);
         }
 
 

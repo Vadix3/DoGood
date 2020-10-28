@@ -10,15 +10,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.dogood.MainActivity;
 import com.example.dogood.R;
 import com.example.dogood.activities.NewGiveItemActivity;
 import com.example.dogood.adapters.RecyclerViewGiveAdapter;
 import com.example.dogood.objects.GiveItem;
-import com.example.dogood.objects.RequestItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -54,7 +51,7 @@ public class GiveItemFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_give_items, container, false);
         }
         initViews();
-        populateEventList();
+        populateItemsList();
         return view;
     }
 
@@ -63,7 +60,7 @@ public class GiveItemFragment extends Fragment {
      */
     private void initViews() {
         Log.d(TAG, "initViews: Initing list fragment views");
-        addItem = view.findViewById(R.id.main_BTN_addItemButton);
+        addItem = view.findViewById(R.id.giveFragment_BTN_addItemButton);
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,12 +79,16 @@ public class GiveItemFragment extends Fragment {
 
 
     /**
-     * A method to populate the main items recyclerview
+     * A method to populate the items list
      */
-    private void populateEventList() {
-        Log.d(TAG, "populateEventList: Populating list with: " + giveItems.toString());
-        recyclerView = view.findViewById(R.id.mainList_LST_mainRecycler);
-        RecyclerViewGiveAdapter recyclerViewGiveAdapter = new RecyclerViewGiveAdapter(getContext(), giveItems);
-        recyclerView.setAdapter(recyclerViewGiveAdapter);
+    private void populateItemsList() {
+        Log.d(TAG, "populateEventList: Populating list with:");
+        if (giveItems != null) {
+            recyclerView = view.findViewById(R.id.giveFragment_LST_mainRecycler);
+            RecyclerViewGiveAdapter recyclerViewGiveAdapter = new RecyclerViewGiveAdapter(getContext(), giveItems);
+            recyclerView.setAdapter(recyclerViewGiveAdapter);
+        } else {
+            Log.d(TAG, "populateItemsList: Empty giveItem array");
+        }
     }
 }

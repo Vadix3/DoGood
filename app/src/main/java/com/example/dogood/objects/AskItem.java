@@ -1,8 +1,8 @@
 package com.example.dogood.objects;
 
 
-
-public class RequestItem {
+public class AskItem {
+    //TODO: Generate ID
     private String id;
     private String name;
     private String category;
@@ -12,7 +12,10 @@ public class RequestItem {
     private User requester;
     private boolean isDiscreteRequest;
 
-    public RequestItem(String id, String name, String category, String city, String description
+    public AskItem() {
+    }
+
+    public AskItem(String id, String name, String category, String city, String description
             , String date, User requester, boolean isDiscreteRequest) {
         this.id = id;
         this.name = name;
@@ -74,7 +77,7 @@ public class RequestItem {
 
     @Override
     public String toString() {
-        return "RequestItem{" +
+        return "AskItem{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", category='" + category + '\'' +

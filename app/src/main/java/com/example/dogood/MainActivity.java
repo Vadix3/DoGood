@@ -23,9 +23,10 @@ import com.example.dogood.fragments.AskItemFragment;
 import com.example.dogood.fragments.Fragment_profile;
 import com.example.dogood.fragments.GiveItemFragment;
 import com.example.dogood.fragments.HomeTabFragment;
+import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.FirestoreDataContainer;
 import com.example.dogood.objects.GiveItem;
-import com.example.dogood.objects.RequestItem;
+import com.example.dogood.objects.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final String NEW_GIVE_ITEM = "111";
     private static final String GIVE_ITEMS_ARRAY = "giveItems";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
+    private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
     private static final int PROFILE_PAGE_RESULT_CODE = 1012;
     private static final int CAMERA_PERMISSION_REQUSETCODE = 122;
     private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
@@ -71,7 +73,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private ArrayList<GiveItem> giveItems;
-    private ArrayList<RequestItem> requestItems;
+    private ArrayList<AskItem> askItems;
+    private User testUser;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -82,16 +85,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         findViews();
-
-        /**TESTING ARRAYS*/
         giveItems = new ArrayList<>();
-        requestItems = new ArrayList<>();
+
+        /**TESTING*/
+        testUser = new User("Test User", "Test@user.com", "testPass"
+                , "Test City", "0501234567", "testPhoto");
 
 
         fetchItemsFromFirestore(); // Get data from firestore and initialize the fragments
+        initAskItemsArray();
         initListChangeListener(); // Init listener for item change detection
         initBottomNavigationMenu(); // initialize bottom navigation menu
         searchAction();
+    }
+
+    /**
+     * A TESTING METHOD TO INITIALIZE ASK STUFF ARRAY
+     */
+    private void initAskItemsArray() {
+        Log.d(TAG, "initAskItemsArray: initing test arrays");
+        askItems = new ArrayList<>();
+        askItems.add(new AskItem("12341", "Test1", "Appliances", "Beer-Sheva"
+                , "Any microwave will do", "12-10-2020", testUser, true));
+        askItems.add(new AskItem("12342", "Test2", "Appliances", "Beer-Sheva"
+                , "Any microwave will do", "12-10-2020", testUser, false));
+        askItems.add(new AskItem("12343", "Test3", "Appliances", "Tel-Aviv"
+                , "Any microwave will do", "12-10-2020", testUser, true));
+        askItems.add(new AskItem("12344", "Test4", "Appliances", "Netanya"
+                , "Any microwave will do", "12-10-2020", testUser, false));
+        askItems.add(new AskItem("12345", "Test5", "Appliances", "Beer-Sheva"
+                , "Any microwave will do", "12-10-2020", testUser, true));
     }
 
     /**
@@ -175,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void setProfileFragment() {
         Log.d(TAG, "onNavigationItemSelected: profile");
-        fragment_profile = new Fragment_profile(giveItems, requestItems);
+        fragment_profile = new Fragment_profile(giveItems, askItems);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_profilePageFragment, fragment_profile);
         transaction.commit();
@@ -186,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void setAskFragment() {
         Log.d(TAG, "onNavigationItemSelected: ask");
-        askItemFragment = new AskItemFragment();
+        askItemFragment = new AskItemFragment(askItems);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_askPageFragment, askItemFragment);
         transaction.commit();
@@ -196,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * A method to set the Give fragment
      */
     private void setGiveFragment() {
-        Log.d(TAG, "initItemsFragment: Initing give list with: " + giveItems.toString());
+        Log.d(TAG, "initItemsFragment: Initing give list");
         giveItemFragment = new GiveItemFragment(giveItems);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_givePageFragment, giveItemFragment);
@@ -232,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (snapshot != null && snapshot.exists()) {
                     Log.d(TAG, "Current data: HAS NEW DATA! " + snapshot.getData());
                     FirestoreDataContainer container = snapshot.toObject(FirestoreDataContainer.class);
+                    giveItems = container.getGiveItems();
                     updateFragments();
                 } else {
                     Log.d(TAG, "Current data: null");
@@ -256,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void saveItemsToFirestore() {
         Log.d(TAG, "saveItemsToFirestore: Saving items to firestore: " + giveItems.toString());
 
-        FirestoreDataContainer dataContainer = new FirestoreDataContainer(giveItems);
+        FirestoreDataContainer dataContainer = new FirestoreDataContainer(giveItems, askItems);
 
         db.collection("data").document(GIVE_ITEMS_ARRAY)
                 .set(dataContainer)
@@ -292,8 +316,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     FirestoreDataContainer container = documentSnapshot.toObject(FirestoreDataContainer.class);
                     giveItems = container.getGiveItems();
+                    askItems = container.getAskItems();
                     initPageFragments();
-                    Log.d(TAG, "onSuccess: GiveItems: " + giveItems);
+                    Log.d(TAG, "onSuccess: GiveItems: " + giveItems.toString());
+                    Log.d(TAG, "onSuccess: askItems: " + askItems.toString());
+
                 } else {
                     Log.d(TAG, "onSuccess: Document does not exist!");
                 }
@@ -378,8 +405,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.d(TAG, "onActivityResult: request code: " + requestCode + " Result code: " + resultCode
-                + "\nData: " + data.toString());
+        Log.d(TAG, "onActivityResult: request code: " + requestCode + " Result code: " + resultCode);
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (resultCode) {

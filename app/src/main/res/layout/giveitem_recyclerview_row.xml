@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/eventRow_LAY_mainLayout"
+    android:id="@+id/giveRow_LAY_mainLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/row_giveitem_row"
+        android:id="@+id/giveRow_giveitem_row"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
@@ -24,7 +24,7 @@
             android:padding="5dp">
 
             <ImageView
-                android:id="@+id/row_IMG_itemPicture"
+                android:id="@+id/giveRow_IMG_itemPicture"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@mipmap/ic_launcher"
@@ -35,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/row_LBL_itemName"
+                android:id="@+id/giveRow_LBL_itemName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Microwave"
@@ -44,24 +44,24 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.056"
-                app:layout_constraintStart_toEndOf="@+id/row_IMG_itemPicture"
+                app:layout_constraintStart_toEndOf="@+id/giveRow_IMG_itemPicture"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.136" />
 
             <TextView
-                android:id="@+id/row_LBL_itemDescription"
+                android:id="@+id/giveRow_LBL_itemDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="A Samsung white microwave"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.088"
-                app:layout_constraintStart_toEndOf="@+id/row_IMG_itemPicture"
-                app:layout_constraintTop_toBottomOf="@+id/row_LBL_itemName"
+                app:layout_constraintStart_toEndOf="@+id/giveRow_IMG_itemPicture"
+                app:layout_constraintTop_toBottomOf="@+id/giveRow_LBL_itemName"
                 app:layout_constraintVertical_bias="0.102" />
 
             <TextView
-                android:id="@+id/row_LBL_itemPrice"
+                android:id="@+id/giveRow_LBL_itemPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Free"
@@ -74,27 +74,27 @@
                 app:layout_constraintVertical_bias="0.506" />
 
             <TextView
-                android:id="@+id/row_LBL_itemState"
+                android:id="@+id/giveRow_LBL_itemState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Used"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.043"
-                app:layout_constraintStart_toEndOf="@+id/row_IMG_itemPicture"
-                app:layout_constraintTop_toBottomOf="@+id/row_LBL_itemDescription"
+                app:layout_constraintStart_toEndOf="@+id/giveRow_IMG_itemPicture"
+                app:layout_constraintTop_toBottomOf="@+id/giveRow_LBL_itemDescription"
                 app:layout_constraintVertical_bias="0.3" />
 
             <TextView
-                android:id="@+id/row_LBL_postDate"
+                android:id="@+id/giveRow_LBL_postDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="14/10/20"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.066"
-                app:layout_constraintStart_toEndOf="@+id/row_LBL_itemState"
-                app:layout_constraintTop_toBottomOf="@+id/row_LBL_itemDescription"
+                app:layout_constraintStart_toEndOf="@+id/giveRow_LBL_itemState"
+                app:layout_constraintTop_toBottomOf="@+id/giveRow_LBL_itemDescription"
                 app:layout_constraintVertical_bias="0.3" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
