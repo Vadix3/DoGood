@@ -35,7 +35,7 @@ public class Fragment_profile extends Fragment {
     private TextView profile_LBL_city;
     private TextView profile_LBL_phone;
     private TextView profile_LBL_mail;
-    private RecyclerView profile_RCV_post;
+    private FrameLayout profile_LAY_post;
 
     private ArrayList<GiveItem> giveItems;
     private ArrayList<RequestItem> requestItems;
@@ -63,21 +63,25 @@ public class Fragment_profile extends Fragment {
         }
         findViews();
         addTolistTest();
-        populateEventList();
+        //populateEventList();
         return view;
     }
 
     private void addTolistTest() {
         Log.d(TAG, "addTolistTest: ");
         String userCustomImage = "null";
-        User nathan = new User("nathan","email","passord","netanya","054","photo");
-        giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
-        giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
-        giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
-        giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
-        giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
-        giveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+        ArrayList<GiveItem> mgiveItems = new ArrayList<>();
+        ArrayList<RequestItem>mrequestItems = new ArrayList<>();
 
+        User nathan = new User("nathan","email","passord","netanya","054","photo");
+        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+
+        addGiveItemsFragment(mgiveItems,mrequestItems);
     }
 
     private void findViews() {
@@ -86,14 +90,17 @@ public class Fragment_profile extends Fragment {
         profile_LBL_city = view.findViewById(R.id.profile_LBL_city);
         profile_LBL_phone = view.findViewById(R.id.profile_LBL_phone);
         profile_LBL_mail = view.findViewById(R.id.profile_LBL_mail);
-        profile_RCV_post = view.findViewById(R.id.profile_RCV_post);
+        profile_LAY_post = view.findViewById(R.id.profile_LAY_post);
 
     }
 
-    private void populateEventList() {
-        Log.d(TAG, "populateEventList: Populating list");
-        RecyclerViewGiveAdapter recyclerViewGiveAdapter = new RecyclerViewGiveAdapter(getContext(), giveItems);
-        profile_RCV_post.setAdapter(recyclerViewGiveAdapter);
+    private void addGiveItemsFragment(ArrayList<GiveItem> mgiveItems, ArrayList<RequestItem> mrequestItems) {
+        Log.d(TAG, "initItemsFragment: Initing main list with: " + giveItems.toString());
+        GiveItemFragment giveItemFragment = new GiveItemFragment(mgiveItems, mrequestItems);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.profile_LAY_post, giveItemFragment);
+        transaction.commit();
     }
+
 
 }

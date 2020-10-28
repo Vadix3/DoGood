@@ -4,15 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.Fragment_profile">
-
+    <RelativeLayout
+        android:id="@+id/profile_LAY_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ImageView
         android:id="@+id/profile_IMG_font"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="325dp"
+        android:layout_height="300dp"
         android:scaleType="fitXY"
         android:src="@drawable/ic_font_profile"
         android:visibility="visible"/>
+
 
     <ImageView
         android:id="@+id/profile_IMG_picture"
@@ -65,19 +68,22 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/profile_IMG_line"
         android:layout_width="300dp"
         android:scaleType="fitXY"
         android:layout_gravity="center"
-        android:layout_marginBottom="50dp"
         android:layout_height="wrap_content"
+        android:layout_above="@id/profile_LAY_post"
+        android:layout_marginBottom="80dp"
+        android:layout_marginStart="45dp"
         android:src="@drawable/ic_line" />
 
+        <FrameLayout
+            android:id="@+id/profile_LAY_post"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/profile_IMG_font" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/profile_RCV_post"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="170dp"/>
+    </RelativeLayout>
 
 </FrameLayout>
