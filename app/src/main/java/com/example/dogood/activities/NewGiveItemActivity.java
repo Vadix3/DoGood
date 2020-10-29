@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -90,7 +89,7 @@ public class NewGiveItemActivity extends AppCompatActivity {
         itemName = findViewById(R.id.addgiveitem_EDT_itemName);
         itemDescription = findViewById(R.id.addgiveitem_EDT_itemDescription);
         itemPrice = findViewById(R.id.addgiveitem_EDT_itemPrice);
-        freeItem = findViewById(R.id.addgiveitem_CHK_priceCheckbox);
+        freeItem = findViewById(R.id.addAskItem_CHK_isDescrete);
         freeItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -108,7 +107,7 @@ public class NewGiveItemActivity extends AppCompatActivity {
         condition = findViewById(R.id.addgiveitem_LST_conditionSpinner);
         category = findViewById(R.id.addgiveitem_LST_categorySpinner);
         submitBtn = findViewById(R.id.addgiveitem_BTN_submitBtn);
-        initCategotySpinner();
+        initCategorySpinner();
         initConditionSpinner();
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
@@ -283,7 +282,7 @@ public class NewGiveItemActivity extends AppCompatActivity {
     /**
      * A method to initialize the item category spinner
      */
-    private void initCategotySpinner() {
+    private void initCategorySpinner() {
         Log.d(TAG, "initCategotySpinner: Initing category spinner");
         ArrayList<String> categories = new ArrayList<>();
         categories.add(getString(R.string.select_categories));

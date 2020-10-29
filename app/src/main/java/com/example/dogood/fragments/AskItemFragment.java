@@ -1,5 +1,6 @@
 package com.example.dogood.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogood.R;
+import com.example.dogood.activities.NewAskItemActivity;
+import com.example.dogood.activities.NewGiveItemActivity;
 import com.example.dogood.adapters.RecyclerViewAskAdapter;
 import com.example.dogood.adapters.RecyclerViewGiveAdapter;
 import com.example.dogood.objects.AskItem;
@@ -70,5 +73,20 @@ public class AskItemFragment extends Fragment {
      */
     private void initViews() {
         Log.d(TAG, "initViews: initializing views");
+        addItem=view.findViewById(R.id.askFragment_BTN_addItemButton);
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openAddItemActivity();
+            }
+        });
+    }
+
+    /**
+     * A method to move to add item activity
+     */
+    private void openAddItemActivity() {
+        Log.d(TAG, "openAddItemActivity: ");
+        startActivityForResult(new Intent(getActivity(), NewAskItemActivity.class), NEW_ASK_ITEM_RESULT_CODE);
     }
 }

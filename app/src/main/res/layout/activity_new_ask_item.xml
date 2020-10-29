@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/addAskItem_EDT_itemName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_edt_border_edges"
+        android:drawablePadding="10dp"
+        android:elevation="10dp"
+        android:gravity="center"
+        android:hint="@string/item_name"
+        android:inputType="textCapSentences"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
+
+
+    <EditText
+        android:id="@+id/addAskItem_EDT_itemDescription"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_edt_border_edges"
+        android:drawablePadding="10dp"
+        android:elevation="10dp"
+        android:gravity="center"
+        android:hint="@string/item_description"
+        android:inputType="textCapSentences"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addAskItem_EDT_itemName"
+        app:layout_constraintVertical_bias="0.032" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/addAskItem_LST_categorySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_edt_border_edges"
+        android:dropDownVerticalOffset="40dp"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addAskItem_EDT_itemDescription"
+        app:layout_constraintVertical_bias="0.02" />
+
+    <CheckBox
+        android:id="@+id/addAskItem_CHK_isDescrete"
+        android:layout_width="wrap_content"
+        android:layout_height="53dp"
+        android:checked="true"
+        android:text="@string/discrete_request"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addAskItem_LST_categorySpinner"
+        app:layout_constraintVertical_bias="0.042" />
+
+    <Button
+        android:id="@+id/addAskItem_BTN_submitBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/round_button_backgroud"
+        android:text="@string/submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.446" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

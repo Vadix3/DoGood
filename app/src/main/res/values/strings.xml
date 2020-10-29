@@ -21,6 +21,7 @@
     <string name="item_price">Item price</string>
     <string name="free_item">Free</string>
     <string name="submit">Submit</string>
+    <string name="discrete_request">Discrete request (Username will not be visible)</string>
 
 
     <!-- spinner items-->
@@ -41,8 +42,6 @@
     <string name="computers">Computers</string>
     <string name="other">Other</string>
     <string name="free">Free</string>
-
-
 
 
     <!-- conditions-->

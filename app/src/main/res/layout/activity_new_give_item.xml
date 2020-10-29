@@ -34,7 +34,7 @@
         android:elevation="10dp"
         android:gravity="center"
         android:hint="@string/item_name"
-        android:inputType="textEmailAddress"
+        android:inputType="textCapSentences"
         android:padding="15dp"
         app:layout_constraintBottom_toTopOf="@+id/addgiveitem_EDT_itemDescription"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +55,7 @@
         android:elevation="10dp"
         android:gravity="center"
         android:hint="@string/item_description"
-        android:inputType="textEmailAddress"
+        android:inputType="textCapSentences"
         android:padding="15dp"
         app:layout_constraintBottom_toTopOf="@+id/addgiveitem_LST_conditionSpinner"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +92,7 @@
             android:padding="15dp" />
 
         <CheckBox
-            android:id="@+id/addgiveitem_CHK_priceCheckbox"
+            android:id="@+id/addAskItem_CHK_isDescrete"
             android:layout_width="wrap_content"
             android:layout_height="53dp"
             android:checked="true"

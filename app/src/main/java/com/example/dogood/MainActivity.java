@@ -46,6 +46,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
+    private static final String NEW_ASK_ITEM = "112";
     private static final String GIVE_ITEMS_ARRAY = "giveItems";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int CAMERA_PICTURE_REQUEST = 124;
     private static final int RETURN_NEW_USER = 125;
 
+    private boolean isDataLoaded = false; // A boolean var to open bottom menu in case of data loaded;
 
     //private MaterialToolbar main_TLB_title;
     private Toolbar main_TLB_head;
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AskItemFragment askItemFragment;
     private Fragment_profile fragment_profile;
 
+    private BottomNavigationView bottomNavigationView;
 
     private ArrayList<GiveItem> giveItems;
     private ArrayList<AskItem> askItems;
@@ -86,35 +89,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         findViews();
         giveItems = new ArrayList<>();
+        askItems = new ArrayList<>();
 
         /**TESTING*/
         testUser = new User("Test User", "Test@user.com", "testPass"
                 , "Test City", "0501234567", "testPhoto");
 
-
         fetchItemsFromFirestore(); // Get data from firestore and initialize the fragments
-        initAskItemsArray();
         initListChangeListener(); // Init listener for item change detection
-        initBottomNavigationMenu(); // initialize bottom navigation menu
         searchAction();
-    }
-
-    /**
-     * A TESTING METHOD TO INITIALIZE ASK STUFF ARRAY
-     */
-    private void initAskItemsArray() {
-        Log.d(TAG, "initAskItemsArray: initing test arrays");
-        askItems = new ArrayList<>();
-        askItems.add(new AskItem("12341", "Test1", "Appliances", "Beer-Sheva"
-                , "Any microwave will do", "12-10-2020", testUser, true));
-        askItems.add(new AskItem("12342", "Test2", "Appliances", "Beer-Sheva"
-                , "Any microwave will do", "12-10-2020", testUser, false));
-        askItems.add(new AskItem("12343", "Test3", "Appliances", "Tel-Aviv"
-                , "Any microwave will do", "12-10-2020", testUser, true));
-        askItems.add(new AskItem("12344", "Test4", "Appliances", "Netanya"
-                , "Any microwave will do", "12-10-2020", testUser, false));
-        askItems.add(new AskItem("12345", "Test5", "Appliances", "Beer-Sheva"
-                , "Any microwave will do", "12-10-2020", testUser, true));
     }
 
     /**
@@ -156,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void initBottomNavigationMenu() {
         Log.d(TAG, "initBottomNavigationMenu: Bottom navigation init");
-        BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottom_navigation);
+        bottomNavigationView = findViewById(R.id.main_bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -317,9 +300,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     FirestoreDataContainer container = documentSnapshot.toObject(FirestoreDataContainer.class);
                     giveItems = container.getGiveItems();
                     askItems = container.getAskItems();
-                    initPageFragments();
                     Log.d(TAG, "onSuccess: GiveItems: " + giveItems.toString());
                     Log.d(TAG, "onSuccess: askItems: " + askItems.toString());
+                    initPageFragments();
+                    initBottomNavigationMenu(); // initialize bottom navigation menu
+                    bottomNavigationView.setVisibility(View.VISIBLE);
 
                 } else {
                     Log.d(TAG, "onSuccess: Document does not exist!");
@@ -424,12 +409,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case NEW_GIVE_ITEM_RESULT_CODE:
-                Log.d(TAG, "onActivityResult: Got new item from activity");
+                Log.d(TAG, "onActivityResult: Got new item from give activity");
 
                 if (data != null) {
                     String gotNewItem = data.getStringExtra(NEW_GIVE_ITEM);
-                    Log.d(TAG, "onActivityResult: Got data from activity");
-                    Log.d(TAG, "onActivityResult: Got new item after intent: " + gotNewItem);
+                    Log.d(TAG, "onActivityResult: Got new give item: " + gotNewItem);
                     Toast.makeText(this, "Item added successfully!", Toast.LENGTH_SHORT).show();
                     Gson gson = new Gson();
                     Type itemType = new TypeToken<GiveItem>() {
@@ -442,7 +426,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Log.d(TAG, "onActivityResult: User canceled new item input");
                 }
                 break;
-            //TODO: Add switch for profile page
+            case NEW_ASK_ITEM_RESULT_CODE:
+                Log.d(TAG, "onActivityResult: Got new item from ask activity");
+                if (data != null) {
+                    String gotNewItem = data.getStringExtra(NEW_ASK_ITEM);
+                    Log.d(TAG, "onActivityResult: Got ask item: " + gotNewItem);
+                    Toast.makeText(this, "Item added successfully!", Toast.LENGTH_SHORT).show();
+                    Gson gson = new Gson();
+                    Type itemType = new TypeToken<AskItem>() {
+                    }.getType();
+                    AskItem temp = gson.fromJson(gotNewItem, itemType);
+                    Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
+                    askItems.add(temp);
+                    saveItemsToFirestore();
+                } else {
+                    Log.d(TAG, "onActivityResult: User canceled new item input");
+                }
+                //TODO: Add switch for profile page
         }
     }
 }
