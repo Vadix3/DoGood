@@ -100,6 +100,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchAction();
     }
 
+    private void findViews() {
+        Log.d(TAG, "findViews: ");
+
+        main_TLB_head = findViewById(R.id.main_TLB_head);
+        main_SRC_search = findViewById(R.id.main_SRC_search);
+        main_LAY_main = findViewById(R.id.main_LAY_main);
+         onCreateOptionsMenu(main_TLB_head.getMenu());
+
+    }
+
     /**
      * A method to initialize the page fragments
      */
@@ -247,16 +257,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    private void findViews() {
-        Log.d(TAG, "findViews: ");
-
-        main_TLB_head = findViewById(R.id.main_TLB_head);
-        main_SRC_search = findViewById(R.id.main_SRC_search);
-        main_LAY_main = findViewById(R.id.main_LAY_main);
-
-
-    }
-
     /**
      * A method to upload items array to firestore
      */
@@ -335,19 +335,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    // creation of the side menu
+
     @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionsMenu: ");
-
+        Log.d("nathan", "onCreateOptionsMenu: ");
         getMenuInflater().inflate(R.menu.top_app_bar, menu);
 
-        MenuItem item = menu.findItem(R.id.action_search);
-        main_SRC_search.setMenuItem(item);
+       MenuItem item = menu.findItem(R.id.top_app_bar_search);
+       main_SRC_search.setMenuItem(item);
 
         return true;
-
     }
 
     private void searchAction() {
