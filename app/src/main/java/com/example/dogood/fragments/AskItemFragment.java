@@ -36,6 +36,14 @@ public class AskItemFragment extends Fragment {
         this.askItems = askItems;
     }
 
+    public void hideFloatingButton() {
+        addItem.setVisibility(View.GONE);
+    }
+
+    public void showFloatingButton() {
+        addItem.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +81,7 @@ public class AskItemFragment extends Fragment {
      */
     private void initViews() {
         Log.d(TAG, "initViews: initializing views");
-        addItem=view.findViewById(R.id.askFragment_BTN_addItemButton);
+        addItem = view.findViewById(R.id.askFragment_BTN_addItemButton);
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

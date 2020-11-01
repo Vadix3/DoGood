@@ -148,8 +148,8 @@ public class NewAskItemActivity extends AppCompatActivity {
 
         Intent resultIntent = new Intent();
         Gson gson = new Gson();
-        String jsonEvents = gson.toJson(temp);
-        resultIntent.putExtra(NEW_ASK_ITEM, jsonEvents);
+        String jsonItems = gson.toJson(temp);
+        resultIntent.putExtra(NEW_ASK_ITEM, jsonItems);
         setResult(NEW_ASK_ITEM_RESULT_CODE, resultIntent);
         finish();
     }

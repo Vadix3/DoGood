@@ -3,7 +3,7 @@ package com.example.dogood.objects;
 
 public class AskItem {
     //TODO: Generate ID
-    private String id;
+    private String id; // Id sample: "A21" - Ask item 21
     private String name;
     private String category;
     private String city;

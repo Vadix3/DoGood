@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import java.io.Serializable;
 
 public class GiveItem implements Serializable {
-    String id;
+    String id; // ID sample: "G24" - Give item 24
     String name;
     String category;
     String state;

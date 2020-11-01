@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -30,7 +31,6 @@ import com.example.dogood.objects.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -40,27 +40,32 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
     private static final String NEW_ASK_ITEM = "112";
     private static final String GIVE_ITEMS_ARRAY = "giveItems";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
+    private static final int SEARCH_IN_GIVE_ITEMS = 11;
+    private static final int SEARCH_IN_ASK_ITEMS = 12;
     private static final int PROFILE_PAGE_RESULT_CODE = 1012;
     private static final int CAMERA_PERMISSION_REQUSETCODE = 122;
     private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
     private static final int CAMERA_PICTURE_REQUEST = 124;
     private static final int RETURN_NEW_USER = 125;
 
-    private boolean isDataLoaded = false; // A boolean var to open bottom menu in case of data loaded;
+    private boolean showingResults = false; // A boolean var to indicate that search results are showing.
 
     //private MaterialToolbar main_TLB_title;
     private Toolbar main_TLB_head;
     private MaterialSearchView main_SRC_search;
+    private MenuItem searchItem;
     private ConstraintLayout main_LAY_main;
 
     private FrameLayout mainFragment;
@@ -77,6 +82,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private ArrayList<GiveItem> giveItems;
     private ArrayList<AskItem> askItems;
+
+    private ArrayList<GiveItem> giveResults = new ArrayList<>(); // An array to store give items search results
+    private ArrayList<AskItem> askResults = new ArrayList<>(); // An array to store ask items search results
+
     private User testUser;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -86,8 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        findViews();
+        initViews();
         giveItems = new ArrayList<>();
         askItems = new ArrayList<>();
 
@@ -98,16 +106,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fetchItemsFromFirestore(); // Get data from firestore and initialize the fragments
         initListChangeListener(); // Init listener for item change detection
         searchAction();
-    }
-
-    private void findViews() {
-        Log.d(TAG, "findViews: ");
-
-        main_TLB_head = findViewById(R.id.main_TLB_head);
-        main_SRC_search = findViewById(R.id.main_SRC_search);
-        main_LAY_main = findViewById(R.id.main_LAY_main);
-         onCreateOptionsMenu(main_TLB_head.getMenu());
-
     }
 
     /**
@@ -121,16 +119,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         profileFragment = findViewById(R.id.main_LAY_profilePageFragment);
 
         setProfileFragment();
-        setGiveFragment();
+        setGiveFragment(giveItems);
+        setAskFragment(askItems);
         setHomeFragment();
-        setAskFragment();
 
 
         giveFragment.setVisibility(View.GONE);
         askFragment.setVisibility(View.GONE);
         profileFragment.setVisibility(View.GONE);
-
-
     }
 
     /**
@@ -139,9 +135,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void updateFragments() {
         Log.d(TAG, "updateFragments: Updating fragments");
         setProfileFragment();
-        setGiveFragment();
+        setGiveFragment(giveItems);
         setHomeFragment();
-        setAskFragment();
+        setAskFragment(askItems);
     }
 
     /**
@@ -153,18 +149,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (main_SRC_search.isSearchOpen()) {
+                    main_SRC_search.closeSearch();
+                }
                 switch (item.getItemId()) {
                     case R.id.bottom_menu_home:
-                        showFragment(mainFragment);
+                        searchItem.setVisible(false);
+                        if (mainFragment != null) {
+                            main_TLB_head.setTitle("Do Good");
+                            showFragment(mainFragment);
+                        }
                         break;
                     case R.id.bottom_menu_give:
-                        showFragment(giveFragment);
+                        searchItem.setVisible(true);
+                        if (giveFragment != null) {
+                            if (giveFragment.getVisibility() != View.VISIBLE) {
+                                main_TLB_head.setTitle("Given Items");
+                                main_TLB_head.setNavigationIcon(null);
+                                setGiveFragment(giveItems);
+                                showFragment(giveFragment);
+                            }
+                        }
                         break;
                     case R.id.bottom_menu_ask:
-                        showFragment(askFragment);
+                        searchItem.setVisible(true);
+                        if (askFragment != null) {
+                            if (askFragment.getVisibility() != View.VISIBLE) {
+                                main_TLB_head.setTitle("Needed Items");
+                                main_TLB_head.setNavigationIcon(null);
+                                setAskFragment(askItems);
+                                showFragment(askFragment);
+                            }
+                        }
                         break;
                     case R.id.bottom_menu_profile:
-                        showFragment(profileFragment);
+                        searchItem.setVisible(false);
+                        if (profileFragment != null) {
+                            main_TLB_head.setTitle(testUser.getName());
+                            showFragment(profileFragment);
+                        }
                         break;
                 }
                 return true;
@@ -177,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void showFragment(FrameLayout fragment) {
         Log.d(TAG, "showFragment: Showing fragment: " + fragment.toString());
-
         mainFragment.setVisibility(View.GONE);
         giveFragment.setVisibility(View.GONE);
         askFragment.setVisibility(View.GONE);
@@ -200,9 +222,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * A method to set the Ask fragment
      */
-    private void setAskFragment() {
+    private void setAskFragment(ArrayList<AskItem> items) {
         Log.d(TAG, "onNavigationItemSelected: ask");
-        askItemFragment = new AskItemFragment(askItems);
+        askItemFragment = new AskItemFragment(items);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_askPageFragment, askItemFragment);
         transaction.commit();
@@ -211,9 +233,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * A method to set the Give fragment
      */
-    private void setGiveFragment() {
+    private void setGiveFragment(ArrayList<GiveItem> items) {
         Log.d(TAG, "initItemsFragment: Initing give list");
-        giveItemFragment = new GiveItemFragment(giveItems);
+        giveItemFragment = new GiveItemFragment(items);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_givePageFragment, giveItemFragment);
         transaction.commit();
@@ -255,6 +277,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
+    }
+
+
+    /**
+     * A method to initialize the views
+     */
+    private void initViews() {
+        Log.d(TAG, "findViews: ");
+
+        main_TLB_head = findViewById(R.id.main_TLB_head);
+
+        setSupportActionBar(main_TLB_head);
+
+
+        main_SRC_search = findViewById(R.id.main_SRC_search);
+        main_SRC_search.setBackgroundColor(getColor(R.color.white));
+        main_SRC_search.showSuggestions();
+    }
+
+    /**
+     * A method to enable back button on the toolbar
+     */
+    private void enableToolbarBackOption() {
+        Log.d(TAG, "enableToolbarBackOption: enabling back option toolbar");
+        main_TLB_head.setNavigationIcon(R.drawable.ic_chevron_left_black_36dp);
+        main_TLB_head.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAllItems();
+            }
+        });
+
     }
 
     /**
@@ -304,7 +358,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Log.d(TAG, "onSuccess: askItems: " + askItems.toString());
                     initPageFragments();
                     initBottomNavigationMenu(); // initialize bottom navigation menu
-                    bottomNavigationView.setVisibility(View.VISIBLE);
 
                 } else {
                     Log.d(TAG, "onSuccess: Document does not exist!");
@@ -319,56 +372,111 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-
-    // side menu action and move to fragment when bottom press
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_profile) {
-            Log.d(TAG, "onNavigationItemSelected: profile press");
-        } else if (item.getItemId() == R.id.menu_logout) {
-            Log.d(TAG, "onNavigationItemSelected: logout press");
-        } else if (item.getItemId() == R.id.menu_rate) {
-            Log.d(TAG, "onNavigationItemSelected: rate press");
-        } else if (item.getItemId() == R.id.menu_share) {
-            Log.d(TAG, "onNavigationItemSelected: share press");
-        }
-        return true;
-    }
-
-
+    // creation of the side menu
     @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d("nathan", "onCreateOptionsMenu: ");
+        Log.d(TAG, "onCreateOptionsMenu: ");
         getMenuInflater().inflate(R.menu.top_app_bar, menu);
-
-       MenuItem item = menu.findItem(R.id.top_app_bar_search);
-       main_SRC_search.setMenuItem(item);
+        searchItem = menu.findItem(R.id.action_search);
+        searchItem.setVisible(false);
+        main_SRC_search.setMenuItem(searchItem);
 
         return true;
+
     }
 
+    /**
+     * A method to define what happens when you search for something
+     */
     private void searchAction() {
         Log.d(TAG, "searchAction: ");
-        String[] sug = new String[giveItems.size()];
-        for (int i = 0; i < giveItems.size(); i++) {
-            sug[i] = giveItems.get(i).getName();
-        }
-
-        main_SRC_search.setSuggestions(sug);
 
         main_SRC_search.setVoiceSearch(true);
 
         main_SRC_search.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //Do some magic
+                Log.d(TAG, "onQueryTextSubmit: ");
+                main_TLB_head.setTitle("Results: " + query);
+                showingResults = true;
+                if (askFragment.getVisibility() == View.VISIBLE) { // search in ask array
+                    Log.d(TAG, "onQueryTextChange: Ask fragment is showing");
+                    if (!askResults.isEmpty()) {
+                        Log.d(TAG, "onQueryTextChange: There are suggestions!");
+
+                        String[] suggestions = getResultNames(SEARCH_IN_ASK_ITEMS);
+                        main_SRC_search.setSuggestions(suggestions);
+                        main_SRC_search.showSuggestions();
+                        setAskFragment(askResults);
+                        enableToolbarBackOption();
+                    }
+
+                } else { // search in give array
+                    Log.d(TAG, "onQueryTextChange: Give fragment is showing");
+                    if (!giveResults.isEmpty()) {
+                        Log.d(TAG, "onQueryTextChange: There are suggestions!");
+                        String[] suggestions = getResultNames(SEARCH_IN_GIVE_ITEMS); // Get suggestion names to string array
+                        main_SRC_search.setSuggestions(suggestions);
+                        main_SRC_search.showSuggestions();
+                        setGiveFragment(giveResults);
+                        enableToolbarBackOption();
+                    }
+
+                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //Do some magic
+                Log.d(TAG, "onQueryTextChange: ");
+                if (!newText.equals("")) {
+                    if (askFragment.getVisibility() == View.VISIBLE) { // search in ask array
+                        Log.d(TAG, "onQueryTextChange: Ask fragment is showing");
+                        searchForItem(SEARCH_IN_ASK_ITEMS, newText);
+                        if (!askResults.isEmpty()) {
+                            Log.d(TAG, "onQueryTextChange: There are suggestions!");
+                            String[] suggestions = getResultNames(SEARCH_IN_ASK_ITEMS);
+                            main_SRC_search.setSuggestions(suggestions);
+                            main_SRC_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Log.d(TAG, "onItemClick: " + askResults.get(position).getName());
+                                    showingResults = true;
+                                    main_TLB_head.setTitle("Results: " + suggestions[position]);
+                                    main_SRC_search.closeSearch();
+                                }
+                            });
+                            main_SRC_search.showSuggestions();
+                            setAskFragment(askResults);
+                            enableToolbarBackOption();
+                        }
+
+
+                    } else { // search in give array
+                        Log.d(TAG, "onQueryTextChange: Give fragment is showing");
+                        searchForItem(SEARCH_IN_GIVE_ITEMS, newText); // Get suggestions as items array
+                        if (!giveResults.isEmpty()) {
+                            Log.d(TAG, "onQueryTextChange: There are suggestions!");
+
+                            String[] suggestions = getResultNames(SEARCH_IN_GIVE_ITEMS); // Get suggestion names to string array
+                            main_SRC_search.setSuggestions(suggestions);
+                            main_SRC_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Log.d(TAG, "onItemClick: " + giveResults.get(position).getName());
+                                    showingResults = true;
+                                    main_TLB_head.setTitle("Results: " + suggestions[position]);
+                                    main_SRC_search.closeSearch();
+                                }
+                            });
+                            main_SRC_search.showSuggestions();
+                            setGiveFragment(giveResults);
+                            enableToolbarBackOption();
+                        }
+
+                    }
+                }
                 return false;
             }
         });
@@ -376,14 +484,68 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         main_SRC_search.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
-                //Do some magic
+                Log.d(TAG, "onSearchViewShown: ");
             }
 
             @Override
             public void onSearchViewClosed() {
-                //Do some magic
+                Log.d(TAG, "onSearchViewClosed: ");
+                if (!showingResults) {
+                    Log.d(TAG, "onSearchViewClosed: Not showing results");
+                    showAllItems();
+                } else {
+                    Log.d(TAG, "onSearchViewClosed: Showing results so I'm not closing");
+                    if (askFragment.getVisibility() == View.VISIBLE) {
+                        setAskFragment(askItems);
+                    } else {
+                        setGiveFragment(giveItems);
+                    }
+                }
             }
         });
+    }
+
+    /**
+     * A method to extract search results names and put them in an array to display suggestions
+     */
+    private String[] getResultNames(int arrayToSearch) {
+        ArrayList<String> results = new ArrayList<>();
+        if (arrayToSearch == SEARCH_IN_ASK_ITEMS) {
+            Log.d(TAG, "getResultNames: extracting from ask items");
+            for (AskItem item : askResults) {
+                results.add(item.getName());
+            }
+        } else {
+            Log.d(TAG, "getResultNames: extracting from ask items");
+            for (GiveItem item : giveResults) {
+                results.add(item.getName());
+            }
+        }
+        return results.toArray(new String[0]);
+    }
+
+    /**
+     * A method to search for given query in given array
+     */
+    private void searchForItem(int searchLocation, String newText) {
+        askResults.clear();
+        giveResults.clear();
+        if (searchLocation == SEARCH_IN_ASK_ITEMS) {
+            Log.d(TAG, "searchForItem: Searching for: " + newText + " in ask items");
+            for (AskItem item : askItems) {
+                if (item.getName().toLowerCase().contains(newText.toLowerCase())) {
+                    askResults.add(item);
+                }
+            }
+
+        } else {
+            Log.d(TAG, "searchForItem: Searching for: " + newText + " in give items");
+            for (GiveItem item : giveItems) {
+                if (item.getName().toLowerCase().contains(newText.toLowerCase())) {
+                    giveResults.add(item);
+                }
+            }
+        }
     }
 
     @Override
@@ -417,6 +579,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Type itemType = new TypeToken<GiveItem>() {
                     }.getType();
                     GiveItem temp = gson.fromJson(gotNewItem, itemType);
+                    temp.setId("G" + giveItems.size());
                     Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
                     giveItems.add(temp);
                     saveItemsToFirestore();
@@ -434,6 +597,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Type itemType = new TypeToken<AskItem>() {
                     }.getType();
                     AskItem temp = gson.fromJson(gotNewItem, itemType);
+                    temp.setId("G" + askItems.size());
                     Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
                     askItems.add(temp);
                     saveItemsToFirestore();
@@ -443,4 +607,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //TODO: Add switch for profile page
         }
     }
+
+    /**
+     * A method to show all the items after exiting search
+     */
+    private void showAllItems() {
+        Log.d(TAG, "showAllItems: Showing all items");
+        showingResults = false;
+        if (giveFragment.getVisibility() == View.VISIBLE) {
+            setGiveFragment(giveItems);
+            main_TLB_head.setTitle("Given Items");
+            main_TLB_head.setNavigationIcon(null);
+        } else {
+            setAskFragment(askItems);
+            main_TLB_head.setTitle("Needed Items");
+            main_TLB_head.setNavigationIcon(null);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (main_SRC_search.isSearchOpen()) {
+            main_SRC_search.closeSearch();
+        } else if (showingResults) {
+            showAllItems();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
 }

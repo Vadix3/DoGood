@@ -334,10 +334,12 @@ public class NewGiveItemActivity extends AppCompatActivity {
 
             case CAMERA_PICTURE_REQUEST:
                 Log.d(TAG, "onActivityResult: I came from camera");
-                userCustomImage = (Bitmap) data.getExtras().get("data");
-                itemPhoto.setStrokeWidth(30);
-                itemPhoto.setStrokeColor(getColorStateList(R.color.colorPrimary));
-                itemPhoto.setImageBitmap(userCustomImage);
+                if (data != null) {
+                    userCustomImage = (Bitmap) data.getExtras().get("data");
+                    itemPhoto.setStrokeWidth(30);
+                    itemPhoto.setStrokeColor(getColorStateList(R.color.colorPrimary));
+                    itemPhoto.setImageBitmap(userCustomImage);
+                }
                 break;
         }
     }

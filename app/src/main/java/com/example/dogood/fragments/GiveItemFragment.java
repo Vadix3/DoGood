@@ -55,6 +55,14 @@ public class GiveItemFragment extends Fragment {
         return view;
     }
 
+    public void hideFloatingButton() {
+        addItem.setVisibility(View.GONE);
+    }
+
+    public void showFloatingButton() {
+        addItem.setVisibility(View.VISIBLE);
+    }
+
     /**
      * A method to initialize the views
      */
