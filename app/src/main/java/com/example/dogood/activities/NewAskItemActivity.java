@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.dogood.R;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.User;
+import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class NewAskItemActivity extends AppCompatActivity {
     private EditText itemDescription;
     private Spinner itemCategory;
     private CheckBox isDiscrete;
-    private Button submitBtn;
+    private MaterialButton submitBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

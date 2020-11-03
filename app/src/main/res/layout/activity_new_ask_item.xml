@@ -78,14 +78,14 @@
         app:layout_constraintTop_toBottomOf="@+id/addAskItem_LST_categorySpinner"
         app:layout_constraintVertical_bias="0.042" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/addAskItem_BTN_submitBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/round_button_backgroud"
+        app:cornerRadius="20dp"
         android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

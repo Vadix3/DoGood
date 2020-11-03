@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat;
 import com.example.dogood.R;
 import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.User;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
@@ -56,7 +57,7 @@ public class NewGiveItemActivity extends AppCompatActivity {
     private CheckBox freeItem;
     private Spinner condition;
     private Spinner category;
-    private Button submitBtn;
+    private MaterialButton submitBtn;
 
     private Bitmap userCustomImage;
 

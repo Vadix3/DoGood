@@ -11,4 +11,6 @@
     <color name="colorPrimaryDark">#FA4D88</color>
     <color name="clear">#00BB86FC</color>
 
+    <color name="colorBackroundLogin">#10002F</color>
+
 </resources>
