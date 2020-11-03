@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,7 +8,76 @@
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".MainActivity">
+
+
+    <FrameLayout
+        android:id="@+id/main_LAY_mainPageFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#FCE4EC"
+        app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topbar_placeholder" />
+
+    <FrameLayout
+        android:id="@+id/main_LAY_givePageFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#FCE4EC"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topbar_placeholder" />
+
+    <FrameLayout
+        android:id="@+id/main_LAY_askPageFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#FCE4EC"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topbar_placeholder" />
+
+    <FrameLayout
+        android:id="@+id/main_LAY_profilePageFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#FCE4EC"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topbar_placeholder" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/main_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/colorPrimary"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1"
+        app:menu="@menu/bottom_navigation_menu" />
+
+    <RelativeLayout
+        android:id="@+id/topbar_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <FrameLayout
         android:id="@+id/toolbar_container"
@@ -19,77 +89,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/main_TLB_head"
-                android:layout_width="match_parent"
-                app:title="@string/Dogood"
-                app:titleTextColor="@color/white"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"/>
 
-            <com.miguelcatalan.materialsearchview.MaterialSearchView
-                android:id="@+id/main_SRC_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/main_TLB_head"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:title="Do Good"
+            app:titleTextColor="@color/white" />
 
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/main_SRC_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible" />
     </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/main_LAY_mainPageFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="#FCE4EC"
-        app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_container"
-        />
-
-    <FrameLayout
-        android:id="@+id/main_LAY_givePageFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        android:background="#FCE4EC"
-        app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_container" />
-
-    <FrameLayout
-        android:id="@+id/main_LAY_askPageFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        android:background="#FCE4EC"
-        app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_container" />
-
-    <FrameLayout
-        android:id="@+id/main_LAY_profilePageFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        android:background="#FCE4EC"
-        app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_container" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/main_bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:backgroundTint="@color/colorPrimary"
-        app:itemTextColor="@color/white"
-        app:itemIconTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1"
-        app:menu="@menu/bottom_navigation_menu" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
