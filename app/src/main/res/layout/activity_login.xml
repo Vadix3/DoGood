@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,16 +11,16 @@
         android:id="@+id/login_LBL_first"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_to_do_good"
         android:fontFamily="cursive"
-        android:textSize="28sp"
+        android:text="@string/welcome_to_do_good"
         android:textColor="@color/white"
+        android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".13"
-        app:layout_constraintHorizontal_bias="0.526"/>
+        app:layout_constraintVertical_bias=".13" />
 
     <TextView
         android:id="@+id/login_LBL_second"
@@ -29,70 +28,70 @@
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
         android:text="@string/do_good_and_fell_good"
-        android:textStyle="italic"
-        android:textSize="20sp"
         android:textColor="@color/purple_500"
+        android:textSize="20sp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".18"
-        app:layout_constraintHorizontal_bias="0.526"/>
+        app:layout_constraintVertical_bias=".18" />
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_EDT_mail"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:hint="@string/mail"
         android:background="@color/white"
+        android:backgroundTint="@color/colorBackroundLogin"
+        android:hint="@string/mail"
+        app:boxBackgroundColor="@color/white"
         app:boxCornerRadiusBottomEnd="20dp"
         app:boxCornerRadiusBottomStart="20dp"
         app:boxCornerRadiusTopEnd="20dp"
         app:boxCornerRadiusTopStart="20dp"
         app:boxStrokeColor="@color/colorPrimary"
-        app:startIconDrawable="@drawable/ic_mail"
-        android:backgroundTint="@color/colorBackroundLogin"
-        app:boxBackgroundColor="@color/white"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".3">
+        app:layout_constraintVertical_bias=".3"
+        app:startIconDrawable="@drawable/ic_mail">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_EDT_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:hint="@string/password"
         android:background="@color/white"
+        android:backgroundTint="@color/colorBackroundLogin"
+        android:hint="@string/password"
+        app:boxBackgroundColor="@color/white"
         app:boxCornerRadiusBottomEnd="20dp"
         app:boxCornerRadiusBottomStart="20dp"
         app:boxCornerRadiusTopEnd="20dp"
         app:boxCornerRadiusTopStart="20dp"
         app:boxStrokeColor="@color/colorPrimary"
-        app:startIconDrawable="@drawable/ic_password"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:backgroundTint="@color/colorBackroundLogin"
-        app:boxBackgroundColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".4">
+        app:layout_constraintVertical_bias=".4"
+        app:startIconDrawable="@drawable/ic_password">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -101,19 +100,34 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/login_LBL_forgot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="@string/forgot_password"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".464" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/login_BTN_login"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:text="@string/login"
+        android:textAllCaps="false"
         android:textStyle="bold"
         app:cornerRadius="20dp"
-        android:textAllCaps="false"
-        android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".53" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -122,10 +136,11 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.46"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".57"
-        app:layout_constraintHorizontal_bias="0.46"/>
+        app:layout_constraintVertical_bias=".6" />
+
     <ImageView
         android:id="@+id/login_IMG_facebookLogin"
         android:layout_width="40dp"
@@ -136,10 +151,10 @@
         android:src="@drawable/ic_facebook"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".65"
-        app:layout_constraintHorizontal_bias="0.42"/>
+        app:layout_constraintVertical_bias=".65" />
 
     <ImageView
         android:id="@+id/login_IMG_googleLogin"
@@ -157,21 +172,20 @@
         app:layout_constraintVertical_bias="0.65" />
 
     <TextView
-        android:id="@+id/login_LBL_forgot"
+        android:id="@+id/login_LBL_createCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
-        android:text="@string/forgot_password"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20dp"
         android:clickable="true"
         android:foreground="?attr/selectableItemBackground"
+        android:text="@string/not_a_member"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.546"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.961"/>
+        app:layout_constraintVertical_bias="0.961" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

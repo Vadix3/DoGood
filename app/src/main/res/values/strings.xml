@@ -67,6 +67,11 @@
     <string name="login">Login</string>
     <string name="forgot_password">Forgot password ?</string>
     <string name="sign_in_with">Sign in with :</string>
+    <string name="not_a_member">Not a member ?</string>
+    <string name="first_and_last_name">First and last name</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone number</string>
+    <string name="your_city">Your city</string>
 
     <string-array name="query_suggestions">
         <item>Android</item>

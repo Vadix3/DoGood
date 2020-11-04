@@ -20,6 +20,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DoGood" >
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1483180866214481~5226872413"/>
+
+
         <activity android:name=".activities.Activity_login"
             android:screenOrientation="portrait" >
             <intent-filter>

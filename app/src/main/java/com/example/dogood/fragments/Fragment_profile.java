@@ -35,12 +35,14 @@ public class Fragment_profile extends Fragment {
 
     private ArrayList<GiveItem> giveItems;
     private ArrayList<AskItem> askItems;
+    private User mUser;
 
     public Fragment_profile(){}
 
-    public Fragment_profile(ArrayList<GiveItem> giveItems, ArrayList<AskItem> askItems) {
+    public Fragment_profile(ArrayList<GiveItem> giveItems, ArrayList<AskItem> askItems, User user) {
         this.giveItems = giveItems;
         this.askItems = askItems;
+        this.mUser = user;
     }
 
 
@@ -58,9 +60,19 @@ public class Fragment_profile extends Fragment {
             view = inflater.inflate(R.layout.fragment_profile, container, false);
         }
         findViews();
+        updateUser();
         addTolistTest();
         //populateEventList();
         return view;
+    }
+
+    private void updateUser() {
+        Log.d(TAG, "updateUser: ");
+
+        profile_LBL_name.setText(mUser.getName());
+        profile_LBL_mail.setText(mUser.getEmail());
+
+
     }
 
     private void addTolistTest() {
@@ -69,13 +81,12 @@ public class Fragment_profile extends Fragment {
         ArrayList<GiveItem> mgiveItems = new ArrayList<>();
         ArrayList<AskItem>mrequestItems = new ArrayList<>();
 
-        User nathan = new User("nathan","email","passord","netanya","054","photo");
-        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
-        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
-        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
-        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
-        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
-        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",nathan));
+        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",mUser));
+        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",mUser));
+        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",mUser));
+        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",mUser));
+        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",mUser));
+        mgiveItems.add(new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",mUser));
 
         addGiveItemsFragment(mgiveItems,mrequestItems);
     }

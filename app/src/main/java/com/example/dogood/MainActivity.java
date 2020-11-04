@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
+        initUser();
         giveItems = new ArrayList<>();
         askItems = new ArrayList<>();
 
@@ -106,6 +107,20 @@ public class MainActivity extends AppCompatActivity {
         fetchItemsFromFirestore(); // Get data from firestore and initialize the fragments
         initListChangeListener(); // Init listener for item change detection
         searchAction();
+    }
+
+    private User initUser() {
+
+        User user = new User();
+
+        String email = "";
+        email = getIntent().getStringExtra("email");
+        user.setEmail(email);
+
+        String name = "";
+        name = getIntent().getStringExtra("name");
+        user.setName(name);
+        return user;
     }
 
     /**
@@ -212,8 +227,9 @@ public class MainActivity extends AppCompatActivity {
      * A method to set the profile page fragment
      */
     private void setProfileFragment() {
-        Log.d(TAG, "onNavigationItemSelected: profile");
-        fragment_profile = new Fragment_profile(giveItems, askItems);
+        Log.d(TAG, "onNavigationItemSelected: profile ");
+
+        fragment_profile = new Fragment_profile(giveItems, askItems,initUser());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_profilePageFragment, fragment_profile);
         transaction.commit();
