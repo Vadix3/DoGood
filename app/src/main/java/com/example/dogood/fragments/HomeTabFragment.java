@@ -20,5 +20,7 @@ public class HomeTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
+        //todo:think about maybe mix some ask and some give object
+        //todo: add ads on that page think about
     }
 }

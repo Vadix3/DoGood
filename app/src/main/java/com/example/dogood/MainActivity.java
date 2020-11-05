@@ -120,7 +120,20 @@ public class MainActivity extends AppCompatActivity {
         String name = "";
         name = getIntent().getStringExtra("name");
         user.setName(name);
+
+        String password = "";
+        password = getIntent().getStringExtra("password");
+        user.setPassword(password);
+
+        String city = "";
+        city = getIntent().getStringExtra("city");
+        user.setCity(city);
+
+        String phone = "";
+        phone = getIntent().getStringExtra("phone");
+        user.setPhone(phone);
         return user;
+
     }
 
     /**

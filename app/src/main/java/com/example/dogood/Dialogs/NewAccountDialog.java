@@ -62,6 +62,9 @@ public class NewAccountDialog extends AppCompatDialogFragment {
                         phone = dialog_EDT_phone.getEditText().getText().toString();
                         country = dialog_EDT_country.getEditText().getText().toString();
 
+
+
+
                         listener.getInfoUser(name,email,phone,country,password);
 
                     }

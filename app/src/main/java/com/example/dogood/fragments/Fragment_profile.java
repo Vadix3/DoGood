@@ -59,6 +59,8 @@ public class Fragment_profile extends Fragment {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_profile, container, false);
         }
+        //todo:check if user have complite profile
+        //todo:search the object of the user , not all the object
         findViews();
         updateUser();
         addTolistTest();

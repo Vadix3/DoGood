@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dogood.Dialogs.NewAccountDialog;
+import com.example.dogood.Dialogs.NewAccountDialogListener;
 import com.example.dogood.MainActivity;
 import com.example.dogood.R;
 import com.facebook.CallbackManager;
@@ -32,7 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class Activity_login extends AppCompatActivity {
+public class Activity_login extends AppCompatActivity implements NewAccountDialogListener {
 
     private static final String TAG = "Activity_login";
 
@@ -44,6 +45,7 @@ public class Activity_login extends AppCompatActivity {
     private ImageView       login_IMG_facebookLogin;
     private ImageView       login_IMG_googleLogin;
     private TextView        login_LBL_createCount;
+    private String name = "", email = "", phone = "", country = "", password = "";
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -231,4 +233,16 @@ public class Activity_login extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void getInfoUser(String name, String email, String phone, String country, String password) {
+        Log.d(TAG, "getInfoUser: "+name + " "+email) ;
+        // todo: send the user info and save on database
+        // todo: check if the info is correcte
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.country = country;
+        this.password = password;
+
+    }
 }
