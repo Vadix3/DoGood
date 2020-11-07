@@ -54,11 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
     private static final int SEARCH_IN_GIVE_ITEMS = 11;
     private static final int SEARCH_IN_ASK_ITEMS = 12;
-    private static final int PROFILE_PAGE_RESULT_CODE = 1012;
-    private static final int CAMERA_PERMISSION_REQUSETCODE = 122;
-    private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
-    private static final int CAMERA_PICTURE_REQUEST = 124;
-    private static final int RETURN_NEW_USER = 125;
 
     private boolean showingResults = false; // A boolean var to indicate that search results are showing.
 
@@ -102,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
         /**TESTING*/
         testUser = new User("Test User", "Test@user.com", "testPass"
-                , "Test City", "0501234567", "testPhoto");
+                , "Test City", "0501234567");
 
         fetchItemsFromFirestore(); // Get data from firestore and initialize the fragments
         initListChangeListener(); // Init listener for item change detection
@@ -524,11 +519,7 @@ public class MainActivity extends AppCompatActivity {
                     showAllItems();
                 } else {
                     Log.d(TAG, "onSearchViewClosed: Showing results so I'm not closing");
-                    if (askFragment.getVisibility() == View.VISIBLE) {
-                        setAskFragment(askItems);
-                    } else {
-                        setGiveFragment(giveItems);
-                    }
+                    //TODO: Fix not found item problem here
                 }
             }
         });
@@ -585,6 +576,7 @@ public class MainActivity extends AppCompatActivity {
         switch (resultCode) {
 
             /** We got from voice listener*/
+            //TODO: Add voice listener
             case MaterialSearchView.REQUEST_VOICE:
                 if (resultCode == RESULT_OK) {
                     ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);

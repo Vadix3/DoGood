@@ -12,13 +12,14 @@ public class User {
     public User() {
     }
 
-    public User(String name, String email, String password, String city, String phone, String photo) {
+    public User(String name, String email, String password, String city, String phone) {
+        //TODO: city? latlng? what else?
+
         this.name = name;
         this.email = email;
         this.password = password;
         this.city = city;
         this.phone = phone;
-        this.photo = photo;
     }
 
     public String getName() {

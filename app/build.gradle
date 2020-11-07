@@ -42,7 +42,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Facebook
@@ -51,8 +51,8 @@ dependencies {
     // Google
     implementation 'com.google.android.libraries.places:places:2.4.0'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
-    implementation 'com.google.android.gms:play-services-ads:19.4.0'
-    implementation 'com.google.firebase:firebase-auth:19.4.0'
+    implementation 'com.google.android.gms:play-services-ads:19.5.0'
+    implementation 'com.google.firebase:firebase-auth:20.0.0'
     implementation 'com.google.firebase:firebase-firestore:22.0.0'
 
 
@@ -62,6 +62,8 @@ dependencies {
 
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+
 
     implementation 'com.github.AraujoJordan:ExcuseMe:0.9.5'
     implementation 'com.karumi:dexter:6.2.1'

@@ -2,12 +2,16 @@ package com.example.dogood.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -19,6 +23,7 @@ import com.example.dogood.Dialogs.NewAccountDialog;
 import com.example.dogood.Dialogs.NewAccountDialogListener;
 import com.example.dogood.MainActivity;
 import com.example.dogood.R;
+import com.example.dogood.objects.User;
 import com.facebook.CallbackManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -45,7 +50,6 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
     private ImageView       login_IMG_facebookLogin;
     private ImageView       login_IMG_googleLogin;
     private TextView        login_LBL_createCount;
-    private String name = "", email = "", phone = "", country = "", password = "";
 
     // Firebase
     private FirebaseAuth mAuth;
@@ -137,8 +141,14 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
     }
 
     private void openDialog() {
-        NewAccountDialog newAccountDialog = new NewAccountDialog();
-        newAccountDialog.show(getSupportFragmentManager(),"newAccountDialog");
+        NewAccountDialog newAccountDialog = new NewAccountDialog(this);
+        newAccountDialog.show();
+        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.8);
+        int width = (int) (getResources().getDisplayMetrics().widthPixels* 0.9);
+        newAccountDialog.getWindow().setLayout(width,height);
+        newAccountDialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        newAccountDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        newAccountDialog.getWindow().setDimAmount(1f);
     }
 
 
@@ -234,15 +244,8 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
     }
 
     @Override
-    public void getInfoUser(String name, String email, String phone, String country, String password) {
-        Log.d(TAG, "getInfoUser: "+name + " "+email) ;
-        // todo: send the user info and save on database
-        // todo: check if the info is correcte
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.country = country;
-        this.password = password;
+    public void getInfoUser(User newUser) {
+        Log.d(TAG, "getInfoUser: ") ;
 
     }
 }

@@ -1,6 +1,8 @@
 package com.example.dogood.Dialogs;
 
+import com.example.dogood.objects.User;
+
 public interface NewAccountDialogListener {
-    void getInfoUser(String name, String email, String phone ,String country ,String password);
+    void getInfoUser(User newUser);
 
 }

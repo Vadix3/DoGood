@@ -6,6 +6,7 @@ public class FirestoreDataContainer {
 
     private ArrayList<GiveItem> giveItems;
     private ArrayList<AskItem> askItems;
+    //TODO: Add users to container
 
 
     public FirestoreDataContainer() {

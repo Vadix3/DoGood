@@ -60,24 +60,33 @@
     <string name="user_mail">User mail</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="welcome_to_do_good">Welcome To Do good !</string>
-    <string name="do_good_and_fell_good">Do good and fell good</string>
+    <string name="welcome_to_do_good">Welcome To Do good!</string>
+    <string name="welcome">Welcome!</string>
+    <string name="do_good_and_fell_good">Do good and fell good!</string>
     <string name="mail">Mail</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="forgot_password">Forgot password ?</string>
-    <string name="sign_in_with">Sign in with :</string>
-    <string name="not_a_member">Not a member ?</string>
-    <string name="first_and_last_name">First and last name</string>
+    <string name="create_account">Create Account</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="sign_in_with">Sign in with:</string>
+    <string name="not_a_member">Not a member?</string>
+    <string name="first_and_last_name">Name</string>
     <string name="email">Email</string>
-    <string name="phone_number">Phone number</string>
-    <string name="your_city">Your city</string>
+    <string name="phone_number">Phone</string>
+    <string name="your_city">City</string>
+    <string name="cancel"><b>Cancel</b></string>
+    <string name="subscribe"><b>Subscribe</b></string>
 
-    <string-array name="query_suggestions">
-        <item>Android</item>
-        <item>iOS</item>
-        <item>SCALA</item>
-        <item>Ruby</item>
-        <item>JavaScript</item>
-    </string-array>
+    <!--Input problem messages-->
+    <string name="enter_name_error">"Please enter a name"</string>
+    <string name="enter_email_error">"Please enter a valid email address"</string>
+    <string name="enter_city_error">Please enter a city name</string>
+    <string name="enter_phone_error">Please enter a phone number</string>
+    <string name="six_chars_password_error">Please enter at least 6 characters</string>
+    <string name="null_password">Please enter a password</string>
+    <string name="confirm_password">Please confirm password</string>
+    <string name="password_no_match">Passwords does not match!</string>
+
+
+
 </resources>

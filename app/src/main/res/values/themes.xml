@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.DoGood" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
+        <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
         <item name="colorOnPrimary">@color/white</item>
