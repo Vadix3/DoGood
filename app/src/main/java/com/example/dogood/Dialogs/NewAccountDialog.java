@@ -49,7 +49,7 @@ public class NewAccountDialog extends Dialog {
 
 
     private void findViews() {
-        Log.d(TAG, "findViews: ");
+        Log.d(TAG, "findViews new account dialog: ");
         newAccount_LAY_mainLayout = findViewById(R.id.newAccount_LAY_mainLayout);
         glideToBackground(newAccount_LAY_mainLayout, R.drawable.dialog_background);
         newAccount_EDT_name = findViewById(R.id.newAccount_EDT_name);
