@@ -6,24 +6,13 @@ public class FirestoreDataContainer {
 
     private ArrayList<GiveItem> giveItems;
     private ArrayList<AskItem> askItems;
-    private ArrayList<User> users;
 
     public FirestoreDataContainer() {
     }
 
-    public ArrayList<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(ArrayList<User> users) {
-        this.users = users;
-    }
-
-    public FirestoreDataContainer(ArrayList<GiveItem> giveItems, ArrayList<AskItem> askItems
-            , ArrayList<User> users) {
+    public FirestoreDataContainer(ArrayList<GiveItem> giveItems, ArrayList<AskItem> askItems) {
         this.giveItems = giveItems;
         this.askItems = askItems;
-        this.users = users;
     }
 
     public ArrayList<AskItem> getAskItems() {

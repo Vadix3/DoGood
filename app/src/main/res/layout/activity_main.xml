@@ -11,7 +11,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-
     <FrameLayout
         android:id="@+id/main_LAY_mainPageFragment"
         android:layout_width="match_parent"
@@ -55,6 +54,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topbar_placeholder" />
 
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:id="@+id/main_BAR_progressBar"
+        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progressTint="@color/teal_200"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_LAY_mainPageFragment"
+        app:layout_constraintVertical_bias="0.0"
+        app:mpb_progressStyle="horizontal" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/main_bottom_navigation"
         android:layout_width="match_parent"
@@ -95,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            app:title="Do Good"
+            app:title="DoGood"
             app:titleTextColor="@color/white" />
 
         <com.miguelcatalan.materialsearchview.MaterialSearchView

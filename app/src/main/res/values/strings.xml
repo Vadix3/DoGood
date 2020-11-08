@@ -87,6 +87,10 @@
     <string name="confirm_password">Please confirm password</string>
     <string name="password_no_match">Passwords does not match!</string>
 
+    <string name="facebook_app_id" translatable="false">3225663444226147</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb3225663444226147</string>
+
+
 
 
 </resources>

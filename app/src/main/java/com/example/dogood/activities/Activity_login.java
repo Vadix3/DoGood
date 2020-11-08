@@ -1,11 +1,15 @@
 package com.example.dogood.activities;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -13,7 +17,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -24,23 +30,42 @@ import com.example.dogood.MainActivity;
 import com.example.dogood.R;
 import com.example.dogood.objects.User;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 public class Activity_login extends AppCompatActivity implements NewAccountDialogListener {
 
     private static final String TAG = "Dogood";
-    private static final String LOGIN_USER = "loginUser";
+    private static final String LOGIN_USER_EXTRA = "loginUser";
 
     private User myUser = new User(); // A user to move with to the main page
 
@@ -64,6 +89,8 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
     //Facebook
     private CallbackManager callbackManager;
 
+    private boolean testing = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +111,7 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
         login_BTN_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                login_BTN_login.setClickable(false);
                 checkForValidLoginInfo();
             }
         });
@@ -116,6 +144,7 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(login_EDT_mail.getEditText().getText().toString()).matches()) {
             Log.d(TAG, "checkForValidInputs: Email invalid");
             login_EDT_mail.setError(getString(R.string.enter_email_error));
+            login_BTN_login.setClickable(true);
             return;
         }
         if (login_EDT_password.getEditText().getText().toString().equals("")
@@ -123,26 +152,18 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
             if (login_EDT_password.getEditText().getText().toString().length() < 6) {
                 Log.d(TAG, "checkForValidInputs: short password");
                 login_EDT_password.setError(getString(R.string.six_chars_password_error));
+                login_BTN_login.setClickable(true);
                 return;
             } else {
                 Log.d(TAG, "checkForValidInputs: invalid password");
                 login_EDT_password.setError(getString(R.string.null_password));
+                login_BTN_login.setClickable(true);
                 return;
             }
         }
-
-        //TODO: Add check credentials
-
-
-        Gson gson = new Gson();
-        String myUserJson = gson.toJson(myUser);
-
-        Intent loginIntent = new Intent(this, MainActivity.class);
-        loginIntent.putExtra(LOGIN_USER, myUserJson);
-        startActivity(loginIntent);
-        finish();
+        // After the credentials are well formatted, check for validity
+        loginUserWithEmailAndPassword();
     }
-
 
     @Override
     protected void onStart() {
@@ -151,8 +172,7 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         // Check if sign in before
         if (account != null) {
-            Log.d(TAG, "GOOGLE: User already signed in: " + account.toString());
-            // goToMain(account);
+            Log.d(TAG, "GOOGLE: User already signed in: " + account.getDisplayName());
         } else {
             Log.d(TAG, "GOOGLE: User no existe ");
         }
@@ -167,9 +187,11 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
             int check = getIntent().getIntExtra("LOGGED_OUT", 0);
             if (check != 1) {
                 Log.d(TAG, "onStart: Did not came from main, logging in");
-                Intent intent = new Intent(Activity_login.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(Activity_login.this, MainActivity.class);
+//                startActivity(intent);
+//                finish();
+                //TODO: RETURN AUTO LOGIN
+                mAuth.signOut();
             } else {
                 Log.d(TAG, "onStart: Came from main, not logging in");
                 mAuth.signOut();
@@ -188,23 +210,57 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
         newAccountDialog.getWindow().setDimAmount(1f);
     }
 
-
-    private void goToMain(GoogleSignInAccount account) {
-        Log.d(TAG, "goToMain: ");
-
-        String displayName = account.getDisplayName();
-        String email = account.getEmail();
-
-        Intent intent = new Intent(Activity_login.this, MainActivity.class);
-        intent.putExtra("email", email);
-        intent.putExtra("name", displayName);
-        startActivity(intent);
-    }
-
     private void initFacebookLogin() {
-        Log.d(TAG, "initFacebookLogin: ");
+        //TODO: Problem with test accounts login, can login only with my account
 
+        Log.d(TAG, "initFacebookLogin: ");
         callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d(TAG, "onSuccess: Facebook success: " + loginResult.toString());
+                //Request the users info
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken()
+                        , new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.d(TAG, "onCompleted: response: " + response.toString());
+                                Log.d(TAG, "onCompleted: json: " + object.toString());
+                                try {
+                                    String name = ""+object.get("name");
+                                    String email = ""+object.get("email");
+                                    User temp = new User(name,email);
+                                    Gson gson = new Gson();
+                                    String userJson = gson.toJson(temp);
+                                    Intent loginIntent = new Intent(Activity_login.this,MainActivity.class);
+                                    loginIntent.putExtra(LOGIN_USER_EXTRA,userJson);
+                                    startActivity(loginIntent);
+                                    finish();
+                                    //TODO: remove logout
+                                    LoginManager.getInstance().logOut();
+                                } catch (JSONException e) {
+                                    Log.d(TAG, "onCompleted: Exception: " + e.getMessage());
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "onCancel: Facebook cancel");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Log.d(TAG, "onError: Exception: " + exception.getMessage());
+            }
+        });
+
+
     }
 
     private void initGoogleLogin() {
@@ -217,6 +273,8 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        //TODO: Remove the signout
+        mGoogleSignInClient.signOut();
     }
 
     private void initPasswordLogin() {
@@ -267,6 +325,12 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
         login_LBL_forgot = findViewById(R.id.login_LBL_forgot);
         login_BTN_login = findViewById(R.id.login_BTN_login);
         login_IMG_facebookLogin = findViewById(R.id.login_IMG_facebookLogin);
+        login_IMG_facebookLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logInWithReadPermissions(Activity_login.this, Arrays.asList("public_profile", "user_friends", "email"));
+            }
+        });
         login_IMG_googleLogin = findViewById(R.id.login_IMG_googleLogin);
         login_LBL_createCount = findViewById(R.id.login_LBL_createCount);
     }
@@ -297,10 +361,13 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
             String email = account.getEmail();
 
             Intent intent = new Intent(Activity_login.this, MainActivity.class);
-            intent.putExtra("email", email);
-            intent.putExtra("name", displayName);
+            Gson gson = new Gson();
+            User temp = new User(displayName, email);
+            String userJson = gson.toJson(temp);
+            intent.putExtra(LOGIN_USER_EXTRA, userJson);
             startActivity(intent);
             finish();
+
 
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
@@ -309,11 +376,141 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
         }
     }
 
+    /**
+     * A callback method to get the user from the new user dialog
+     */
     @Override
     public void getInfoUser(User newUser) {
         Log.d(TAG, "getInfoUser: Got user: " + newUser.toString());
         myUser = newUser;
-        login_EDT_mail.getEditText().setText(myUser.getEmail());
-        login_EDT_password.getEditText().setText(myUser.getPassword());
+        afterGotNewUser();
     }
+
+    /**
+     * A method to deal with new user details
+     */
+    private void afterGotNewUser() {
+        Log.d(TAG, "afterGotNewUser: Dealing with new user: " + myUser.toString());
+        mAuth.createUserWithEmailAndPassword(myUser.getEmail(), myUser.getPassword())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            setFirebaseUserParams(user);
+                            login_EDT_mail.getEditText().setText(myUser.getEmail());
+                            login_EDT_password.getEditText().setText(myUser.getPassword());
+                            Toast.makeText(Activity_login.this, "User Created Successfully!"
+                                    , Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // If sign in fails, display a message to the user.
+                Log.d(TAG, "createUserWithEmail:failure" + e.getMessage());
+                login_EDT_mail.getEditText().setText("");
+                login_EDT_password.getEditText().setText("");
+                if (e.getMessage().equalsIgnoreCase("The email address is already in use by another account.")) {
+                    Toast.makeText(Activity_login.this, "There is an account with that email!"
+                            , Toast.LENGTH_SHORT).show();
+                    login_EDT_mail.getEditText().setText(myUser.getEmail());
+                }
+                if (e.getMessage().equalsIgnoreCase("The email address is badly formatted.")) {
+                    Log.d(TAG, "createUserWithEmail: Failure: email badly formatted");
+                    Toast.makeText(Activity_login.this, "Please enter a valid email address"
+                            , Toast.LENGTH_SHORT).show();
+                    login_BTN_login.setClickable(true);
+                }
+
+            }
+        });
+    }
+
+    /**
+     * A method to set the firebase users parameters
+     */
+    private void setFirebaseUserParams(FirebaseUser user) {
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(myUser.getName())
+                .build();
+
+        user.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User profile updated, Name: " + user.getDisplayName());
+                            fireBasePost();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * A method to post new user to firebase firestore
+     */
+    private void fireBasePost() {
+        Log.d(TAG, "fireBasePost: Posting user to firebase");
+        String emailID = myUser.getEmail();
+        db.collection("users")
+                .document(emailID)
+                .set(myUser)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "onSuccess: User saved successfully!");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: Exception: " + e.getMessage());
+            }
+        });
+    }
+
+    /**
+     * A Method to log in user with email and password
+     */
+    private void loginUserWithEmailAndPassword() {
+        Log.d(TAG, "loginUserWithEmailAndPassword: Logging in user with email and password");
+        mAuth.signInWithEmailAndPassword(login_EDT_mail.getEditText().getText().toString()
+                , login_EDT_password.getEditText().getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Intent intent = new Intent(Activity_login.this, MainActivity.class);
+                            Gson gson = new Gson();
+                            User temp = new User(user.getDisplayName(), user.getEmail());
+                            String jsonUser = gson.toJson(temp);
+                            Log.d(TAG, "onComplete: Sending string user to main: " + jsonUser);
+                            intent.putExtra(LOGIN_USER_EXTRA, jsonUser);
+                            startActivity(intent);
+                            finish();
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Exception e = task.getException();
+                            String errorMsg = e.getMessage();
+                            Log.w(TAG, "signInWithEmail:failure " + errorMsg);
+                            if (e.getMessage().equalsIgnoreCase(
+                                    "The password is invalid or the user does not have a password.")) {
+                                login_EDT_password.setError("Wrong password");
+                                login_BTN_login.setClickable(true);
+                            }
+                            if (e.getMessage().equals("There is no user record corresponding to this identifier. The user may have been deleted.")) {
+                                login_EDT_mail.setError("Email address does not exist!");
+                                login_BTN_login.setClickable(true);
+                            }
+                        }
+                    }
+                });
+    }
+
 }

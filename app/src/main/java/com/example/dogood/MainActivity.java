@@ -20,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.example.dogood.activities.Activity_login;
 import com.example.dogood.fragments.AskItemFragment;
 import com.example.dogood.fragments.Fragment_profile;
 import com.example.dogood.fragments.GiveItemFragment;
@@ -44,6 +43,8 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
@@ -51,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String GIVE_ITEMS_ARRAY = "giveItems";
     private static final String ITEMS_DATA_CONTAINER = "dataContainer";
     private static final String USERS_ARRAY = "usersArray";
+    private static final String USERS_COLLECTION = "users";
+    private static final String LOGIN_USER_EXTRA = "loginUser";
+    private static final String PENDING_USER_DETAILS = "usersArray";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
     private static final int SEARCH_IN_GIVE_ITEMS = 11;
@@ -74,16 +78,16 @@ public class MainActivity extends AppCompatActivity {
     private AskItemFragment askItemFragment;
     private Fragment_profile fragment_profile;
 
+    private MaterialProgressBar loadingBar;
     private BottomNavigationView bottomNavigationView;
 
     private ArrayList<GiveItem> giveItems; // An array to store items to give
     private ArrayList<AskItem> askItems;  // An array to store needed items
-    private ArrayList<User> users; // An array to store app users
 
     private ArrayList<GiveItem> giveResults = new ArrayList<>(); // An array to store give items search results
     private ArrayList<AskItem> askResults = new ArrayList<>(); // An array to store ask items search results
 
-    private User myUser;
+    private User myUser; // The current user that using the app
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -93,14 +97,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-        initUser();
         giveItems = new ArrayList<>();
         askItems = new ArrayList<>();
-        users = new ArrayList<>();
-
-        fetchItemsFromFirestore(); // Get data from firestore and initialize the fragments
-        initListChangeListener(); // Init listener for item change detection
-        searchAction();
+        initUser();
     }
 
     /**
@@ -109,10 +108,31 @@ public class MainActivity extends AppCompatActivity {
     private void initUser() {
         Log.d(TAG, "initUser: ");
         Gson gson = new Gson();
-        String userJson = getIntent().getStringExtra("loginUser");
+        String userJson = getIntent().getStringExtra(LOGIN_USER_EXTRA);
         myUser = gson.fromJson(userJson, User.class);
+        Log.d(TAG, "initUser: Got user from login: " + myUser.toString());
 
 
+        // Save user to firebase
+        db.collection(USERS_COLLECTION).document(myUser.getEmail())
+                .set(myUser)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+
+                        fetchItemsFromFirestore(); // Get data from firestore and initialize the fragments
+                        initListChangeListener(); // Init listener for item change detection
+                        searchAction();
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
 
     }
 
@@ -153,7 +173,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initBottomNavigationMenu() {
         Log.d(TAG, "initBottomNavigationMenu: Bottom navigation init");
-        bottomNavigationView = findViewById(R.id.main_bottom_navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
+        loadingBar.setIndeterminate(false);
+        loadingBar.setVisibility(View.GONE);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -266,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initListChangeListener() {
         Log.d(TAG, "initListChangeListener: Creating list change listener");
-        final DocumentReference docRef = db.collection("data").document(GIVE_ITEMS_ARRAY);
+        final DocumentReference docRef = db.collection("data").document(ITEMS_DATA_CONTAINER);
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
@@ -280,6 +302,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "Current data: HAS NEW DATA! " + snapshot.getData());
                     FirestoreDataContainer container = snapshot.toObject(FirestoreDataContainer.class);
                     giveItems = container.getGiveItems();
+                    askItems=container.getAskItems();
                     updateFragments();
                 } else {
                     Log.d(TAG, "Current data: null");
@@ -294,7 +317,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initViews() {
         Log.d(TAG, "findViews: ");
+        loadingBar = findViewById(R.id.main_BAR_progressBar);
+        loadingBar.setIndeterminate(true);
 
+        bottomNavigationView = findViewById(R.id.main_bottom_navigation);
+        bottomNavigationView.setVisibility(View.GONE);
         main_TLB_head = findViewById(R.id.main_TLB_head);
 
         setSupportActionBar(main_TLB_head);
@@ -326,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
     private void saveItemsToFirestore() {
         Log.d(TAG, "saveItemsToFirestore: Saving items to firestore: ");
 
-        FirestoreDataContainer dataContainer = new FirestoreDataContainer(giveItems, askItems, users);
+        FirestoreDataContainer dataContainer = new FirestoreDataContainer(giveItems, askItems);
 
         // Save arrays
         db.collection("data").document(ITEMS_DATA_CONTAINER)
@@ -367,11 +394,8 @@ public class MainActivity extends AppCompatActivity {
     private void fetchItemsFromFirestore() {
         Log.d(TAG, "fetchItemsFromFirestore: Fetching items from firestore");
         String containerPath = "data/" + ITEMS_DATA_CONTAINER;
-        String usersArrayPath = "data/" + USERS_ARRAY;
-
 
         DocumentReference containerDocRef = db.document(containerPath);
-        DocumentReference usersDocRef = db.document(usersArrayPath);
 
         containerDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -390,20 +414,13 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         askItems = container.getAskItems();
                     }
-                    if (container.getUsers() == null) {
-                        Log.d(TAG, "onSuccess: null users");
-                    } else {
-                        users = container.getUsers();
-                    }
-                    findCurrentUser();
-                    initPageFragments();
-                    initBottomNavigationMenu(); // initialize bottom navigation menu
-                    //TODO: Problem when I'm pressing tabs before data loads, maybe stall bottom menu somehow?
 
                 } else {
                     Log.d(TAG, "onSuccess: Document does not exist!");
                 }
-
+                initPageFragments();
+                initBottomNavigationMenu(); // initialize bottom navigation menu
+                //TODO: Problem when I'm pressing tabs before data loads, maybe stall bottom menu somehow?
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -435,13 +452,6 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    /**
-     * A method to fetch current user and load his data
-     */
-    private void findCurrentUser() {
-        Log.d(TAG, "findCurrentUser: Searching for current user");
-
-    }
 
     // creation of the side menu
     @SuppressLint("RestrictedApi")
