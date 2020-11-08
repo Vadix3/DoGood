@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.example.dogood.Dialogs.NewAccountDialogListener;
 import com.example.dogood.fragments.AskItemFragment;
 import com.example.dogood.fragments.Fragment_profile;
 import com.example.dogood.fragments.GiveItemFragment;
@@ -45,11 +46,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NewAccountDialogListener {
     private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
     private static final String NEW_ASK_ITEM = "112";
     private static final String GIVE_ITEMS_ARRAY = "giveItems";
+    private static final String DATA_CONTAINER = "dataContainer";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
     private static final int SEARCH_IN_GIVE_ITEMS = 11;
@@ -75,8 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
-    private ArrayList<GiveItem> giveItems;
-    private ArrayList<AskItem> askItems;
+    private ArrayList<GiveItem> giveItems; // An array to store items to give
+    private ArrayList<AskItem> askItems;  // An array to store needed items
+    private ArrayList<User> users; // An array to store app users
 
     private ArrayList<GiveItem> giveResults = new ArrayList<>(); // An array to store give items search results
     private ArrayList<AskItem> askResults = new ArrayList<>(); // An array to store ask items search results
@@ -94,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         initUser();
         giveItems = new ArrayList<>();
         askItems = new ArrayList<>();
+        users = new ArrayList<>();
 
         /**TESTING*/
         testUser = new User("Test User", "Test@user.com", "testPass"
@@ -237,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
     private void setProfileFragment() {
         Log.d(TAG, "onNavigationItemSelected: profile ");
 
-        fragment_profile = new Fragment_profile(giveItems, askItems,initUser());
+        fragment_profile = new Fragment_profile(giveItems, askItems, initUser());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_profilePageFragment, fragment_profile);
         transaction.commit();
@@ -341,9 +345,9 @@ public class MainActivity extends AppCompatActivity {
     private void saveItemsToFirestore() {
         Log.d(TAG, "saveItemsToFirestore: Saving items to firestore: " + giveItems.toString());
 
-        FirestoreDataContainer dataContainer = new FirestoreDataContainer(giveItems, askItems);
+        FirestoreDataContainer dataContainer = new FirestoreDataContainer(giveItems, askItems, users);
 
-        db.collection("data").document(GIVE_ITEMS_ARRAY)
+        db.collection("data").document(DATA_CONTAINER)
                 .set(dataContainer)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -365,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void fetchItemsFromFirestore() {
         Log.d(TAG, "fetchItemsFromFirestore: Fetching items from firestore");
-        String path = "data/" + GIVE_ITEMS_ARRAY;
+        String path = "data/" + DATA_CONTAINER;
 
         DocumentReference docRef = db.document(path);
 
@@ -376,12 +380,25 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onSuccess: document exists! " + documentSnapshot.getData().toString());
 
                     FirestoreDataContainer container = documentSnapshot.toObject(FirestoreDataContainer.class);
-                    giveItems = container.getGiveItems();
-                    askItems = container.getAskItems();
-                    Log.d(TAG, "onSuccess: GiveItems: " + giveItems.toString());
-                    Log.d(TAG, "onSuccess: askItems: " + askItems.toString());
+                    if (container.getGiveItems() == null) {
+                        Log.d(TAG, "onSuccess: null give items");
+                    } else {
+                        giveItems = container.getGiveItems();
+                    }
+                    if (container.getAskItems() == null) {
+                        Log.d(TAG, "onSuccess: null ask items");
+                    } else {
+                        askItems = container.getAskItems();
+                    }
+                    if (container.getUsers() == null) {
+                        Log.d(TAG, "onSuccess: null users");
+                    } else {
+                        users = container.getUsers();
+                    }
+                    findCurrentUser();
                     initPageFragments();
                     initBottomNavigationMenu(); // initialize bottom navigation menu
+                    //TODO: Problem when I'm pressing tabs before data loads, maybe stall bottom menu somehow?
 
                 } else {
                     Log.d(TAG, "onSuccess: Document does not exist!");
@@ -394,6 +411,12 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure: Exception: " + e.getMessage());
             }
         });
+    }
+
+    /** A method to fetch current user and load his data*/
+    private void findCurrentUser() {
+        Log.d(TAG, "findCurrentUser: Searching for current user");
+
     }
 
     // creation of the side menu
@@ -658,4 +681,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void getInfoUser(User newUser) {
+        Log.d(TAG, "getInfoUser: Got user from new user dialog");
+        users.add(newUser);
+        saveItemsToFirestore();
+    }
 }
