@@ -1,4 +1,4 @@
-package com.example.dogood.Dialogs;
+package com.example.dogood.interfaces;
 
 import com.example.dogood.objects.User;
 

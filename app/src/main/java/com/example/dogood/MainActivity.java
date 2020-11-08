@@ -20,7 +20,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.example.dogood.Dialogs.NewAccountDialogListener;
+import com.example.dogood.activities.Activity_login;
 import com.example.dogood.fragments.AskItemFragment;
 import com.example.dogood.fragments.Fragment_profile;
 import com.example.dogood.fragments.GiveItemFragment;
@@ -41,17 +41,16 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 
-public class MainActivity extends AppCompatActivity implements NewAccountDialogListener {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
     private static final String NEW_ASK_ITEM = "112";
     private static final String GIVE_ITEMS_ARRAY = "giveItems";
-    private static final String DATA_CONTAINER = "dataContainer";
+    private static final String ITEMS_DATA_CONTAINER = "dataContainer";
+    private static final String USERS_ARRAY = "usersArray";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
     private static final int SEARCH_IN_GIVE_ITEMS = 11;
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NewAccountDialogL
     private ArrayList<GiveItem> giveResults = new ArrayList<>(); // An array to store give items search results
     private ArrayList<AskItem> askResults = new ArrayList<>(); // An array to store ask items search results
 
-    private User testUser;
+    private User myUser;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -99,39 +98,21 @@ public class MainActivity extends AppCompatActivity implements NewAccountDialogL
         askItems = new ArrayList<>();
         users = new ArrayList<>();
 
-        /**TESTING*/
-        testUser = new User("Test User", "Test@user.com", "testPass"
-                , "Test City", "0501234567");
-
         fetchItemsFromFirestore(); // Get data from firestore and initialize the fragments
         initListChangeListener(); // Init listener for item change detection
         searchAction();
     }
 
-    private User initUser() {
+    /**
+     * A method to get the user details from the login activity and fetch the valid info from firebase
+     */
+    private void initUser() {
+        Log.d(TAG, "initUser: ");
+        Gson gson = new Gson();
+        String userJson = getIntent().getStringExtra("loginUser");
+        myUser = gson.fromJson(userJson, User.class);
 
-        User user = new User();
 
-        String email = "";
-        email = getIntent().getStringExtra("email");
-        user.setEmail(email);
-
-        String name = "";
-        name = getIntent().getStringExtra("name");
-        user.setName(name);
-
-        String password = "";
-        password = getIntent().getStringExtra("password");
-        user.setPassword(password);
-
-        String city = "";
-        city = getIntent().getStringExtra("city");
-        user.setCity(city);
-
-        String phone = "";
-        phone = getIntent().getStringExtra("phone");
-        user.setPhone(phone);
-        return user;
 
     }
 
@@ -212,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements NewAccountDialogL
                     case R.id.bottom_menu_profile:
                         searchItem.setVisible(false);
                         if (profileFragment != null) {
-                            main_TLB_head.setTitle(testUser.getName());
+                            main_TLB_head.setTitle(myUser.getName());
                             showFragment(profileFragment);
                         }
                         break;
@@ -241,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements NewAccountDialogL
     private void setProfileFragment() {
         Log.d(TAG, "onNavigationItemSelected: profile ");
 
-        fragment_profile = new Fragment_profile(giveItems, askItems, initUser());
+        fragment_profile = new Fragment_profile(giveItems, askItems, myUser);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_profilePageFragment, fragment_profile);
         transaction.commit();
@@ -343,11 +324,12 @@ public class MainActivity extends AppCompatActivity implements NewAccountDialogL
      * A method to upload items array to firestore
      */
     private void saveItemsToFirestore() {
-        Log.d(TAG, "saveItemsToFirestore: Saving items to firestore: " + giveItems.toString());
+        Log.d(TAG, "saveItemsToFirestore: Saving items to firestore: ");
 
         FirestoreDataContainer dataContainer = new FirestoreDataContainer(giveItems, askItems, users);
 
-        db.collection("data").document(DATA_CONTAINER)
+        // Save arrays
+        db.collection("data").document(ITEMS_DATA_CONTAINER)
                 .set(dataContainer)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -361,6 +343,21 @@ public class MainActivity extends AppCompatActivity implements NewAccountDialogL
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
+
+//        //Saving users array
+//        db.collection("data").document(USERS_ARRAY)
+//                .set(users)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        Log.d(TAG, "onSuccess: users successfully written");
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.d(TAG, "onFailure: " + e.getMessage());
+//            }
+//        });
     }
 
 
@@ -369,11 +366,14 @@ public class MainActivity extends AppCompatActivity implements NewAccountDialogL
      */
     private void fetchItemsFromFirestore() {
         Log.d(TAG, "fetchItemsFromFirestore: Fetching items from firestore");
-        String path = "data/" + DATA_CONTAINER;
+        String containerPath = "data/" + ITEMS_DATA_CONTAINER;
+        String usersArrayPath = "data/" + USERS_ARRAY;
 
-        DocumentReference docRef = db.document(path);
 
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        DocumentReference containerDocRef = db.document(containerPath);
+        DocumentReference usersDocRef = db.document(usersArrayPath);
+
+        containerDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
@@ -411,9 +411,33 @@ public class MainActivity extends AppCompatActivity implements NewAccountDialogL
                 Log.d(TAG, "onFailure: Exception: " + e.getMessage());
             }
         });
+
+//        usersDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                Log.d(TAG, "onSuccess: ");
+//                ArrayList<User> testUsersArray = new ArrayList<>();
+//                try {
+//                    testUsersArray = documentSnapshot.toObject(ArrayList.class);
+//                    if (testUsersArray != null) {
+//                        Log.d(TAG, "onSuccess: Got users array: " + testUsersArray.toString());
+//                    }
+//                } catch (Exception e) {
+//                    Log.d(TAG, "onSuccessConvert: " + e.getMessage());
+//                }
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.d(TAG, "onFailure: " + e.getMessage());
+//            }
+//        });
     }
 
-    /** A method to fetch current user and load his data*/
+    /**
+     * A method to fetch current user and load his data
+     */
     private void findCurrentUser() {
         Log.d(TAG, "findCurrentUser: Searching for current user");
 
@@ -680,11 +704,4 @@ public class MainActivity extends AppCompatActivity implements NewAccountDialogL
         }
     }
 
-
-    @Override
-    public void getInfoUser(User newUser) {
-        Log.d(TAG, "getInfoUser: Got user from new user dialog");
-        users.add(newUser);
-        saveItemsToFirestore();
-    }
 }

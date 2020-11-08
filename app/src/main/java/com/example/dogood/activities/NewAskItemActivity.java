@@ -142,7 +142,7 @@ public class NewAskItemActivity extends AppCompatActivity {
         }
 
         User testUser = new User("Vadim", "dogoodapp1@gmail.com", "123456"
-                , "Netanya", "0541234567", "Photo URL");
+                , "Netanya", "0541234567");
 
         AskItem temp = new AskItem("123", itemName.getText().toString(), itemCategory.getSelectedItem().toString()
                 , testUser.getCity(), itemDescription.getText().toString(), "20-12-20", testUser, tempDiscrete);

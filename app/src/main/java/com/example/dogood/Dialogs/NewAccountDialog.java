@@ -17,12 +17,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.dogood.R;
+import com.example.dogood.interfaces.NewAccountDialogListener;
 import com.example.dogood.objects.User;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class NewAccountDialog extends Dialog {
     private static final String TAG = "Dogood";
+    private Context context;
     //views
     private ConstraintLayout newAccount_LAY_mainLayout;
     private TextInputLayout newAccount_EDT_name;
@@ -33,10 +35,9 @@ public class NewAccountDialog extends Dialog {
     private TextInputLayout newAccount_EDT_confirmPassword;
     private MaterialButton newAccount_EDT_submit;
 
-    private NewAccountDialogListener listener;
-
     public NewAccountDialog(@NonNull Context context) {
         super(context);
+        this.context = context;
     }
 
     @Override
@@ -222,16 +223,16 @@ public class NewAccountDialog extends Dialog {
             newAccount_EDT_confirmPassword.setError(getContext().getString(R.string.password_no_match));
             return;
         }
-        sendInfoToMainActivity();
+        sendInfoToLoginActivity();
 
 
     }
 
     /**
-     * A method to send the confirmed input info to the main activity
+     * A method to send the confirmed input info to the login activity
      */
-    private void sendInfoToMainActivity() {
-        Log.d(TAG, "sendInfoToMainActivity: sending info back");
+    private void sendInfoToLoginActivity() {
+        Log.d(TAG, "sendInfoToLoginActivity: sending info back");
 
         //Extracting information after check to a user object
 
@@ -243,7 +244,26 @@ public class NewAccountDialog extends Dialog {
 
         //Creating a new user with the extracted information
         User temp = new User(name, email, password, city, phone);
-        listener.getInfoUser(temp);
+
+        callBackNewUser(temp);
+    }
+
+    /**
+     * A method to callback the new user
+     */
+    private void callBackNewUser(User temp) {
+        Log.d(TAG, "callBackNewUser: Callbacking: " + temp.toString());
+        NewAccountDialogListener newUserDetailsCallback;
+        try {
+            newUserDetailsCallback = (NewAccountDialogListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + "Must implement dialog listener");
+        }
+
+
+        // Send the trip Dates and trip name to main layout
+        newUserDetailsCallback.getInfoUser(temp);
+        dismiss();
     }
 
     /**

@@ -212,7 +212,7 @@ public class NewGiveItemActivity extends AppCompatActivity {
 
         Log.d(TAG, "checkForValidInput: Passed all checks!");
         User testUser = new User("Vadim", "dogoodapp1@gmail.com", "123456"
-                , "Netanya", "0541234567", "Photo URL");
+                , "Netanya", "0541234567");
 
         String photosJson = bitMapToString(userCustomImage);
 
