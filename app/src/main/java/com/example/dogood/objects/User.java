@@ -1,5 +1,7 @@
 package com.example.dogood.objects;
 
+import java.util.ArrayList;
+
 public class User {
 
     private String name;
@@ -8,6 +10,9 @@ public class User {
     private String city;
     private String phone;
     private String photo;
+
+    private ArrayList<GiveItem> giveItems = new ArrayList<>();
+    private ArrayList<AskItem> askItems = new ArrayList<>();
 
     public User() {
     }
@@ -30,6 +35,28 @@ public class User {
         this.phone = "pending";
     }
 
+    public void addGiveItem(GiveItem item){
+        this.giveItems.add(item);
+    }
+    public void addAskItem(AskItem item){
+        this.askItems.add(item);
+    }
+
+    public ArrayList<GiveItem> getGiveItems() {
+        return giveItems;
+    }
+
+    public void setGiveItems(ArrayList<GiveItem> giveItems) {
+        this.giveItems = giveItems;
+    }
+
+    public ArrayList<AskItem> getAskItems() {
+        return askItems;
+    }
+
+    public void setAskItems(ArrayList<AskItem> askItems) {
+        this.askItems = askItems;
+    }
 
     public String getName() {
         return name;

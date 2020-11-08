@@ -499,14 +499,18 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
                             Exception e = task.getException();
                             String errorMsg = e.getMessage();
                             Log.w(TAG, "signInWithEmail:failure " + errorMsg);
+                            login_BTN_login.setClickable(true);
+                            if(e.getMessage().equalsIgnoreCase(
+                                    "An internal error has occurred. [ Unable to resolve" +
+                                            " host \"www.googleapis.com\":No address associated with hostname ]")){
+                                Toast.makeText(Activity_login.this, "Connection Timeout", Toast.LENGTH_SHORT).show();
+                            }
                             if (e.getMessage().equalsIgnoreCase(
                                     "The password is invalid or the user does not have a password.")) {
                                 login_EDT_password.setError("Wrong password");
-                                login_BTN_login.setClickable(true);
                             }
                             if (e.getMessage().equals("There is no user record corresponding to this identifier. The user may have been deleted.")) {
                                 login_EDT_mail.setError("Email address does not exist!");
-                                login_BTN_login.setClickable(true);
                             }
                         }
                     }

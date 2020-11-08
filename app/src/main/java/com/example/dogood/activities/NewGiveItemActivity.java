@@ -44,7 +44,7 @@ import java.util.ArrayList;
 public class NewGiveItemActivity extends AppCompatActivity {
     private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
-    private static final int CAMERA_PERMISSION_REQUSETCODE = 122;
+    public static final String CURRENT_USER = "currentUser";
     private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
     private static final int CAMERA_PICTURE_REQUEST = 124;
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
@@ -61,10 +61,16 @@ public class NewGiveItemActivity extends AppCompatActivity {
 
     private Bitmap userCustomImage;
 
+    private User currentUser;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_give_item);
+
+        String userJson = getIntent().getStringExtra(CURRENT_USER);
+        Gson gson = new Gson();
+        currentUser = gson.fromJson(userJson, User.class);
 
         initViews();
     }
@@ -211,14 +217,13 @@ public class NewGiveItemActivity extends AppCompatActivity {
         }
 
         Log.d(TAG, "checkForValidInput: Passed all checks!");
-        User testUser = new User("Vadim", "dogoodapp1@gmail.com", "123456"
-                , "Netanya", "0541234567");
 
         String photosJson = bitMapToString(userCustomImage);
 
+
         GiveItem temp = new GiveItem("12", itemName.getText().toString(), category.getSelectedItem().toString()
                 , condition.getSelectedItem().toString(), itemPrice.getText().toString(), itemDescription.getText().toString()
-                , photosJson, "test-date-27/10", testUser);
+                , photosJson, "test-date-27/10", currentUser);
         returnGivenItem(temp);
     }
 

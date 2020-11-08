@@ -105,7 +105,7 @@ public class Fragment_profile extends Fragment {
 
     private void addGiveItemsFragment(ArrayList<GiveItem> mgiveItems, ArrayList<AskItem> mrequestItems) {
         Log.d(TAG, "initItemsFragment: Initing main list with: " + giveItems.toString());
-        GiveItemFragment giveItemFragment = new GiveItemFragment(mgiveItems);
+        GiveItemFragment giveItemFragment = new GiveItemFragment(mgiveItems,mUser);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.profile_LAY_post, giveItemFragment);
         transaction.commit();

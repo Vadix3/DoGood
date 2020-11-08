@@ -16,24 +16,30 @@ import com.example.dogood.activities.NewGiveItemActivity;
 import com.example.dogood.adapters.RecyclerViewAskAdapter;
 import com.example.dogood.adapters.RecyclerViewGiveAdapter;
 import com.example.dogood.objects.AskItem;
+import com.example.dogood.objects.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class AskItemFragment extends Fragment {
     private static final String TAG = "Dogood";
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
+    public static final String CURRENT_USER = "currentUser";
 
     protected View view;
     private RecyclerView recyclerView;
     private ArrayList<AskItem> askItems;
     private FloatingActionButton addItem;
+    private User myUser;
+
 
     public AskItemFragment() {
     }
 
-    public AskItemFragment(ArrayList<AskItem> askItems) {
+    public AskItemFragment(ArrayList<AskItem> askItems, User user) {
         this.askItems = askItems;
+        this.myUser=user;
     }
 
     public void hideFloatingButton() {
@@ -95,6 +101,10 @@ public class AskItemFragment extends Fragment {
      */
     private void openAddItemActivity() {
         Log.d(TAG, "openAddItemActivity: ");
-        startActivityForResult(new Intent(getActivity(), NewAskItemActivity.class), NEW_ASK_ITEM_RESULT_CODE);
+        Intent intent = new Intent(getActivity(), NewAskItemActivity.class);
+        Gson gson = new Gson();
+        String userJson = gson.toJson(myUser);
+        intent.putExtra(CURRENT_USER,userJson);
+        startActivityForResult(intent, NEW_ASK_ITEM_RESULT_CODE);
     }
 }

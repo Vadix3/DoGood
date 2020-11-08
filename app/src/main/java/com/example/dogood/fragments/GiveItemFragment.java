@@ -13,28 +13,35 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogood.R;
+import com.example.dogood.activities.NewAskItemActivity;
 import com.example.dogood.activities.NewGiveItemActivity;
 import com.example.dogood.adapters.RecyclerViewGiveAdapter;
 import com.example.dogood.objects.GiveItem;
+import com.example.dogood.objects.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class GiveItemFragment extends Fragment {
     private static final String TAG = "Dogood";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
+    public static final String CURRENT_USER = "currentUser";
+
 
     protected View view;
     private RecyclerView recyclerView;
     private ArrayList<GiveItem> giveItems;
     private FloatingActionButton addItem;
+    private User myUser;
 
 
     public GiveItemFragment() {
     }
 
-    public GiveItemFragment(ArrayList<GiveItem> giveItems) {
+    public GiveItemFragment(ArrayList<GiveItem> giveItems, User user) {
         this.giveItems = giveItems;
+        this.myUser = user;
     }
 
     @Override
@@ -82,7 +89,11 @@ public class GiveItemFragment extends Fragment {
      */
     private void openAddItemActivity() {
         Log.d(TAG, "openAddItemActivity: ");
-        startActivityForResult(new Intent(getActivity(), NewGiveItemActivity.class), NEW_GIVE_ITEM_RESULT_CODE);
+        Intent intent = new Intent(getActivity(), NewGiveItemActivity.class);
+        Gson gson = new Gson();
+        String userJson = gson.toJson(myUser);
+        intent.putExtra(CURRENT_USER, userJson);
+        startActivityForResult(intent, NEW_GIVE_ITEM_RESULT_CODE);
     }
 
 

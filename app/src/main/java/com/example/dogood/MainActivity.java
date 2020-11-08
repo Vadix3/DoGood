@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setAskFragment(ArrayList<AskItem> items) {
         Log.d(TAG, "onNavigationItemSelected: ask");
-        askItemFragment = new AskItemFragment(items);
+        askItemFragment = new AskItemFragment(items, myUser);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_askPageFragment, askItemFragment);
         transaction.commit();
@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setGiveFragment(ArrayList<GiveItem> items) {
         Log.d(TAG, "initItemsFragment: Initing give list");
-        giveItemFragment = new GiveItemFragment(items);
+        giveItemFragment = new GiveItemFragment(items, myUser);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_givePageFragment, giveItemFragment);
         transaction.commit();
@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "Current data: HAS NEW DATA! " + snapshot.getData());
                     FirestoreDataContainer container = snapshot.toObject(FirestoreDataContainer.class);
                     giveItems = container.getGiveItems();
-                    askItems=container.getAskItems();
+                    askItems = container.getAskItems();
                     updateFragments();
                 } else {
                     Log.d(TAG, "Current data: null");
@@ -370,21 +370,25 @@ public class MainActivity extends AppCompatActivity {
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
+    }
 
-//        //Saving users array
-//        db.collection("data").document(USERS_ARRAY)
-//                .set(users)
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        Log.d(TAG, "onSuccess: users successfully written");
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Log.d(TAG, "onFailure: " + e.getMessage());
-//            }
-//        });
+    private void updateUserInFirestore(){
+        Log.d(TAG, "updateUserInFirestore: saving user: "+myUser.toString());
+        // Save arrays
+        db.collection(USERS_COLLECTION).document(myUser.getEmail())
+                .set(myUser)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
     }
 
 
@@ -428,28 +432,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure: Exception: " + e.getMessage());
             }
         });
-
-//        usersDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                Log.d(TAG, "onSuccess: ");
-//                ArrayList<User> testUsersArray = new ArrayList<>();
-//                try {
-//                    testUsersArray = documentSnapshot.toObject(ArrayList.class);
-//                    if (testUsersArray != null) {
-//                        Log.d(TAG, "onSuccess: Got users array: " + testUsersArray.toString());
-//                    }
-//                } catch (Exception e) {
-//                    Log.d(TAG, "onSuccessConvert: " + e.getMessage());
-//                }
-//
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Log.d(TAG, "onFailure: " + e.getMessage());
-//            }
-//        });
     }
 
 
@@ -660,6 +642,8 @@ public class MainActivity extends AppCompatActivity {
                     temp.setId("G" + giveItems.size());
                     Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
                     giveItems.add(temp);
+                    myUser.addGiveItem(temp);
+                    updateUserInFirestore();
                     saveItemsToFirestore();
                 } else {
                     Log.d(TAG, "onActivityResult: User canceled new item input");
@@ -678,6 +662,8 @@ public class MainActivity extends AppCompatActivity {
                     temp.setId("G" + askItems.size());
                     Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
                     askItems.add(temp);
+                    myUser.addAskItem(temp);
+                    updateUserInFirestore();
                     saveItemsToFirestore();
                 } else {
                     Log.d(TAG, "onActivityResult: User canceled new item input");

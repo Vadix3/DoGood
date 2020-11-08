@@ -25,13 +25,8 @@ import java.util.ArrayList;
 
 public class NewAskItemActivity extends AppCompatActivity {
     private static final String TAG = "Dogood";
-    private static final String NEW_GIVE_ITEM = "111";
     private static final String NEW_ASK_ITEM = "112";
-
-    private static final int CAMERA_PERMISSION_REQUSETCODE = 122;
-    private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
-    private static final int CAMERA_PICTURE_REQUEST = 124;
-    private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
+    public static final String CURRENT_USER = "currentUser";
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
 
 
@@ -41,14 +36,19 @@ public class NewAskItemActivity extends AppCompatActivity {
     private CheckBox isDiscrete;
     private MaterialButton submitBtn;
 
+    private User currentUser;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_ask_item);
 
+        String userJson = getIntent().getStringExtra(CURRENT_USER);
+        Gson gson = new Gson();
+        currentUser = gson.fromJson(userJson, User.class);
+
         initViews();
         initCategorySpinner();
-
     }
 
     /**
@@ -141,11 +141,8 @@ public class NewAskItemActivity extends AppCompatActivity {
             tempDiscrete = true;
         }
 
-        User testUser = new User("Vadim", "dogoodapp1@gmail.com", "123456"
-                , "Netanya", "0541234567");
-
         AskItem temp = new AskItem("123", itemName.getText().toString(), itemCategory.getSelectedItem().toString()
-                , testUser.getCity(), itemDescription.getText().toString(), "20-12-20", testUser, tempDiscrete);
+                , currentUser.getCity(), itemDescription.getText().toString(), "20-12-20", currentUser, tempDiscrete);
 
         Intent resultIntent = new Intent();
         Gson gson = new Gson();
