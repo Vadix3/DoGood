@@ -434,6 +434,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
                     Uri selectedImage = data.getData();
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        userCustomImage = bitmap;
                         itemPhoto.setStrokeWidth(30);
                         itemPhoto.setStrokeColor(getColorStateList(R.color.colorPrimary));
                         itemPhoto.setImageBitmap(bitmap);

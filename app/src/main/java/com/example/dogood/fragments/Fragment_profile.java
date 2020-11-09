@@ -1,15 +1,16 @@
 package com.example.dogood.fragments;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.dogood.Dialogs.NewAccountDialog;
-import com.example.dogood.Dialogs.UpdateAccountDialog;
+import com.example.dogood.activities.Activity_updateAccount;
 import com.example.dogood.R;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.GiveItem;
@@ -33,6 +33,8 @@ public class Fragment_profile extends Fragment {
 
     protected View view;
 
+    private static final int UPDATE_PROFILE_RESULT_CODE = 1013;
+
     private ImageView profile_IMG_picture;
     private TextView profile_LBL_name;
     private TextView profile_LBL_city;
@@ -41,15 +43,11 @@ public class Fragment_profile extends Fragment {
     private FrameLayout profile_LAY_post;
     private MaterialButton profile_BTN_update;
 
-    private ArrayList<GiveItem> giveItems;
-    private ArrayList<AskItem> askItems;
     private User mUser;
 
     public Fragment_profile(){}
 
-    public Fragment_profile(ArrayList<GiveItem> giveItems, ArrayList<AskItem> askItems, User user) {
-        this.giveItems = giveItems;
-        this.askItems = askItems;
+    public Fragment_profile(User user) {
         this.mUser = user;
     }
 
@@ -63,56 +61,36 @@ public class Fragment_profile extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
-
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_profile, container, false);
         }
-        //todo:check if user have complite profile
-        //todo:search the object of the user , not all the object
+
         findViews();
-        updateUser(view.getContext());
-        addTolistTest();
-        //populateEventList();
-        return view;
-    }
-
-    private void updateUser(Context context) {
-        Log.d(TAG, "updateUser: ");
-
-        profile_LBL_name.setText(mUser.getName());
-        profile_LBL_mail.setText(mUser.getEmail());
+        updateUser();
+        addGiveItemsFragment(mUser.getGiveItems(),mUser.getAskItems());
 
         profile_BTN_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog(context);
+                openDialog(view);
             }
         });
 
-
+        return view;
     }
 
-    private void addTolistTest() {
-        Log.d(TAG, "addTolistTest: ");
-        String userCustomImage = "null";
-        ArrayList<GiveItem> mgiveItems = new ArrayList<>();
-        ArrayList<AskItem>mrequestItems = new ArrayList<>();
+    private void updateUser() {
+        Log.d(TAG, "updateUser: ");
 
+        profile_LBL_name.setText(mUser.getName());
+        profile_LBL_mail.setText(mUser.getEmail());
+        profile_LBL_city.setText(mUser.getCity());
+        profile_LBL_phone.setText(mUser.getPhone());
+        if (mUser.getPhoto() != null){
+            Bitmap bp = stringToBitMap(mUser.getPhoto());
+            profile_IMG_picture.setImageBitmap(bp);
+        }
 
-        GiveItem gv1 = new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",mUser);
-        GiveItem gv2 = new GiveItem("1000","tv","electronic","new","","no need",userCustomImage,"27/10",mUser);
-        mgiveItems.add(gv1);
-        mgiveItems.add(gv2);
-        AskItem ask1 = new AskItem();
-        AskItem ask2 = new AskItem();
-        ask1.setId("2000");
-        ask1.setName("phone");
-        ask2.setId("2000");
-        ask2.setName("phone");
-        mrequestItems.add(ask1);
-        mrequestItems.add(ask2);
-
-        addGiveItemsFragment(mgiveItems,mrequestItems);
     }
 
     private void findViews() {
@@ -127,23 +105,29 @@ public class Fragment_profile extends Fragment {
     }
 
     private void addGiveItemsFragment(ArrayList<GiveItem> mgiveItems, ArrayList<AskItem> mrequestItems) {
-        Log.d(TAG, "initItemsFragment: Initing main list with: " + giveItems.toString());
+        Log.d(TAG, "initItemsFragment: Initing main list with: " + mgiveItems.toString());
         GiveItemFragment giveItemFragment = new GiveItemFragment(mgiveItems,mUser);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.profile_LAY_post, giveItemFragment);
         transaction.commit();
     }
 
-    private void openDialog(Context context) {
-        UpdateAccountDialog updateAccountDialog = new UpdateAccountDialog(context,mUser);
-        updateAccountDialog.show();
-        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.8);
-        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
-        updateAccountDialog.getWindow().setLayout(width, height);
-        updateAccountDialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-        updateAccountDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        updateAccountDialog.getWindow().setDimAmount(1f);
+    private void openDialog(View view) {
+       Intent intent = new Intent(getActivity(), Activity_updateAccount.class);
+       startActivityForResult(intent, UPDATE_PROFILE_RESULT_CODE);
     }
 
+    public Bitmap stringToBitMap(String encodedString){
+        Log.d(TAG, "StringToBitMap: ");
+        try{
+            byte [] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }
+        catch(Exception e){
+            Log.d(TAG, "StringToBitMap: exception"+e.getMessage());
+            return null;
+        }
+    }
 
 }

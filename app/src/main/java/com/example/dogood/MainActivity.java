@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String PENDING_USER_DETAILS = "usersArray";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
+    private static final int UPDATE_PROFILE_RESULT_CODE = 1013;
+
     private static final int SEARCH_IN_GIVE_ITEMS = 11;
     private static final int SEARCH_IN_ASK_ITEMS = 12;
 
@@ -245,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
     private void setProfileFragment() {
         Log.d(TAG, "onNavigationItemSelected: profile ");
 
-        fragment_profile = new Fragment_profile(giveItems, askItems, myUser);
+        fragment_profile = new Fragment_profile(myUser);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_profilePageFragment, fragment_profile);
         transaction.commit();
@@ -670,6 +672,26 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onActivityResult: User canceled new item input");
                 }
                 //TODO: Add switch for profile page
+            case UPDATE_PROFILE_RESULT_CODE:
+                Log.d(TAG, "onActivityResult: UPDATE_PROFILE_RESULT_CODE");
+                if (data != null){
+                    String name = (String) data.getExtras().get("name");
+                    String phone = (String) data.getExtras().get("phone");
+                    String city = (String) data.getExtras().get("city");
+                    String photo = (String) data.getExtras().get("photo");
+
+                    myUser.setName(name);
+                    myUser.setPhone(phone);
+                    myUser.setCity(city);
+                    if(photo != null){
+                        myUser.setPhoto(photo);
+                    }
+                    //end
+                    updateUserInFirestore();
+                    setProfileFragment();
+                }else{
+                    Log.d(TAG, "onActivityResult: User canceled update profile");
+                }
         }
     }
 
