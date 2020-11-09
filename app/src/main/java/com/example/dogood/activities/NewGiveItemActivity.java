@@ -5,11 +5,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +22,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -25,7 +31,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.dogood.Dialogs.NewAccountDialog;
+import com.example.dogood.Dialogs.PhotoModeDialog;
 import com.example.dogood.R;
+import com.example.dogood.interfaces.PhotoModeListener;
 import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.User;
 import com.google.android.material.button.MaterialButton;
@@ -39,14 +48,18 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
-public class NewGiveItemActivity extends AppCompatActivity {
+public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeListener {
     private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
     public static final String CURRENT_USER = "currentUser";
     private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
+    private static final int STORAGE_PERMISSION_SETTINGS_REQUSETCODE = 133;
     private static final int CAMERA_PICTURE_REQUEST = 124;
+    private static final int STORAGE_PICTURE_REQUEST = 125;
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
 
 
@@ -76,6 +89,22 @@ public class NewGiveItemActivity extends AppCompatActivity {
     }
 
     /**
+     * A method to open photo choices dialog
+     */
+    private void openPhotoDialog() {
+        Log.d(TAG, "openPhotoDialog: ");
+        //TODO: fix quality
+        PhotoModeDialog photoModeDialog = new PhotoModeDialog(this);
+        photoModeDialog.show();
+        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.8);
+        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
+        photoModeDialog.getWindow().setLayout(width, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        photoModeDialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        photoModeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        photoModeDialog.getWindow().setDimAmount(0.9f);
+    }
+
+    /**
      * A method to init the views
      */
     private void initViews() {
@@ -84,13 +113,7 @@ public class NewGiveItemActivity extends AppCompatActivity {
         itemPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(NewGiveItemActivity.this, Manifest.permission.CAMERA
-                ) == PackageManager.PERMISSION_GRANTED) {
-                    Log.d(TAG, "onClick: User already given permission, moving straight to camera");
-                    openCamera();
-                } else {
-                    checkingForCameraPermissions();
-                }
+                openPhotoDialog();
             }
         });
         itemName = findViewById(R.id.addgiveitem_EDT_itemName);
@@ -136,10 +159,20 @@ public class NewGiveItemActivity extends AppCompatActivity {
     }
 
     /**
+     * A method to open the storage to fetch a photo
+     */
+    private void openStorage() {
+        Log.d(TAG, "openStorage: opening storage");
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(pickPhoto, STORAGE_PICTURE_REQUEST);
+    }
+
+    /**
      * A method to check for camera permissions
      */
     private void checkingForCameraPermissions() {
-        Log.d(TAG, "addPhotoToPage: checking for users permissions");
+        Log.d(TAG, "checkingForCameraPermissions: checking for users permissions");
 
         Dexter.withContext(this)
                 .withPermission(Manifest.permission.CAMERA)
@@ -167,6 +200,52 @@ public class NewGiveItemActivity extends AppCompatActivity {
                                             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                                             intent.setData(Uri.fromParts("package", getPackageName(), null));
                                             startActivityForResult(intent, CAMERA_PERMISSION_SETTINGS_REQUSETCODE);
+                                        }
+                                    }).show();
+                        } else {
+                            Log.d(TAG, "onPermissionDenied: User denied permission!");
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+    }
+
+    /**
+     * A method to check for storage access permissions
+     */
+    private void checkingForStoragePermissions() {
+        Log.d(TAG, "checkingForStoragePermissions: checking for users permissions");
+
+        Dexter.withContext(this)
+                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        Log.d(TAG, "onPermissionGranted: User given permission");
+                        openCamera();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            Log.d(TAG, "onPermissionDenied: User denied permission permanently!");
+                            AlertDialog.Builder builder = new AlertDialog.Builder(NewGiveItemActivity.this);
+                            builder.setTitle("Permission Denied")
+                                    .setMessage("Storage permission is required to add a photo of your item.\n" +
+                                            "Please allow storage permissions in app settings.")
+                                    .setNegativeButton("Cancel", null)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Log.d(TAG, "onClick: Opening settings activity");
+                                            Intent intent = new Intent();
+                                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                            intent.setData(Uri.fromParts("package", getPackageName(), null));
+                                            startActivityForResult(intent, STORAGE_PERMISSION_SETTINGS_REQUSETCODE);
                                         }
                                     }).show();
                         } else {
@@ -335,9 +414,11 @@ public class NewGiveItemActivity extends AppCompatActivity {
         Log.d(TAG, "onActivityResult: Im im activity result");
         switch (requestCode) {
             case CAMERA_PERMISSION_SETTINGS_REQUSETCODE:
-                Log.d(TAG, "onActivityResult: I came from app settings");
+                Log.d(TAG, "onActivityResult: I came from app settings: camera");
                 break;
-
+            case STORAGE_PERMISSION_SETTINGS_REQUSETCODE:
+                Log.d(TAG, "onActivityResult: I came from app settings: storage");
+                break;
             case CAMERA_PICTURE_REQUEST:
                 Log.d(TAG, "onActivityResult: I came from camera");
                 if (data != null) {
@@ -347,6 +428,42 @@ public class NewGiveItemActivity extends AppCompatActivity {
                     itemPhoto.setImageBitmap(userCustomImage);
                 }
                 break;
+            case STORAGE_PICTURE_REQUEST:
+                Log.d(TAG, "onActivityResult: I came from storage");
+                if (data != null) {
+                    Uri selectedImage = data.getData();
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        itemPhoto.setStrokeWidth(30);
+                        itemPhoto.setStrokeColor(getColorStateList(R.color.colorPrimary));
+                        itemPhoto.setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        Log.i("TAG", "Some exception " + e);
+                    }
+                }
+        }
+    }
+
+    @Override
+    public void photoMode(Boolean fromCamera) {
+        if (fromCamera) {
+            Log.d(TAG, "photoMode: Taking picture from camera");
+            if (ContextCompat.checkSelfPermission(NewGiveItemActivity.this, Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "onClick: User already given permission, moving straight to camera");
+                openCamera();
+            } else {
+                checkingForCameraPermissions();
+            }
+        } else {
+            Log.d(TAG, "photoMode: Fetching picture from storage");
+            if (ContextCompat.checkSelfPermission(NewGiveItemActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "onClick: User already given permission, moving straight to storage");
+                openStorage();
+            } else {
+                checkingForStoragePermissions();
+            }
         }
     }
 }
