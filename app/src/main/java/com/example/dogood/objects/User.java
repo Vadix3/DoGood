@@ -58,6 +58,18 @@ public class User {
         this.askItems = askItems;
     }
 
+    public User(String name, String email, String password, String city, String phone,String photo) {
+        //TODO: city? latlng? what else?
+
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.city = city;
+        this.phone = phone;
+        this.photo = photo;
+    }
+
+
     public String getName() {
         return name;
     }

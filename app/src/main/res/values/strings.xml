@@ -89,8 +89,7 @@
 
     <string name="facebook_app_id" translatable="false">3225663444226147</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb3225663444226147</string>
-
-
+    <string name="update_account">Update account</string>
 
 
 </resources>

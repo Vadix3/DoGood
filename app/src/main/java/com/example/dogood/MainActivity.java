@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
                         if (mainFragment != null) {
                             main_TLB_head.setTitle("Do Good");
                             showFragment(mainFragment);
+                            Log.d(TAG, "onNavigationItemSelected:  "+ myUser.toString());
                         }
                         break;
                     case R.id.bottom_menu_give:
