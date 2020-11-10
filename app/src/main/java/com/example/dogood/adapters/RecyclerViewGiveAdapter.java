@@ -3,6 +3,7 @@ package com.example.dogood.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,14 +15,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.dogood.R;
 import com.example.dogood.objects.GiveItem;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
 public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGiveAdapter.ViewHolder> {
     private static final String TAG = "Dogood";
+    FirebaseStorage storage = FirebaseStorage.getInstance();
     private Context context;
     private ArrayList<GiveItem> items;
 
@@ -52,8 +59,39 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
         }
         holder.itemDescription.setText(temp.getDescription());
         holder.postDate.setText(temp.getDate());
-        Bitmap photo = stringToBitMap(temp.getPictures());
-        holder.itemPhoto.setImageBitmap(photo);
+        ImageView itemImage = holder.itemPhoto;
+        getPhotoFromStorage(itemImage, position);
+        holder.rowCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: Clicking item: " + (position + 1));
+            }
+        });
+    }
+
+    /**
+     * A method to get the item photo from the storage
+     */
+    private void getPhotoFromStorage(final ImageView itemPhoto, int position) {
+        Log.d(TAG, "getPhotoFromStorage: Fetching photo from storage");
+        String itemID = items.get(position).getId();
+
+        String path = "gs://" + context.getString(R.string.google_storage_bucket) + "/" + itemID + ".jpg";
+        Log.d(TAG, "getPhotoFromStorage: Fetching: " + path);
+        StorageReference gsReference = storage.getReferenceFromUrl(path);
+
+        gsReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.d(TAG, "onSuccess: " + uri);
+                Glide.with(context).load(uri).placeholder(R.mipmap.ic_launcher).into(itemPhoto);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d(TAG, "onFailure: Exception: " + exception.getMessage());
+            }
+        });
 
     }
 

@@ -34,6 +34,9 @@ public class NewAskItemActivity extends AppCompatActivity {
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
 
+    private static final String ITEM_COUNT = "itemCount";
+
+
 
     private EditText itemName;
     private EditText itemDescription;
@@ -41,10 +44,14 @@ public class NewAskItemActivity extends AppCompatActivity {
     private CheckBox isDiscrete;
     private MaterialButton submitBtn;
 
+    private int itemCount=0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_ask_item);
+        itemCount=getIntent().getIntExtra(ITEM_COUNT,0);
+        //TODO: Need user here?
 
         initViews();
         initCategorySpinner();

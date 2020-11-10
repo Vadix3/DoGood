@@ -54,6 +54,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:19.5.0'
     implementation 'com.google.firebase:firebase-auth:20.0.0'
     implementation 'com.google.firebase:firebase-firestore:22.0.0'
+    implementation 'com.google.firebase:firebase-storage:19.2.0'
+    implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
+
+
 
 
     testImplementation 'junit:junit:4.13.1'

@@ -26,6 +26,8 @@ import java.util.ArrayList;
 public class GiveItemFragment extends Fragment {
     private static final String TAG = "Dogood";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
+    private static final String ITEM_COUNT = "itemCount";
+
     public static final String CURRENT_USER = "currentUser";
 
 
@@ -93,6 +95,7 @@ public class GiveItemFragment extends Fragment {
         Gson gson = new Gson();
         String userJson = gson.toJson(myUser);
         intent.putExtra(CURRENT_USER, userJson);
+        intent.putExtra(ITEM_COUNT,giveItems.size());
         startActivityForResult(intent, NEW_GIVE_ITEM_RESULT_CODE);
     }
 

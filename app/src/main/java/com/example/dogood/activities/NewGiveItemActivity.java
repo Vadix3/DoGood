@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,8 +38,16 @@ import com.example.dogood.R;
 import com.example.dogood.interfaces.PhotoModeListener;
 import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -62,6 +71,10 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
     private static final int STORAGE_PICTURE_REQUEST = 125;
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
 
+    private static final String ITEM_COUNT = "itemCount";
+
+
+    FirebaseStorage storage = FirebaseStorage.getInstance();
 
     private ShapeableImageView itemPhoto;
     private EditText itemName;
@@ -76,12 +89,17 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
 
     private User currentUser;
 
+    private int itemCount = 0;
+
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_give_item);
 
         String userJson = getIntent().getStringExtra(CURRENT_USER);
+        itemCount = getIntent().getIntExtra(ITEM_COUNT, 0);
         Gson gson = new Gson();
         currentUser = gson.fromJson(userJson, User.class);
 
@@ -297,13 +315,91 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
 
         Log.d(TAG, "checkForValidInput: Passed all checks!");
 
-        String photosJson = bitMapToString(userCustomImage);
+//        checkForFirebaseAuthLogin(); TODO: Fix google and fb here
+        uploadBitmapToStorage();
+    }
+
+    /**
+     * A method to check if there is a firebase login instance.
+     * Since user may login using facebook or google there is no firebaseAuth instance
+     * to upload images to firebase storage.
+     */
+    private void checkForFirebaseAuthLogin() {
+        Log.d(TAG, "checkForFirebaseAuthLogin: ");
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            Log.d(TAG, "checkForFirebaseAuthLogin: user is not null!");
+            uploadBitmapToStorage();
+        } else {
+            signInAnonymously();
+        }
+    }
+
+    /**
+     * A method to sign in anonymously in case he hasn't logged in with firebase auth
+     */
+    private void signInAnonymously() {
+        Log.d(TAG, "signInAnonymously: ");
+        mAuth.signInAnonymously().addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                Log.d(TAG, "onSuccess: Signed in anonymously!");
+                try {
+                    uploadBitmapToStorage();
+                } catch (Exception e) {
+                    Log.d(TAG, "onSuccess: Failed to upload image to after anon: " + e.getMessage());
+                }
+            }
+        }).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d(TAG, "signInAnonymously:FAILURE" + exception.getMessage());
+            }
+        });
+    }
+
+    /**
+     * A method to upload picture to Firebase Storage
+     */
+    private void uploadBitmapToStorage() {
+        Log.d(TAG, "uploadBitmapToStorage: Uploading bitmap to storage: ");
+        final String itemID = "G" + itemCount;
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://" + getString(R.string.google_storage_bucket));
+
+        // Create a reference to "mountains.jpg"
+        StorageReference tempRef = storageRef.child(itemID + ".jpg");
+
+        // Create a reference to 'images/mountains.jpg'
+        StorageReference tempImagesRef = storageRef.child("images/" + itemID + ".jpg");
+
+        // While the file names are the same, the references point to different files
+        tempRef.getName().equals(tempImagesRef.getName());    // true
+        tempRef.getPath().equals(tempImagesRef.getPath());    // false
 
 
-        GiveItem temp = new GiveItem("12", itemName.getText().toString(), category.getSelectedItem().toString()
-                , condition.getSelectedItem().toString(), itemPrice.getText().toString(), itemDescription.getText().toString()
-                , photosJson, "test-date-27/10", currentUser);
-        returnGivenItem(temp);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        userCustomImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = tempRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d(TAG, "onFailure: Upload failed: " + exception.getMessage());
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d(TAG, "onSuccess: Image upload successful!");
+                // TODO: Fix google and facebook photo issues
+                GiveItem temp = new GiveItem(itemID, itemName.getText().toString(), category.getSelectedItem().toString()
+                        , condition.getSelectedItem().toString(), itemPrice.getText().toString(), itemDescription.getText().toString()
+                        , "Test", "test-date-27/10", currentUser);
+                returnGivenItem(temp);
+            }
+        });
     }
 
     /**

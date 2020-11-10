@@ -89,8 +89,6 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
     //Facebook
     private CallbackManager callbackManager;
 
-    private boolean testing = false;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,11 +185,20 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
             int check = getIntent().getIntExtra("LOGGED_OUT", 0);
             if (check != 1) {
                 Log.d(TAG, "onStart: Did not came from main, logging in");
-//                Intent intent = new Intent(Activity_login.this, MainActivity.class);
-//                startActivity(intent);
-//                finish();
+
+
+                //Remove from here until to do
+                String name = ""+currentUser.getDisplayName();
+                String email = ""+currentUser.getEmail();
+                User temp = new User(name,email);
+                Gson gson = new Gson();
+                String userJson = gson.toJson(temp);
+                Intent loginIntent = new Intent(Activity_login.this,MainActivity.class);
+                loginIntent.putExtra(LOGIN_USER_EXTRA,userJson);
+                startActivity(loginIntent);
+                finish();
                 //TODO: RETURN AUTO LOGIN
-                mAuth.signOut();
+//                mAuth.signOut();
             } else {
                 Log.d(TAG, "onStart: Came from main, not logging in");
                 mAuth.signOut();

@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.text.TextUtils;
@@ -43,6 +44,8 @@ import com.google.gson.reflect.TypeToken;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
@@ -57,9 +60,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String USERS_COLLECTION = "users/";
     private static final String LOGIN_USER_EXTRA = "loginUser";
     private static final String PENDING_USER_DETAILS = "usersArray";
+    private static final String ITEM_COUNT = "itemCount";
+
+
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
     private static final int UPDATE_PROFILE_RESULT_CODE = 1013;
+
 
     private static final int SEARCH_IN_GIVE_ITEMS = 11;
     private static final int SEARCH_IN_ASK_ITEMS = 12;
@@ -117,8 +124,6 @@ public class MainActivity extends AppCompatActivity {
         String userJson = getIntent().getStringExtra(LOGIN_USER_EXTRA);
         myUser = gson.fromJson(userJson, User.class);
         Log.d(TAG, "initUser: Got user from login: " + myUser.toString());
-
-        //TODO: Check if user exists in firebase and load data if not just save
 
         String containerPath = USERS_COLLECTION + myUser.getEmail();
 
@@ -668,6 +673,7 @@ public class MainActivity extends AppCompatActivity {
                     Type itemType = new TypeToken<GiveItem>() {
                     }.getType();
                     GiveItem temp = gson.fromJson(gotNewItem, itemType);
+                    temp.setDate(getCurrentDate());
                     temp.setId("G" + giveItems.size());
                     Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
                     giveItems.add(temp);
@@ -688,6 +694,7 @@ public class MainActivity extends AppCompatActivity {
                     Type itemType = new TypeToken<AskItem>() {
                     }.getType();
                     AskItem temp = gson.fromJson(gotNewItem, itemType);
+                    temp.setDate(getCurrentDate());
                     temp.setId("G" + askItems.size());
                     Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
                     askItems.add(temp);
@@ -719,6 +726,17 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onActivityResult: User canceled update profile");
                 }
         }
+    }
+
+    /** A method to get the current time in a string format*/
+    private String getCurrentDate() {
+        String returnDate = "";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDateTime now = LocalDateTime.now();
+            returnDate = dtf.format(now);
+        }
+        return returnDate;
     }
 
     /**

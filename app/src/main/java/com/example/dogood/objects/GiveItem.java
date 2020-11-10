@@ -12,8 +12,8 @@ public class GiveItem implements Serializable {
     String state;
     String price;
     String description;
-    String pictures; // A JSON string representation of the images
-    String date; //TODO: solve date issue
+    String pictures; // TODO: Save array of pictures
+    String date;
     User giver;
 
     public GiveItem() {

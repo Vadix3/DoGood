@@ -49,6 +49,12 @@ public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAsk
         holder.itemDescription.setText(temp.getDescription());
         holder.postDate.setText(temp.getDate());
         holder.itemPhoto.setImageResource(R.color.colorPrimary);
+        holder.rowCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: Clicking item: " + (position + 1));
+            }
+        });
     }
 
     @Override
