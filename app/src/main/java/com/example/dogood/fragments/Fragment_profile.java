@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.dogood.MainActivity;
 import com.example.dogood.activities.Activity_updateAccount;
 import com.example.dogood.R;
 import com.example.dogood.objects.AskItem;
@@ -28,7 +29,7 @@ import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 
 
-public class Fragment_profile extends Fragment {
+public class Fragment_profile extends Fragment implements MainActivity.IOnBackPressed {
     private static final String TAG = "Fragment_profile";
 
     protected View view;
@@ -42,6 +43,9 @@ public class Fragment_profile extends Fragment {
     private TextView profile_LBL_mail;
     private FrameLayout profile_LAY_post;
     private MaterialButton profile_BTN_update;
+    private FrameLayout profile_LAY_profile;
+
+    private Fragment_ask_give_profile fragment_ask_give_profile;
 
     private User mUser;
 
@@ -102,11 +106,13 @@ public class Fragment_profile extends Fragment {
         profile_LAY_post = view.findViewById(R.id.profile_LAY_post);
         profile_BTN_update = view.findViewById(R.id.profile_BTN_update);
 
+        profile_LAY_profile = view.findViewById(R.id.profile_LAY_profile);
+
     }
 
     private void addGiveItemsFragment(ArrayList<GiveItem> mgiveItems, ArrayList<AskItem> mrequestItems) {
         Log.d(TAG, "initItemsFragment: Initing main list with: " + mgiveItems.toString());
-        Fragment_ask_give_profile fragment_ask_give_profile = new Fragment_ask_give_profile(mUser);
+        fragment_ask_give_profile = new Fragment_ask_give_profile(mUser);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.profile_LAY_post, fragment_ask_give_profile);
         transaction.commit();
@@ -130,4 +136,10 @@ public class Fragment_profile extends Fragment {
         }
     }
 
+
+    @Override
+    public boolean onBackPressed() {
+        Log.d(TAG, "onBackPressed: from profile");
+        return fragment_ask_give_profile.onBackPressed();
+    }
 }

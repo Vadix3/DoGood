@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
@@ -21,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.dogood.fragments.AskItemFragment;
+import com.example.dogood.fragments.Fragment_ask_give_profile;
 import com.example.dogood.fragments.Fragment_profile;
 import com.example.dogood.fragments.GiveItemFragment;
 import com.example.dogood.fragments.HomeTabFragment;
@@ -75,10 +77,12 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout askFragment;
     private FrameLayout profileFragment;
 
+
     private HomeTabFragment homeTabFragment;
     private GiveItemFragment giveItemFragment;
     private AskItemFragment askItemFragment;
     private Fragment_profile fragment_profile;
+
 
     private MaterialProgressBar loadingBar;
     private BottomNavigationView bottomNavigationView;
@@ -269,7 +273,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setProfileFragment() {
         Log.d(TAG, "onNavigationItemSelected: profile ");
-
         fragment_profile = new Fragment_profile(myUser);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_profilePageFragment, fragment_profile);
@@ -742,8 +745,22 @@ public class MainActivity extends AppCompatActivity {
         } else if (showingResults) {
             showAllItems();
         } else {
-            super.onBackPressed();
+            Fragment fragment = getSupportFragmentManager().findFragmentById(fragment_profile.getId());
+            if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
+                super.onBackPressed();
+            }
         }
+
+
+
+    }
+
+    public interface IOnBackPressed {
+        /**
+         * If you return true the back press will not be taken into account, otherwise the activity will act naturally
+         * @return true if your processing has priority if not false
+         */
+        boolean onBackPressed();
     }
 
 }

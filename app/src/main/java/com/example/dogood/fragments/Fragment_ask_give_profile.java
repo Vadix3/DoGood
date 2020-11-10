@@ -12,20 +12,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dogood.MainActivity;
 import com.example.dogood.R;
 import com.example.dogood.activities.NewAskItemActivity;
 import com.example.dogood.activities.NewGiveItemActivity;
 import com.example.dogood.adapters.RecyclerViewAskAdapter;
 import com.example.dogood.adapters.RecyclerViewGiveAdapter;
-import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.User;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 
-public class Fragment_ask_give_profile extends Fragment {
+public class Fragment_ask_give_profile extends Fragment implements MainActivity.IOnBackPressed {
 
     private static final String TAG = "Fragment_ask_give_profile";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
@@ -61,6 +60,7 @@ public class Fragment_ask_give_profile extends Fragment {
         }
         initViews();
         populateItemsListGive();
+
         giveAskFragment_BTM_menu_item1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,7 +112,6 @@ public class Fragment_ask_give_profile extends Fragment {
             recyclerView = view.findViewById(R.id.giveAskFragment_LST_mainRecycler);
             RecyclerViewAskAdapter recyclerViewAskAdapter = new RecyclerViewAskAdapter(getContext(), myUser.getAskItems());
             recyclerView.setAdapter(recyclerViewAskAdapter);
-
         }
     }
 
@@ -125,5 +124,16 @@ public class Fragment_ask_give_profile extends Fragment {
         } else {
             Log.d(TAG, "populateItemsList: Empty giveItem array");
         }
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if (giveAskFragment_BTM_menu.isOpened()){
+            giveAskFragment_BTM_menu.close(true);
+            return true;
+        }else{
+            return false;
+        }
+
     }
 }

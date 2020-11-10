@@ -54,6 +54,7 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
         holder.postDate.setText(temp.getDate());
         Bitmap photo = stringToBitMap(temp.getPictures());
         holder.itemPhoto.setImageBitmap(photo);
+
     }
 
     /**
