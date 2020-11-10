@@ -10,7 +10,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
+    <!--TODO: Arrribute Good Ware,Flaticon,DinosoftLabs-->
     <FrameLayout
         android:id="@+id/main_LAY_mainPageFragment"
         android:layout_width="match_parent"
@@ -59,8 +59,8 @@
         style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:progressTint="@color/teal_200"
         android:indeterminate="true"
+        android:progressTint="@color/teal_200"
         app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String GIVE_ITEMS_ARRAY = "giveItems";
     private static final String ITEMS_DATA_CONTAINER = "dataContainer";
     private static final String USERS_ARRAY = "usersArray";
-    private static final String USERS_COLLECTION = "users";
+    private static final String USERS_COLLECTION = "users/";
     private static final String LOGIN_USER_EXTRA = "loginUser";
     private static final String PENDING_USER_DETAILS = "usersArray";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
@@ -114,28 +114,51 @@ public class MainActivity extends AppCompatActivity {
         myUser = gson.fromJson(userJson, User.class);
         Log.d(TAG, "initUser: Got user from login: " + myUser.toString());
 
+        //TODO: Check if user exists in firebase and load data if not just save
 
-        // Save user to firebase
-        db.collection(USERS_COLLECTION).document(myUser.getEmail())
-                .set(myUser)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
+        String containerPath = USERS_COLLECTION + myUser.getEmail();
 
-                        fetchItemsFromFirestore(); // Get data from firestore and initialize the fragments
-                        initListChangeListener(); // Init listener for item change detection
-                        searchAction();
+        DocumentReference containerDocRef = db.document(containerPath);
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
+        containerDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    Log.d(TAG, "onSuccess: user exists! ");
+                    myUser = documentSnapshot.toObject(User.class);
+                    Log.d(TAG, "onSuccess: Got user details from firebase: " + myUser.toString());
 
+                } else {
+                    Log.d(TAG, "onSuccess: user does not exist! saving new user");
+                    // Save user to firebase
+                    db.collection(USERS_COLLECTION).document(myUser.getEmail())
+                            .set(myUser)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error writing document", e);
+                                }
+                            });
+                }
+                fetchItemsFromFirestore(); // Get data from firestore and initialize the fragments
+                initListChangeListener(); // Init listener for item change detection
+                searchAction();
+                initPageFragments();
+                initBottomNavigationMenu(); // initialize bottom navigation menu
+                //TODO: Problem when I'm pressing tabs before data loads, maybe stall bottom menu somehow?
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: Exception: " + e.getMessage());
+            }
+        });
     }
 
     /**
@@ -190,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                         if (mainFragment != null) {
                             main_TLB_head.setTitle("Do Good");
                             showFragment(mainFragment);
-                            Log.d(TAG, "onNavigationItemSelected:  "+ myUser.toString());
+                            Log.d(TAG, "onNavigationItemSelected:  " + myUser.toString());
                         }
                         break;
                     case R.id.bottom_menu_give:
@@ -375,8 +398,8 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateUserInFirestore(){
-        Log.d(TAG, "updateUserInFirestore: saving user: "+myUser.toString());
+    private void updateUserInFirestore() {
+        Log.d(TAG, "updateUserInFirestore: saving user: " + myUser.toString());
         // Save arrays
         db.collection(USERS_COLLECTION).document(myUser.getEmail())
                 .set(myUser)
@@ -674,7 +697,7 @@ public class MainActivity extends AppCompatActivity {
                 //TODO: Add switch for profile page
             case UPDATE_PROFILE_RESULT_CODE:
                 Log.d(TAG, "onActivityResult: UPDATE_PROFILE_RESULT_CODE");
-                if (data != null){
+                if (data != null) {
                     String name = (String) data.getExtras().get("name");
                     String phone = (String) data.getExtras().get("phone");
                     String city = (String) data.getExtras().get("city");
@@ -683,13 +706,13 @@ public class MainActivity extends AppCompatActivity {
                     myUser.setName(name);
                     myUser.setPhone(phone);
                     myUser.setCity(city);
-                    if(photo != null){
+                    if (photo != null) {
                         myUser.setPhoto(photo);
                     }
                     //end
                     updateUserInFirestore();
                     setProfileFragment();
-                }else{
+                } else {
                     Log.d(TAG, "onActivityResult: User canceled update profile");
                 }
         }
