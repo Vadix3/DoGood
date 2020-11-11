@@ -91,15 +91,30 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
 
     private void updateUser() {
         Log.d(TAG, "updateUser: ");
+        if(mUser.getName() == null || mUser.getName().equals("")){
+            profile_LBL_name.setText(R.string.please_update);
+        }else {
+            profile_LBL_name.setText(mUser.getName());
+        }
 
-        profile_LBL_name.setText(mUser.getName());
-        profile_LBL_mail.setText(mUser.getEmail());
-        profile_LBL_city.setText(mUser.getCity());
-        profile_LBL_phone.setText(mUser.getPhone());
+        if(mUser.getCity() == null || mUser.getCity().equals("")){
+            profile_LBL_city.setText(R.string.please_update);
+        }else {
+            profile_LBL_city.setText(mUser.getCity());
+        }
+
+        if(mUser.getPhone() == null || mUser.getPhone().equals("")){
+            profile_LBL_phone.setText(R.string.please_update);
+        }else {
+            profile_LBL_phone.setText(mUser.getPhone());
+        }
+
         if (mUser.getPhoto() != null) {
             Bitmap bp = stringToBitMap(mUser.getPhoto());
             profile_IMG_picture.setImageBitmap(bp);
         }
+
+        profile_LBL_mail.setText(mUser.getEmail());
 
     }
 

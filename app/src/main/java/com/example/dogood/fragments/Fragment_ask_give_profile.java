@@ -71,6 +71,7 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
         giveAskFragment_BTM_menu_item1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                giveAskFragment_BTM_menu_item1.setLabelText(getResources().getString(R.string.object_to_give));
                 populateItemsListGive();
                 giveAskFragment_BTM_menu_item1.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -81,9 +82,12 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
             }
         });
 
+
+
         giveAskFragment_BTM_menu_item2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                giveAskFragment_BTM_menu_item2.setLabelText(getResources().getString(R.string.object_to_ask));
                 populateItemsListAsk();
                 giveAskFragment_BTM_menu_item2.setOnClickListener(new View.OnClickListener() {
                     @Override

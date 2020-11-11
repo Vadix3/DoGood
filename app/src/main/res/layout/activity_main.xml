@@ -109,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            app:title="DoGood"
+            app:title="@string/app_name"
             app:titleTextColor="@color/white" />
 
         <com.miguelcatalan.materialsearchview.MaterialSearchView

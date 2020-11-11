@@ -17,41 +17,40 @@
         app:layout_constraintVertical_bias="0.0" />
 
 
-
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/giveAskFragment_BTM_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:menu_icon="@drawable/ic_add_24px"
-        app:menu_colorNormal="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintHorizontal_bias="@string/size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.975"
-        app:menu_showShadow="true"
+        app:layout_constraintVertical_bias="0.948"
+        app:menu_backgroundColor="@android:color/transparent"
+        app:menu_colorNormal="@color/colorPrimary"
         app:menu_fab_label=""
+        app:menu_icon="@drawable/ic_add_24px"
         app:menu_openDirection="up"
-        app:menu_backgroundColor="@android:color/transparent">
+        app:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/giveAskFragment_BTM_menu_item1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_label="@string/object_to_give"
-            app:fab_size="mini"
+            android:src="@drawable/ic_gift"
             app:fab_colorNormal="@color/colorPrimary"
-            android:src="@drawable/ic_gift"/>
+            app:fab_label="@string/show_give_item"
+            app:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/giveAskFragment_BTM_menu_item2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_label="@string/object_to_ask"
-            app:fab_size="mini"
+            android:src="@drawable/ic_post"
             app:fab_colorNormal="@color/colorPrimary"
-            android:src="@drawable/ic_post"/>
+            app:fab_label="@string/show_ask_item"
+            app:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

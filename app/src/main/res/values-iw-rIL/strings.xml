@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">DoGood</string>
-    <string name="Dogood">Do Good</string>
+    <string name="app_name">תעשה טוב</string>
+    <string name="Dogood">תעשה טוב</string>
     <string name="home">בית</string>
     <string name="object_to_give">תן חפץ</string>
     <string name="object_to_ask">בקש חפץ</string>
@@ -62,7 +62,12 @@
     <string name="enter_phone_error">הכנס טלפון</string>
     <string name="six_chars_password_error">בבקשה הכנס יותר מ6 תווים</string>
     <string name="null_password">הכנס סיסמה</string>
-    <string name="confirm_password">הכנס סיסמה</string>
+    <string name="confirm_password">הכנס שוב סיסמה</string>
     <string name="password_no_match">סיסמאות לא תואמות !</string>
     <string name="update_account">"לעדכן חשבון "</string>
+    <string name="please_update">עדכן בבקשה</string>
+    <string name="size">0.134</string>
+    <string name="update_profile">עדכן פרופיל</string>
+    <string name="show_ask_item">"הצג חפצים לתת "</string>
+    <string name="show_give_item">הצג חפצים לבקשה</string>
 </resources>
