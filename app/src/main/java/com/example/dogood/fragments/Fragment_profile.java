@@ -35,6 +35,8 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
     protected View view;
 
     private static final int UPDATE_PROFILE_RESULT_CODE = 1013;
+    private static final String ITEM_COUNT = "itemCount";
+
 
     private ImageView profile_IMG_picture;
     private TextView profile_LBL_name;
@@ -48,13 +50,17 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
     private Fragment_ask_give_profile fragment_ask_give_profile;
 
     private User mUser;
+    private ArrayList<GiveItem> giveItems;
+    private ArrayList<AskItem> askItems;
 
-    public Fragment_profile(){}
-
-    public Fragment_profile(User user) {
-        this.mUser = user;
+    public Fragment_profile() {
     }
 
+    public Fragment_profile(User user, ArrayList<GiveItem> giveItems, ArrayList<AskItem> askItems) {
+        this.mUser = user;
+        this.giveItems = giveItems;
+        this.askItems = askItems;
+    }
 
 
     @Override
@@ -71,7 +77,7 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
 
         findViews();
         updateUser();
-        addGiveItemsFragment(mUser.getGiveItems(),mUser.getAskItems());
+        addGiveItemsFragment(mUser.getGiveItems(), mUser.getAskItems());
 
         profile_BTN_update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +96,7 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
         profile_LBL_mail.setText(mUser.getEmail());
         profile_LBL_city.setText(mUser.getCity());
         profile_LBL_phone.setText(mUser.getPhone());
-        if (mUser.getPhoto() != null){
+        if (mUser.getPhoto() != null) {
             Bitmap bp = stringToBitMap(mUser.getPhoto());
             profile_IMG_picture.setImageBitmap(bp);
         }
@@ -112,26 +118,25 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
 
     private void addGiveItemsFragment(ArrayList<GiveItem> mgiveItems, ArrayList<AskItem> mrequestItems) {
         Log.d(TAG, "initItemsFragment: Initing main list with: " + mgiveItems.toString());
-        fragment_ask_give_profile = new Fragment_ask_give_profile(mUser);
+        fragment_ask_give_profile = new Fragment_ask_give_profile(mUser,giveItems,askItems);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.profile_LAY_post, fragment_ask_give_profile);
         transaction.commit();
     }
 
     private void openDialog(View view) {
-       Intent intent = new Intent(getActivity(), Activity_updateAccount.class);
-       startActivityForResult(intent, UPDATE_PROFILE_RESULT_CODE);
+        Intent intent = new Intent(getActivity(), Activity_updateAccount.class);
+        startActivityForResult(intent, UPDATE_PROFILE_RESULT_CODE);
     }
 
-    public Bitmap stringToBitMap(String encodedString){
+    public Bitmap stringToBitMap(String encodedString) {
         Log.d(TAG, "StringToBitMap: ");
-        try{
-            byte [] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
-        }
-        catch(Exception e){
-            Log.d(TAG, "StringToBitMap: exception"+e.getMessage());
+        } catch (Exception e) {
+            Log.d(TAG, "StringToBitMap: exception" + e.getMessage());
             return null;
         }
     }

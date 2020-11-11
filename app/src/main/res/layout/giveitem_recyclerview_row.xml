@@ -9,7 +9,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/giveRow_giveitem_row"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="130dp"
         android:layout_alignParentTop="true"
         android:layout_margin="3dp"
         android:backgroundTint="#E0F2F1"
@@ -25,7 +25,7 @@
 
             <ImageView
                 android:id="@+id/giveRow_IMG_itemPicture"
-                android:layout_width="100dp"
+                android:layout_width="130dp"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
                 android:src="@mipmap/ic_launcher"

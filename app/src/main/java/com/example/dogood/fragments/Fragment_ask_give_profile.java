@@ -18,10 +18,14 @@ import com.example.dogood.activities.NewAskItemActivity;
 import com.example.dogood.activities.NewGiveItemActivity;
 import com.example.dogood.adapters.RecyclerViewAskAdapter;
 import com.example.dogood.adapters.RecyclerViewGiveAdapter;
+import com.example.dogood.objects.AskItem;
+import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.User;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 
 public class Fragment_ask_give_profile extends Fragment implements MainActivity.IOnBackPressed {
@@ -29,11 +33,14 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
     private static final String TAG = "Fragment_ask_give_profile";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
+    private static final String ITEM_COUNT = "itemCount";
     public static final String CURRENT_USER = "currentUser";
 
     protected View view;
     private RecyclerView recyclerView;
     private User myUser;
+    private ArrayList<GiveItem> giveItems;
+    private ArrayList<AskItem> askItems;
 
     private FloatingActionMenu giveAskFragment_BTM_menu;
     private FloatingActionButton giveAskFragment_BTM_menu_item1 ;
@@ -43,8 +50,10 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
 
     public Fragment_ask_give_profile() { }
 
-    public Fragment_ask_give_profile(User user) {
+    public Fragment_ask_give_profile(User user,ArrayList<GiveItem> giveItems, ArrayList<AskItem> askItems) {
         this.myUser = user;
+        this.giveItems = giveItems;
+        this.askItems = askItems;
     }
 
     @Override
@@ -86,6 +95,7 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
         Gson gson = new Gson();
         String userJson = gson.toJson(myUser);
         intent.putExtra(CURRENT_USER, userJson);
+        intent.putExtra(ITEM_COUNT,giveItems.size());
         startActivityForResult(intent, NEW_GIVE_ITEM_RESULT_CODE);
     }
 
@@ -95,6 +105,7 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
         Gson gson = new Gson();
         String userJson = gson.toJson(myUser);
         intent.putExtra(CURRENT_USER,userJson);
+        intent.putExtra(ITEM_COUNT,askItems.size());
         startActivityForResult(intent, NEW_ASK_ITEM_RESULT_CODE);
     }
 
