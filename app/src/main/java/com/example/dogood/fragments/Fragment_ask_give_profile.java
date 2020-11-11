@@ -46,6 +46,9 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
     private FloatingActionButton giveAskFragment_BTM_menu_item1 ;
     private FloatingActionButton giveAskFragment_BTM_menu_item2 ;
 
+    private int countAsk = 0;
+    private int countGive = 0;
+
     public Fragment_ask_give_profile() { }
 
     public Fragment_ask_give_profile(User user,ArrayList<GiveItem> giveItems, ArrayList<AskItem> askItems) {
@@ -68,38 +71,56 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
         initViews();
         populateItemsListGive();
 
-        giveAskFragment_BTM_menu_item1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                giveAskFragment_BTM_menu_item1.setLabelText(getResources().getString(R.string.object_to_give));
-                populateItemsListGive();
-                giveAskFragment_BTM_menu_item1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openGiveItemActivity();
-                    }
-                });
-            }
-        });
+        giveAskFragment_BTM_menu_item1.setOnClickListener(actionGive);
+        giveAskFragment_BTM_menu_item2.setOnClickListener(actionAsk);
 
-
-
-        giveAskFragment_BTM_menu_item2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                giveAskFragment_BTM_menu_item2.setLabelText(getResources().getString(R.string.object_to_ask));
-                populateItemsListAsk();
-                giveAskFragment_BTM_menu_item2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openAskItemActivity();
-                    }
-                });
-            }
-        });
-
+        giveAskFragment_BTM_menu.close(true);
         return view;
     }
+
+    View.OnClickListener actionGive = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            giveAskFragment_BTM_menu_item1.setLabelText(getResources().getString(R.string.object_to_give));
+            populateItemsListGive();
+            giveAskFragment_BTM_menu_item1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "onClick: ask item count = "+countGive);
+                    if(countGive%2 == 0){
+                        openGiveItemActivity();
+                        giveAskFragment_BTM_menu_item1.setLabelText(getResources().getString(R.string.show_give_item));
+                    }else {
+                        populateItemsListGive();
+                        giveAskFragment_BTM_menu_item1.setLabelText(getResources().getString(R.string.object_to_give));
+                    }
+                    countGive++;
+                }
+            });
+        }
+    };
+
+    View.OnClickListener actionAsk = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            giveAskFragment_BTM_menu_item2.setLabelText(getResources().getString(R.string.object_to_ask));
+            populateItemsListAsk();
+            giveAskFragment_BTM_menu_item2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "onClick: ask item count = "+countAsk);
+                    if(countAsk%2 == 0){
+                        openAskItemActivity();
+                        giveAskFragment_BTM_menu_item2.setLabelText(getResources().getString(R.string.show_ask_item));
+                    }else {
+                        populateItemsListAsk();
+                        giveAskFragment_BTM_menu_item2.setLabelText(getResources().getString(R.string.object_to_ask));
+                    }
+                    countAsk++;
+                }
+            });
+        }
+    };
 
     private void openGiveItemActivity() {
         Log.d(TAG, "openAddItemActivity: ");

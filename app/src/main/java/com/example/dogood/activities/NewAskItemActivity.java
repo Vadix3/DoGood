@@ -36,8 +36,6 @@ public class NewAskItemActivity extends AppCompatActivity {
 
     private static final String ITEM_COUNT = "itemCount";
 
-
-
     private EditText itemName;
     private EditText itemDescription;
     private Spinner itemCategory;

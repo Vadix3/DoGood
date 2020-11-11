@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bottom_menu_home:
                         searchItem.setVisible(false);
                         if (mainFragment != null) {
-                            main_TLB_head.setTitle("Do Good");
+                            main_TLB_head.setTitle(getResources().getString(R.string.home));
                             showFragment(mainFragment);
                             Log.d(TAG, "onNavigationItemSelected:  " + myUser.toString());
                         }
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                         searchItem.setVisible(true);
                         if (giveFragment != null) {
                             if (giveFragment.getVisibility() != View.VISIBLE) {
-                                main_TLB_head.setTitle("Given Items");
+                                main_TLB_head.setTitle(getResources().getString(R.string.object_to_give));
                                 main_TLB_head.setNavigationIcon(null);
                                 setGiveFragment(giveItems);
                                 showFragment(giveFragment);
@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
                         searchItem.setVisible(true);
                         if (askFragment != null) {
                             if (askFragment.getVisibility() != View.VISIBLE) {
-                                main_TLB_head.setTitle("Needed Items");
+                                main_TLB_head.setTitle(getResources().getString(R.string.object_to_ask));
                                 main_TLB_head.setNavigationIcon(null);
                                 setAskFragment(askItems);
                                 showFragment(askFragment);
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bottom_menu_profile:
                         searchItem.setVisible(false);
                         if (profileFragment != null) {
-                            main_TLB_head.setTitle(myUser.getName());
+                            main_TLB_head.setTitle(getResources().getString(R.string.profile));
                             showFragment(profileFragment);
                         }
                         break;

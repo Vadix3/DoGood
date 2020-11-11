@@ -45,7 +45,7 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
     private TextView profile_LBL_mail;
     private FrameLayout profile_LAY_post;
     private MaterialButton profile_BTN_update;
-    private FrameLayout profile_LAY_profile;
+
 
     private Fragment_ask_give_profile fragment_ask_give_profile;
 
@@ -86,7 +86,18 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
             }
         });
 
+        profile_IMG_picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPicture();
+            }
+        });
+
         return view;
+    }
+
+    private void addPicture() {
+
     }
 
     private void updateUser() {
@@ -126,9 +137,6 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
         profile_LBL_mail = view.findViewById(R.id.profile_LBL_mail);
         profile_LAY_post = view.findViewById(R.id.profile_LAY_post);
         profile_BTN_update = view.findViewById(R.id.profile_BTN_update);
-
-        profile_LAY_profile = view.findViewById(R.id.profile_LAY_profile);
-
     }
 
     private void addGiveItemsFragment(ArrayList<GiveItem> mgiveItems, ArrayList<AskItem> mrequestItems) {

@@ -26,7 +26,7 @@
         app:layout_constraintHorizontal_bias="@string/size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.948"
+        app:layout_constraintVertical_bias="0.95"
         app:menu_backgroundColor="@android:color/transparent"
         app:menu_colorNormal="@color/colorPrimary"
         app:menu_fab_label=""
