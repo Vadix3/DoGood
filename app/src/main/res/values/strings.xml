@@ -6,12 +6,12 @@
     <string name="object_to_ask">Needed items</string>
     <string name="profile">Profile</string>
     <string name="logout">Logout</string>
-    <string name="communicate">Communicate</string>
-    <string name="share">Share</string>
-    <string name="rate">Rate</string>
+    <string name="communicate" translatable="false">Communicate</string>
+    <string name="share" translatable="false">Share</string>
+    <string name="rate" translatable="false">Rate</string>
 
-    <string name="navigation_drawer_open">Navigation drawer open</string>
-    <string name="navigation_drawer_close">Navigation drawer close</string>
+    <string name="navigation_drawer_open" translatable="false">Navigation drawer open</string>
+    <string name="navigation_drawer_close" translatable="false">Navigation drawer close</string>
     <string name="menu">Menu</string>
 
 
@@ -59,17 +59,17 @@
     <string name="user_phone">User phone</string>
     <string name="user_mail">User mail</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="welcome_to_do_good">Welcome To Do good!</string>
     <string name="welcome">Welcome!</string>
-    <string name="do_good_and_fell_good">Do good and fell good!</string>
+    <string name="do_good_and_fell_good">Do good and feel good!</string>
     <string name="mail">Mail</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="create_account">Create Account</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="sign_in_with">Sign in with:</string>
-    <string name="not_a_member">Not a member?</string>
+    <string name="not_a_member">Not a member ?</string>
     <string name="first_and_last_name">Name</string>
     <string name="email">Email</string>
     <string name="phone_number">Phone</string>

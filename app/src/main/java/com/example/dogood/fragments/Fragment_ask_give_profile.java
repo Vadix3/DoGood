@@ -46,8 +46,6 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
     private FloatingActionButton giveAskFragment_BTM_menu_item1 ;
     private FloatingActionButton giveAskFragment_BTM_menu_item2 ;
 
-
-
     public Fragment_ask_give_profile() { }
 
     public Fragment_ask_give_profile(User user,ArrayList<GiveItem> giveItems, ArrayList<AskItem> askItems) {
@@ -73,16 +71,26 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
         giveAskFragment_BTM_menu_item1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openGiveItemActivity();
                 populateItemsListGive();
+                giveAskFragment_BTM_menu_item1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openGiveItemActivity();
+                    }
+                });
             }
         });
 
         giveAskFragment_BTM_menu_item2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAskItemActivity();
                 populateItemsListAsk();
+                giveAskFragment_BTM_menu_item2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openAskItemActivity();
+                    }
+                });
             }
         });
 
