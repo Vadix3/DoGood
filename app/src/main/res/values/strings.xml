@@ -96,5 +96,8 @@
     <string name="show_ask_item">Show ask item</string>
     <string name="show_give_item">Show give item</string>
 
+    <string name="sort">Sort</string>
+    <string name="filter">Filter</string>
+
 
 </resources>

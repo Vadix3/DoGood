@@ -10,6 +10,7 @@
     <color name="colorPrimary">#FF80AB</color>
     <color name="colorPrimaryDark">#FA4D88</color>
     <color name="clear">#00BB86FC</color>
+    <color name="light_teal">#A8FFFA</color>
 
     <color name="colorBackroundLogin">#10002F</color>
 

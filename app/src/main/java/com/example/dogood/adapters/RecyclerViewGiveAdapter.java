@@ -3,6 +3,8 @@ package com.example.dogood.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.shapes.Shape;
 import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
@@ -13,14 +15,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.example.dogood.MainActivity;
 import com.example.dogood.R;
 import com.example.dogood.objects.GiveItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -57,9 +67,8 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
         } else {
             holder.itemPrice.setText(R.string.free);
         }
-        holder.itemDescription.setText(temp.getDescription());
         holder.postDate.setText(temp.getDate());
-        ImageView itemImage = holder.itemPhoto;
+        ShapeableImageView itemImage = holder.itemPhoto;
         getPhotoFromStorage(itemImage, position);
         holder.rowCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +81,7 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
     /**
      * A method to get the item photo from the storage
      */
-    private void getPhotoFromStorage(final ImageView itemPhoto, int position) {
+    private void getPhotoFromStorage(final ShapeableImageView itemPhoto, int position) {
         Log.d(TAG, "getPhotoFromStorage: Fetching photo from storage");
         String itemID = items.get(position).getId();
 
@@ -84,7 +93,15 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
             @Override
             public void onSuccess(Uri uri) {
                 Log.d(TAG, "onSuccess: " + uri);
-                Glide.with(context).load(uri).placeholder(R.mipmap.ic_launcher).into(itemPhoto);
+                // create a ProgressDrawable object which we will show as placeholder
+                CircularProgressDrawable drawable = new CircularProgressDrawable(context);
+                drawable.setColorSchemeColors(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.black);
+                drawable.setCenterRadius(30f);
+                drawable.setStrokeWidth(5f);
+                // set all other properties as you would see fit and start it
+                drawable.start();
+                Glide.with(context).load(uri).placeholder(drawable).into(itemPhoto);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -123,7 +140,7 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
     public class ViewHolder extends RecyclerView.ViewHolder { // To hold each row
 
         TextView itemName, itemState, itemPrice, itemDescription, postDate;
-        ImageView itemPhoto;
+        ShapeableImageView itemPhoto;
         MaterialCardView rowCard;
 
         public ViewHolder(@NonNull View itemView) {
@@ -139,7 +156,6 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
             itemName = itemView.findViewById(R.id.giveRow_LBL_itemName);
             itemState = itemView.findViewById(R.id.giveRow_LBL_itemState);
             itemPrice = itemView.findViewById(R.id.giveRow_LBL_itemPrice);
-            itemDescription = itemView.findViewById(R.id.giveRow_LBL_itemDescription);
             postDate = itemView.findViewById(R.id.giveRow_LBL_postDate);
             itemPhoto = itemView.findViewById(R.id.giveRow_IMG_itemPicture);
         }

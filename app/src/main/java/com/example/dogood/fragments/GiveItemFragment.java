@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogood.R;
@@ -30,6 +32,8 @@ public class GiveItemFragment extends Fragment {
 
     public static final String CURRENT_USER = "currentUser";
 
+    private FrameLayout frameLayout;
+    private SortFilterFragment sortFilterfragment;
 
     protected View view;
     private RecyclerView recyclerView;
@@ -60,8 +64,20 @@ public class GiveItemFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_give_items, container, false);
         }
         initViews();
+        initSortFilterFragment();
         populateItemsList();
         return view;
+    }
+
+    /**
+     * A method to initialize the sort and filter fragment
+     */
+    private void initSortFilterFragment() {
+        Log.d(TAG, "initSortFilterFragment: ");
+        sortFilterfragment = new SortFilterFragment(getContext());
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.giveFragment_LAY_sortFilterFragment, sortFilterfragment);
+        transaction.commit();
     }
 
     public void hideFloatingButton() {
@@ -77,6 +93,8 @@ public class GiveItemFragment extends Fragment {
      */
     private void initViews() {
         Log.d(TAG, "initViews: Initing list fragment views");
+
+        frameLayout = view.findViewById(R.id.giveFragment_LAY_sortFilterFragment);
         addItem = view.findViewById(R.id.giveFragment_BTN_addItemButton);
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +113,7 @@ public class GiveItemFragment extends Fragment {
         Gson gson = new Gson();
         String userJson = gson.toJson(myUser);
         intent.putExtra(CURRENT_USER, userJson);
-        intent.putExtra(ITEM_COUNT,giveItems.size());
+        intent.putExtra(ITEM_COUNT, giveItems.size());
         startActivityForResult(intent, NEW_GIVE_ITEM_RESULT_CODE);
     }
 

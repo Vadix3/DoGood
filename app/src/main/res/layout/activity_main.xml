@@ -10,7 +10,9 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".MainActivity">
-    <!--TODO: Arrribute Good Ware,Flaticon,DinosoftLabs-->
+
+    <!--TODO: Arrribute Good Ware,Flaticon,DinosoftLabs,Smartline-->
+
     <FrameLayout
         android:id="@+id/main_LAY_mainPageFragment"
         android:layout_width="match_parent"
@@ -19,7 +21,7 @@
         app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topbar_placeholder" />
+        app:layout_constraintTop_toBottomOf="@id/giveFragment_LAY_sortFilterFragment" />
 
     <FrameLayout
         android:id="@+id/main_LAY_givePageFragment"
@@ -30,7 +32,7 @@
         app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topbar_placeholder" />
+        app:layout_constraintTop_toBottomOf="@id/giveFragment_LAY_sortFilterFragment" />
 
     <FrameLayout
         android:id="@+id/main_LAY_askPageFragment"
@@ -41,7 +43,7 @@
         app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topbar_placeholder" />
+        app:layout_constraintTop_toBottomOf="@id/giveFragment_LAY_sortFilterFragment" />
 
     <FrameLayout
         android:id="@+id/main_LAY_profilePageFragment"
@@ -52,7 +54,7 @@
         app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topbar_placeholder" />
+        app:layout_constraintTop_toBottomOf="@id/giveFragment_LAY_sortFilterFragment" />
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         android:id="@+id/main_BAR_progressBar"
@@ -84,7 +86,7 @@
         app:menu="@menu/bottom_navigation_menu" />
 
     <RelativeLayout
-        android:id="@+id/topbar_placeholder"
+        android:id="@+id/giveFragment_LAY_sortFilterFragment"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintBottom_toBottomOf="parent"

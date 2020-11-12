@@ -16,6 +16,7 @@ import com.example.dogood.R;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.GiveItem;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 
@@ -44,9 +45,7 @@ public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAsk
         Log.d(TAG, "onBindViewHolder: got item: " + items.get(position));
         AskItem temp = items.get(position);
         holder.itemName.setText(temp.getName());
-        holder.itemCategory.setText(temp.getCategory());
         holder.itemCity.setText(temp.getCity());
-        holder.itemDescription.setText(temp.getDescription());
         holder.postDate.setText(temp.getDate());
         holder.itemPhoto.setImageResource(R.color.colorPrimary);
         holder.rowCard.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +68,7 @@ public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAsk
     public class ViewHolder extends RecyclerView.ViewHolder { // To hold each row
 
         TextView itemName, itemCategory, itemCity, itemDescription, postDate;
-        ImageView itemPhoto;
+        ShapeableImageView itemPhoto;
         MaterialCardView rowCard;
 
         public ViewHolder(@NonNull View itemView) {
@@ -83,9 +82,7 @@ public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAsk
         private void initViews() {
             rowCard = itemView.findViewById(R.id.askRow_LAY_row);
             itemName = itemView.findViewById(R.id.askRow_LBL_itemName);
-            itemCategory = itemView.findViewById(R.id.askRow_LBL_itemCategory);
             itemCity = itemView.findViewById(R.id.askRow_LBL_itemCity);
-            itemDescription = itemView.findViewById(R.id.askRow_LBL_itemDescription);
             postDate = itemView.findViewById(R.id.askRow_LBL_postDate);
             itemPhoto = itemView.findViewById(R.id.askRow_IMG_itemCategoryPic);
         }

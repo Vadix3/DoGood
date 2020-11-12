@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String ITEM_COUNT = "itemCount";
 
 
+
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
     private static final int UPDATE_PROFILE_RESULT_CODE = 1013;
@@ -72,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int SEARCH_IN_ASK_ITEMS = 12;
 
     private boolean showingResults = false; // A boolean var to indicate that search results are showing.
+
+    private boolean isProfileFragmentShowing =false;
+    private boolean isGiveItemFragmentShowing =false;
+    private boolean isAskItemFragmentShowing =false;
+    private boolean isHomeFragmentShowing =false;
 
     //private MaterialToolbar main_TLB_title;
     private Toolbar main_TLB_head;
@@ -222,7 +228,11 @@ public class MainActivity extends AppCompatActivity {
                         if (mainFragment != null) {
                             main_TLB_head.setTitle(getResources().getString(R.string.home));
                             showFragment(mainFragment);
-                            Log.d(TAG, "onNavigationItemSelected:  " + myUser.toString());
+
+                            isProfileFragmentShowing =false;
+                            isGiveItemFragmentShowing =false;
+                            isAskItemFragmentShowing =false;
+                            isHomeFragmentShowing =true;
                         }
                         break;
                     case R.id.bottom_menu_give:
@@ -233,6 +243,11 @@ public class MainActivity extends AppCompatActivity {
                                 main_TLB_head.setNavigationIcon(null);
                                 setGiveFragment(giveItems);
                                 showFragment(giveFragment);
+
+                                isProfileFragmentShowing =false;
+                                isGiveItemFragmentShowing =true;
+                                isAskItemFragmentShowing =false;
+                                isHomeFragmentShowing =false;
                             }
                         }
                         break;
@@ -244,6 +259,11 @@ public class MainActivity extends AppCompatActivity {
                                 main_TLB_head.setNavigationIcon(null);
                                 setAskFragment(askItems);
                                 showFragment(askFragment);
+
+                                isProfileFragmentShowing =false;
+                                isGiveItemFragmentShowing =false;
+                                isAskItemFragmentShowing =true;
+                                isHomeFragmentShowing =false;
                             }
                         }
                         break;
@@ -252,6 +272,11 @@ public class MainActivity extends AppCompatActivity {
                         if (profileFragment != null) {
                             main_TLB_head.setTitle(getResources().getString(R.string.profile));
                             showFragment(profileFragment);
+
+                            isProfileFragmentShowing =true;
+                            isGiveItemFragmentShowing =false;
+                            isAskItemFragmentShowing =false;
+                            isHomeFragmentShowing =false;
                         }
                         break;
                 }

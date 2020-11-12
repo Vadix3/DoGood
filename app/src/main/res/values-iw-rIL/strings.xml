@@ -70,4 +70,6 @@
     <string name="update_profile">עדכן פרופיל</string>
     <string name="show_ask_item">"הצג חפצים לתת "</string>
     <string name="show_give_item">הצג חפצים לבקשה</string>
+    <string name="sort">מיין</string>
+    <string name="filter">סנן</string>
 </resources>
