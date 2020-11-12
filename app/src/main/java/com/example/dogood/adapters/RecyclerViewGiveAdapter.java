@@ -1,31 +1,24 @@
 package com.example.dogood.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.shapes.Shape;
 import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.example.dogood.MainActivity;
 import com.example.dogood.R;
+import com.example.dogood.activities.ItemDetailsActivity;
 import com.example.dogood.objects.GiveItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,11 +26,13 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGiveAdapter.ViewHolder> {
     private static final String TAG = "Dogood";
+    private static final String GIVE_ITEM = "giveItem";
     FirebaseStorage storage = FirebaseStorage.getInstance();
     private Context context;
     private ArrayList<GiveItem> items;
@@ -73,9 +68,21 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
         holder.rowCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: Clicking item: " + (position + 1));
+                openItemDetails(position);
             }
         });
+    }
+
+    /**
+     * A method to open the item details activity
+     */
+    private void openItemDetails(int position) {
+        Log.d(TAG, "openItemDetails: ");
+        Intent intent = new Intent(context, ItemDetailsActivity.class);
+        Gson gson = new Gson();
+        String itemJson = gson.toJson(items.get(position));
+        intent.putExtra(GIVE_ITEM, itemJson);
+        context.startActivity(intent);
     }
 
     /**
@@ -109,7 +116,6 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
                 Log.d(TAG, "onFailure: Exception: " + exception.getMessage());
             }
         });
-
     }
 
     /**

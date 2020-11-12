@@ -99,5 +99,11 @@
     <string name="sort">Sort</string>
     <string name="filter">Filter</string>
 
+    <string name="condition">Condition: </string>
+    <string name="post_date">Post date: </string>
+    <string name="price">Price: </string>
+    <string name="description">Description: </string>
+
+
 
 </resources>

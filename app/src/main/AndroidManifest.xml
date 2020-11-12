@@ -73,6 +73,9 @@
         <activity
             android:name=".activities.NewAskItemActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ItemDetailsActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

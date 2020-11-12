@@ -72,4 +72,9 @@
     <string name="show_give_item">הצג חפצים לבקשה</string>
     <string name="sort">מיין</string>
     <string name="filter">סנן</string>
+
+    <string name="condition">מצב: </string>
+    <string name="post_date">תאריך פרסום: </string>
+    <string name="price">מחיר: </string>
+    <string name="description">תיאור: </string>
 </resources>

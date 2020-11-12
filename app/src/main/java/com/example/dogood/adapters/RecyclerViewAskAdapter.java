@@ -1,6 +1,7 @@
 package com.example.dogood.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,15 +14,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogood.R;
+import com.example.dogood.activities.ItemDetailsActivity;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.GiveItem;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAskAdapter.ViewHolder> {
     private static final String TAG = "Dogood";
+    private static final String ASK_ITEM = "askItem";
     private Context context;
     private ArrayList<AskItem> items;
 
@@ -51,9 +55,21 @@ public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAsk
         holder.rowCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: Clicking item: " + (position + 1));
+                openItemDetails(position);
             }
         });
+    }
+
+    /**
+     * A method to open the item details activity
+     */
+    private void openItemDetails(int position) {
+        Log.d(TAG, "openItemDetails: ");
+        Intent intent = new Intent(context, ItemDetailsActivity.class);
+        Gson gson = new Gson();
+        String itemJson = gson.toJson(items.get(position));
+        intent.putExtra(ASK_ITEM, itemJson);
+        context.startActivity(intent);
     }
 
     @Override

@@ -15,4 +15,9 @@
         <!-- Customize your theme here. -->
 
     </style>
+
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize10Percent" parent="">
+        <item name="cornerSizeBottomRight">10%</item>
+    </style>
 </resources>
