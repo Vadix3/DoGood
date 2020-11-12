@@ -53,7 +53,7 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
     private TextView profile_LBL_mail;
     //private FrameLayout profile_LAY_post;
     private MaterialButton profile_BTN_update;
-    private ViewPager viewPager;
+    private ViewPager2 viewPager;
 
 
     private Fragment_ask_give_profile fragment_ask_give_profile;
@@ -148,7 +148,7 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
         profile_BTN_update = view.findViewById(R.id.profile_BTN_update);
 
         viewPager = view.findViewById(R.id.viewPager);
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getFragmentManager(), mUser);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getFragmentManager(),getLifecycle(), mUser);
         viewPager.setAdapter(viewPagerAdapter);
     }
 

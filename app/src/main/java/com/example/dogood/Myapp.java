@@ -7,7 +7,6 @@ import com.example.dogood.objects.User;
 
 public class Myapp extends Application {
     private static final String TAG = "Myapp";
-    private User myUser;
     @Override
     public void onCreate() {
         super.onCreate();
