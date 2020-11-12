@@ -39,8 +39,6 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
     protected View view;
     private RecyclerView recyclerView;
     private User myUser;
-    private ArrayList<GiveItem> giveItems;
-    private ArrayList<AskItem> askItems;
 
     private FloatingActionMenu giveAskFragment_BTM_menu;
     private FloatingActionButton giveAskFragment_BTM_menu_item1 ;
@@ -51,10 +49,8 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
 
     public Fragment_ask_give_profile() { }
 
-    public Fragment_ask_give_profile(User user,ArrayList<GiveItem> giveItems, ArrayList<AskItem> askItems) {
+    public Fragment_ask_give_profile(User user) {
         this.myUser = user;
-        this.giveItems = giveItems;
-        this.askItems = askItems;
     }
 
     @Override
@@ -128,7 +124,7 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
         Gson gson = new Gson();
         String userJson = gson.toJson(myUser);
         intent.putExtra(CURRENT_USER, userJson);
-        intent.putExtra(ITEM_COUNT,giveItems.size());
+        intent.putExtra(ITEM_COUNT,myUser.getGiveItems().size());
         startActivityForResult(intent, NEW_GIVE_ITEM_RESULT_CODE);
     }
 
@@ -138,7 +134,7 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
         Gson gson = new Gson();
         String userJson = gson.toJson(myUser);
         intent.putExtra(CURRENT_USER,userJson);
-        intent.putExtra(ITEM_COUNT,askItems.size());
+        intent.putExtra(ITEM_COUNT,myUser.getAskItems().size());
         startActivityForResult(intent, NEW_ASK_ITEM_RESULT_CODE);
     }
 
@@ -180,4 +176,6 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
         }
 
     }
+
+
 }

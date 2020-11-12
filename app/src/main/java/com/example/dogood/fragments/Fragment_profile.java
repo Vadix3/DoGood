@@ -1,32 +1,40 @@
 package com.example.dogood.fragments;
 
+
+/*
+
+        <FrameLayout
+            android:id="@+id/profile_LAY_post"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+ */
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.example.dogood.MainActivity;
-import com.example.dogood.activities.Activity_updateAccount;
 import com.example.dogood.R;
-import com.example.dogood.objects.AskItem;
-import com.example.dogood.objects.GiveItem;
+import com.example.dogood.activities.Activity_updateAccount;
+import com.example.dogood.adapters.ViewPagerAdapter;
 import com.example.dogood.objects.User;
 import com.google.android.material.button.MaterialButton;
-
-import java.util.ArrayList;
 
 
 public class Fragment_profile extends Fragment implements MainActivity.IOnBackPressed {
@@ -43,23 +51,20 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
     private TextView profile_LBL_city;
     private TextView profile_LBL_phone;
     private TextView profile_LBL_mail;
-    private FrameLayout profile_LAY_post;
+    //private FrameLayout profile_LAY_post;
     private MaterialButton profile_BTN_update;
+    private ViewPager viewPager;
 
 
     private Fragment_ask_give_profile fragment_ask_give_profile;
 
     private User mUser;
-    private ArrayList<GiveItem> giveItems;
-    private ArrayList<AskItem> askItems;
 
     public Fragment_profile() {
     }
 
-    public Fragment_profile(User user, ArrayList<GiveItem> giveItems, ArrayList<AskItem> askItems) {
+    public Fragment_profile(User user) {
         this.mUser = user;
-        this.giveItems = giveItems;
-        this.askItems = askItems;
     }
 
 
@@ -77,7 +82,7 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
 
         findViews();
         updateUser();
-        addGiveItemsFragment(mUser.getGiveItems(), mUser.getAskItems());
+        //addGiveItemsFragment();
 
         profile_BTN_update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,15 +140,21 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
         profile_LBL_city = view.findViewById(R.id.profile_LBL_city);
         profile_LBL_phone = view.findViewById(R.id.profile_LBL_phone);
         profile_LBL_mail = view.findViewById(R.id.profile_LBL_mail);
-        profile_LAY_post = view.findViewById(R.id.profile_LAY_post);
+        //profile_LAY_post = view.findViewById(R.id.profile_LAY_post);
         profile_BTN_update = view.findViewById(R.id.profile_BTN_update);
+
+        viewPager = view.findViewById(R.id.viewPager);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getFragmentManager(),mUser);
+        viewPager.setAdapter(viewPagerAdapter);
     }
 
-    private void addGiveItemsFragment(ArrayList<GiveItem> mgiveItems, ArrayList<AskItem> mrequestItems) {
-        Log.d(TAG, "initItemsFragment: Initing main list with: " + mgiveItems.toString());
-        fragment_ask_give_profile = new Fragment_ask_give_profile(mUser,giveItems,askItems);
+
+
+    private void addGiveItemsFragment() {
+        Log.d(TAG, "initItemsFragment: Initing main list with: ");
+        fragment_ask_give_profile = new Fragment_ask_give_profile(mUser);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.profile_LAY_post, fragment_ask_give_profile);
+      //  transaction.replace(R.id.profile_LAY_post, fragment_ask_give_profile);
         transaction.commit();
     }
 
@@ -163,6 +174,7 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
             return null;
         }
     }
+
 
 
     @Override

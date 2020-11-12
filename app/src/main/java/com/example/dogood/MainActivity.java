@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setProfileFragment() {
         Log.d(TAG, "onNavigationItemSelected: profile ");
-        fragment_profile = new Fragment_profile(myUser,giveItems,askItems);
+        fragment_profile = new Fragment_profile(myUser);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_profilePageFragment, fragment_profile);
         transaction.commit();

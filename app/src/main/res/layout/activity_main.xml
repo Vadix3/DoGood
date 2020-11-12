@@ -112,6 +112,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             app:title="@string/app_name"
+            android:elevation="4dp"
             app:titleTextColor="@color/white" />
 
         <com.miguelcatalan.materialsearchview.MaterialSearchView
