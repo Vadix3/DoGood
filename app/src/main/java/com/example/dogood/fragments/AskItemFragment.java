@@ -41,7 +41,7 @@ public class AskItemFragment extends Fragment {
 
     public AskItemFragment(ArrayList<AskItem> askItems, User user) {
         this.askItems = askItems;
-        this.myUser=user;
+        this.myUser = user;
     }
 
     public void hideFloatingButton() {
@@ -78,7 +78,7 @@ public class AskItemFragment extends Fragment {
             Log.d(TAG, "populateItemsList: no askItems");
         } else {
             recyclerView = view.findViewById(R.id.askFragment_LST_mainRecycler);
-            RecyclerViewAskAdapter recyclerViewAskAdapter = new RecyclerViewAskAdapter(getContext(), askItems);
+            RecyclerViewAskAdapter recyclerViewAskAdapter = new RecyclerViewAskAdapter(getContext(), askItems, myUser);
             recyclerView.setAdapter(recyclerViewAskAdapter);
 
         }
@@ -106,8 +106,8 @@ public class AskItemFragment extends Fragment {
         Intent intent = new Intent(getActivity(), NewAskItemActivity.class);
         Gson gson = new Gson();
         String userJson = gson.toJson(myUser);
-        intent.putExtra(CURRENT_USER,userJson);
-        intent.putExtra(ITEM_COUNT,askItems.size());
+        intent.putExtra(CURRENT_USER, userJson);
+        intent.putExtra(ITEM_COUNT, askItems.size());
         startActivityForResult(intent, NEW_ASK_ITEM_RESULT_CODE);
     }
 }

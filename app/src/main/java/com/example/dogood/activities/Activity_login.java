@@ -188,13 +188,13 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
 
 
                 //Remove from here until to do
-                String name = ""+currentUser.getDisplayName();
-                String email = ""+currentUser.getEmail();
-                User temp = new User(name,email);
+                String name = "" + currentUser.getDisplayName();
+                String email = "" + currentUser.getEmail();
+                User temp = new User(name, email);
                 Gson gson = new Gson();
                 String userJson = gson.toJson(temp);
-                Intent loginIntent = new Intent(Activity_login.this,MainActivity.class);
-                loginIntent.putExtra(LOGIN_USER_EXTRA,userJson);
+                Intent loginIntent = new Intent(Activity_login.this, MainActivity.class);
+                loginIntent.putExtra(LOGIN_USER_EXTRA, userJson);
                 startActivity(loginIntent);
                 finish();
                 //TODO: RETURN AUTO LOGIN
@@ -234,13 +234,13 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
                                 Log.d(TAG, "onCompleted: response: " + response.toString());
                                 Log.d(TAG, "onCompleted: json: " + object.toString());
                                 try {
-                                    String name = ""+object.get("name");
-                                    String email = ""+object.get("email");
-                                    User temp = new User(name,email);
+                                    String name = "" + object.get("name");
+                                    String email = "" + object.get("email");
+                                    User temp = new User(name, email);
                                     Gson gson = new Gson();
                                     String userJson = gson.toJson(temp);
-                                    Intent loginIntent = new Intent(Activity_login.this,MainActivity.class);
-                                    loginIntent.putExtra(LOGIN_USER_EXTRA,userJson);
+                                    Intent loginIntent = new Intent(Activity_login.this, MainActivity.class);
+                                    loginIntent.putExtra(LOGIN_USER_EXTRA, userJson);
                                     startActivity(loginIntent);
                                     finish();
                                     //TODO: remove logout
@@ -507,9 +507,9 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
                             String errorMsg = e.getMessage();
                             Log.w(TAG, "signInWithEmail:failure " + errorMsg);
                             login_BTN_login.setClickable(true);
-                            if(e.getMessage().equalsIgnoreCase(
+                            if (e.getMessage().equalsIgnoreCase(
                                     "An internal error has occurred. [ Unable to resolve" +
-                                            " host \"www.googleapis.com\":No address associated with hostname ]")){
+                                            " host \"www.googleapis.com\":No address associated with hostname ]")) {
                                 Toast.makeText(Activity_login.this, "Connection Timeout", Toast.LENGTH_SHORT).show();
                             }
                             if (e.getMessage().equalsIgnoreCase(

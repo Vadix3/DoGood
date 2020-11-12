@@ -59,12 +59,16 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
     private Fragment_ask_give_profile fragment_ask_give_profile;
 
     private User mUser;
+    private int giveItemsArraySize; // The size of the total give items
+    private int askItemsArraySIze; // The size of the total ask items
 
     public Fragment_profile() {
     }
 
-    public Fragment_profile(User user) {
+    public Fragment_profile(User user, int giveItemsArraySize, int askItemsArraySize) {
         this.mUser = user;
+        this.giveItemsArraySize = giveItemsArraySize;
+        this.askItemsArraySIze = askItemsArraySize;
     }
 
 
@@ -107,21 +111,21 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
 
     private void updateUser() {
         Log.d(TAG, "updateUser: ");
-        if(mUser.getName() == null || mUser.getName().equals("")){
+        if (mUser.getName() == null || mUser.getName().equals("")) {
             profile_LBL_name.setText(R.string.please_update);
-        }else {
+        } else {
             profile_LBL_name.setText(mUser.getName());
         }
 
-        if(mUser.getCity() == null || mUser.getCity().equals("")){
+        if (mUser.getCity() == null || mUser.getCity().equals("")) {
             profile_LBL_city.setText(R.string.please_update);
-        }else {
+        } else {
             profile_LBL_city.setText(mUser.getCity());
         }
 
-        if(mUser.getPhone() == null || mUser.getPhone().equals("")){
+        if (mUser.getPhone() == null || mUser.getPhone().equals("")) {
             profile_LBL_phone.setText(R.string.please_update);
-        }else {
+        } else {
             profile_LBL_phone.setText(mUser.getPhone());
         }
 
@@ -144,17 +148,16 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
         profile_BTN_update = view.findViewById(R.id.profile_BTN_update);
 
         viewPager = view.findViewById(R.id.viewPager);
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getFragmentManager(),mUser);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getFragmentManager(), mUser);
         viewPager.setAdapter(viewPagerAdapter);
     }
 
 
-
     private void addGiveItemsFragment() {
         Log.d(TAG, "initItemsFragment: Initing main list with: ");
-        fragment_ask_give_profile = new Fragment_ask_give_profile(mUser);
+        fragment_ask_give_profile = new Fragment_ask_give_profile(mUser, giveItemsArraySize, askItemsArraySIze);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-      //  transaction.replace(R.id.profile_LAY_post, fragment_ask_give_profile);
+        //  transaction.replace(R.id.profile_LAY_post, fragment_ask_give_profile);
         transaction.commit();
     }
 
@@ -174,7 +177,6 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
             return null;
         }
     }
-
 
 
     @Override

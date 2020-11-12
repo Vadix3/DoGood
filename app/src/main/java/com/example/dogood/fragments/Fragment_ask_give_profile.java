@@ -41,16 +41,22 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
     private User myUser;
 
     private FloatingActionMenu giveAskFragment_BTM_menu;
-    private FloatingActionButton giveAskFragment_BTM_menu_item1 ;
-    private FloatingActionButton giveAskFragment_BTM_menu_item2 ;
+    private FloatingActionButton giveAskFragment_BTM_menu_item1;
+    private FloatingActionButton giveAskFragment_BTM_menu_item2;
 
     private int countAsk = 0;
     private int countGive = 0;
 
-    public Fragment_ask_give_profile() { }
+    private int giveItemsArraySize; // The size of the total give items
+    private int askItemsArraySize; // The size of the total ask items
 
-    public Fragment_ask_give_profile(User user) {
+    public Fragment_ask_give_profile() {
+    }
+
+    public Fragment_ask_give_profile(User user, int giveItemsArraySize, int askItemsArraySize) {
         this.myUser = user;
+        this.giveItemsArraySize = giveItemsArraySize;
+        this.askItemsArraySize = askItemsArraySize;
     }
 
     @Override
@@ -82,11 +88,11 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
             giveAskFragment_BTM_menu_item1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "onClick: ask item count = "+countGive);
-                    if(countGive%2 == 0){
+                    Log.d(TAG, "onClick: ask item count = " + countGive);
+                    if (countGive % 2 == 0) {
                         openGiveItemActivity();
                         giveAskFragment_BTM_menu_item1.setLabelText(getResources().getString(R.string.show_give_item));
-                    }else {
+                    } else {
                         populateItemsListGive();
                         giveAskFragment_BTM_menu_item1.setLabelText(getResources().getString(R.string.object_to_give));
                     }
@@ -104,11 +110,11 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
             giveAskFragment_BTM_menu_item2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "onClick: ask item count = "+countAsk);
-                    if(countAsk%2 == 0){
+                    Log.d(TAG, "onClick: ask item count = " + countAsk);
+                    if (countAsk % 2 == 0) {
                         openAskItemActivity();
                         giveAskFragment_BTM_menu_item2.setLabelText(getResources().getString(R.string.show_ask_item));
-                    }else {
+                    } else {
                         populateItemsListAsk();
                         giveAskFragment_BTM_menu_item2.setLabelText(getResources().getString(R.string.object_to_ask));
                     }
@@ -124,7 +130,8 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
         Gson gson = new Gson();
         String userJson = gson.toJson(myUser);
         intent.putExtra(CURRENT_USER, userJson);
-        intent.putExtra(ITEM_COUNT,myUser.getGiveItems().size());
+        //TODO: Problem here, the total number of items is not the total number of stuff
+        intent.putExtra(ITEM_COUNT, giveItemsArraySize);
         startActivityForResult(intent, NEW_GIVE_ITEM_RESULT_CODE);
     }
 
@@ -133,8 +140,8 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
         Intent intent = new Intent(getActivity(), NewAskItemActivity.class);
         Gson gson = new Gson();
         String userJson = gson.toJson(myUser);
-        intent.putExtra(CURRENT_USER,userJson);
-        intent.putExtra(ITEM_COUNT,myUser.getAskItems().size());
+        intent.putExtra(CURRENT_USER, userJson);
+        intent.putExtra(ITEM_COUNT, askItemsArraySize);
         startActivityForResult(intent, NEW_ASK_ITEM_RESULT_CODE);
     }
 
@@ -150,7 +157,7 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
             Log.d(TAG, "populateItemsList: no askItems");
         } else {
             recyclerView = view.findViewById(R.id.giveAskFragment_LST_mainRecycler);
-            RecyclerViewAskAdapter recyclerViewAskAdapter = new RecyclerViewAskAdapter(getContext(), myUser.getAskItems());
+            RecyclerViewAskAdapter recyclerViewAskAdapter = new RecyclerViewAskAdapter(getContext(), myUser.getAskItems(), myUser);
             recyclerView.setAdapter(recyclerViewAskAdapter);
         }
     }
@@ -159,7 +166,7 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
         Log.d(TAG, "populateEventList: Populating list with:");
         if (myUser.getGiveItems() != null) {
             recyclerView = view.findViewById(R.id.giveAskFragment_LST_mainRecycler);
-            RecyclerViewGiveAdapter recyclerViewGiveAdapter = new RecyclerViewGiveAdapter(getContext(), myUser.getGiveItems());
+            RecyclerViewGiveAdapter recyclerViewGiveAdapter = new RecyclerViewGiveAdapter(getContext(), myUser.getGiveItems(), myUser);
             recyclerView.setAdapter(recyclerViewGiveAdapter);
         } else {
             Log.d(TAG, "populateItemsList: Empty giveItem array");
@@ -168,10 +175,10 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
 
     @Override
     public boolean onBackPressed() {
-        if (giveAskFragment_BTM_menu.isOpened()){
+        if (giveAskFragment_BTM_menu.isOpened()) {
             giveAskFragment_BTM_menu.close(true);
             return true;
-        }else{
+        } else {
             return false;
         }
 

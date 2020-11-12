@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setProfileFragment() {
         Log.d(TAG, "onNavigationItemSelected: profile ");
-        fragment_profile = new Fragment_profile(myUser);
+        fragment_profile = new Fragment_profile(myUser,giveItems.size(),askItems.size());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_profilePageFragment, fragment_profile);
         transaction.commit();
@@ -700,7 +700,6 @@ public class MainActivity extends AppCompatActivity {
                     GiveItem temp = gson.fromJson(gotNewItem, itemType);
                     temp.setDate(getCurrentDate());
                     temp.setId("G" + giveItems.size());
-                    Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
                     giveItems.add(temp);
                     myUser.addGiveItem(temp);
                     updateUserInFirestore();
@@ -730,6 +729,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onActivityResult: User canceled new item input");
                 }
                 //TODO: Add switch for profile page
+                break;
             case UPDATE_PROFILE_RESULT_CODE:
                 Log.d(TAG, "onActivityResult: UPDATE_PROFILE_RESULT_CODE");
                 if (data != null) {

@@ -17,6 +17,7 @@ import com.example.dogood.R;
 import com.example.dogood.activities.ItemDetailsActivity;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.GiveItem;
+import com.example.dogood.objects.User;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.gson.Gson;
@@ -26,13 +27,17 @@ import java.util.ArrayList;
 public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAskAdapter.ViewHolder> {
     private static final String TAG = "Dogood";
     private static final String ASK_ITEM = "askItem";
+    private static final String OWNER_USER = "ownerUser";
+
     private Context context;
     private ArrayList<AskItem> items;
+    private User myUser;
 
-    public RecyclerViewAskAdapter(Context context, ArrayList<AskItem> items) {
+    public RecyclerViewAskAdapter(Context context, ArrayList<AskItem> items, User user) {
         Log.d(TAG, "RecyclerViewAskAdapter: Im in adapter with: " + items.toString());
         this.context = context;
         this.items = items;
+        this.myUser = user;
     }
 
 
@@ -68,6 +73,12 @@ public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAsk
         Intent intent = new Intent(context, ItemDetailsActivity.class);
         Gson gson = new Gson();
         String itemJson = gson.toJson(items.get(position));
+        Log.d(TAG, "openItemDetails: Owner: "+items.get(position).getRequester().toString());
+        Log.d(TAG, "openItemDetails: Me: "+myUser.toString());
+        if (items.get(position).getRequester().getEmail().equals(myUser.getEmail())) {
+            Log.d(TAG, "openItemDetails: Owner user");
+            intent.putExtra(OWNER_USER, true);
+        }
         intent.putExtra(ASK_ITEM, itemJson);
         context.startActivity(intent);
     }

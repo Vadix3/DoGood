@@ -32,6 +32,8 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private static final String TAG = "Dogood";
     private static final String GIVE_ITEM = "giveItem";
     private static final String ASK_ITEM = "askItem";
+    private static final String OWNER_USER = "ownerUser";
+
     private Context context = getBaseContext();
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -42,6 +44,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private GiveItem myGiveItem = null;
     private AskItem myAskItem = null;
     private User itemUser;
+    private boolean ownerUser = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,11 +81,17 @@ public class ItemDetailsActivity extends AppCompatActivity {
      */
     private void updateUI() {
         Log.d(TAG, "updateUI: ");
+        if (getIntent().getBooleanExtra(OWNER_USER, false)) {
+            Log.d(TAG, "updateUI: Im the owner of the post");
+        }
         if (myGiveItem != null) {
             Log.d(TAG, "updateUI: Updating UI to match give item");
             itemName.setText(myGiveItem.getName());
             itemState.setText(getString(R.string.condition) + myGiveItem.getState());
-            itemPrice.setText(getString(R.string.price) + myGiveItem.getPrice());
+            if (myGiveItem.getPrice().equals("")) {
+                itemPrice.setText(getString(R.string.price) + " " + getString(R.string.free));
+            } else
+                itemPrice.setText(getString(R.string.price) + myGiveItem.getPrice());
             itemDescription.setText(getString(R.string.description) + "\n" + myGiveItem.getDescription());
             itemDate.setText(getString(R.string.post_date) + myGiveItem.getDate());
             getPhotoFromStorage();
@@ -94,6 +103,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
             itemDate.setText(getString(R.string.post_date) + myAskItem.getDate());
             itemState.setVisibility(View.GONE);
             itemPrice.setVisibility(View.GONE);
+            contactUser.setText("Contact Asker");
         }
     }
 
@@ -179,5 +189,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
      */
     private void openContactUserDialog() {
         Log.d(TAG, "openContactUserDialog: Contacting: " + itemUser.toString());
+        //TODO: check if request is discrete or not
     }
 }

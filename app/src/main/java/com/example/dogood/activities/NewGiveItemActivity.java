@@ -362,7 +362,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
      * A method to upload picture to Firebase Storage
      */
     private void uploadBitmapToStorage() {
-        Log.d(TAG, "uploadBitmapToStorage: Uploading bitmap to storage: ");
+        Log.d(TAG, "uploadBitmapToStorage: Uploading bitmap to storage: ID: G"+itemCount);
         final String itemID = "G" + itemCount;
         // Create a storage reference from our app
         StorageReference storageRef = storage.getReferenceFromUrl("gs://" + getString(R.string.google_storage_bucket));

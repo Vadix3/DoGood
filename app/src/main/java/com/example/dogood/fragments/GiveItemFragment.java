@@ -125,7 +125,7 @@ public class GiveItemFragment extends Fragment {
         Log.d(TAG, "populateEventList: Populating list with:");
         if (giveItems != null) {
             recyclerView = view.findViewById(R.id.giveFragment_LST_mainRecycler);
-            RecyclerViewGiveAdapter recyclerViewGiveAdapter = new RecyclerViewGiveAdapter(getContext(), giveItems);
+            RecyclerViewGiveAdapter recyclerViewGiveAdapter = new RecyclerViewGiveAdapter(getContext(), giveItems, myUser);
             recyclerView.setAdapter(recyclerViewGiveAdapter);
         } else {
             Log.d(TAG, "populateItemsList: Empty giveItem array");

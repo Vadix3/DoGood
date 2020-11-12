@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.dogood.R;
 import com.example.dogood.activities.ItemDetailsActivity;
 import com.example.dogood.objects.GiveItem;
+import com.example.dogood.objects.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.card.MaterialCardView;
@@ -33,14 +34,18 @@ import java.util.ArrayList;
 public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGiveAdapter.ViewHolder> {
     private static final String TAG = "Dogood";
     private static final String GIVE_ITEM = "giveItem";
+    private static final String OWNER_USER = "ownerUser";
+
     FirebaseStorage storage = FirebaseStorage.getInstance();
     private Context context;
     private ArrayList<GiveItem> items;
+    private User myUser;
 
-    public RecyclerViewGiveAdapter(Context context, ArrayList<GiveItem> items) {
+    public RecyclerViewGiveAdapter(Context context, ArrayList<GiveItem> items, User user) {
         Log.d(TAG, "RecyclerViewGiveAdapter: Im in adapter with: " + items.toString());
         this.context = context;
         this.items = items;
+        this.myUser = user;
     }
 
     @NonNull
@@ -80,6 +85,10 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
         Log.d(TAG, "openItemDetails: ");
         Intent intent = new Intent(context, ItemDetailsActivity.class);
         Gson gson = new Gson();
+        if(items.get(position).getGiver().getEmail().equals(myUser.getEmail())){
+            Log.d(TAG, "openItemDetails: Owner user");
+            intent.putExtra(OWNER_USER,true);
+        }
         String itemJson = gson.toJson(items.get(position));
         intent.putExtra(GIVE_ITEM, itemJson);
         context.startActivity(intent);
