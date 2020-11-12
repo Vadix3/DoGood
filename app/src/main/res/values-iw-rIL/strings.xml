@@ -77,4 +77,7 @@
     <string name="post_date">תאריך פרסום: </string>
     <string name="price">מחיר: </string>
     <string name="description">תיאור: </string>
+
+    <string name="remove_item">מחיקת פריט</string>
+    <string name="edit_item">עריכת פריט</string>
 </resources>

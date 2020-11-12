@@ -104,6 +104,8 @@
     <string name="price">Price: </string>
     <string name="description">Description: </string>
 
+    <string name="remove_item">Remove item </string>
+    <string name="edit_item">Edit item </string>
 
 
 </resources>

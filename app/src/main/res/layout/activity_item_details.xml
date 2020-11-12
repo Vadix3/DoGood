@@ -105,5 +105,46 @@
         app:layout_constraintTop_toBottomOf="@+id/itemDetails_LBL_itemPrice"
         app:layout_constraintVertical_bias="1" />
 
+    <LinearLayout
+        android:id="@+id/itemDetails_LAY_removeEditLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemDetails_LBL_itemPrice"
+        app:layout_constraintVertical_bias="0.8">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/itemDetails_BTN_editEntry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:text="@string/remove_item"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            app:backgroundTint="@color/removeBtnColor"
+            app:cornerRadius="20dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/itemDetails_BTN_removeEntry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:text="@string/edit_item"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            app:backgroundTint="@color/editBtnColor"
+            app:cornerRadius="30dp" />
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

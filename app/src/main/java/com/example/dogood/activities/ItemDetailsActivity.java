@@ -7,7 +7,9 @@ import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +26,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.api.Distribution;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
@@ -41,6 +44,10 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private MaterialButton contactUser;
     private ShapeableImageView itemPhoto;
 
+    private LinearLayout removeEditLayout;
+    private MaterialButton editBtn;
+    private MaterialButton removeBtn;
+
     private GiveItem myGiveItem = null;
     private AskItem myAskItem = null;
     private User itemUser;
@@ -50,6 +57,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_details);
+        ownerUser = getIntent().getBooleanExtra(OWNER_USER, false);
         Log.d(TAG, "onCreate: ");
         initViews();
         checkReceivedItem();
@@ -182,6 +190,42 @@ public class ItemDetailsActivity extends AppCompatActivity {
             }
         });
 
+        removeEditLayout = findViewById(R.id.itemDetails_LAY_removeEditLayout);
+        if (ownerUser) {
+            removeEditLayout.setVisibility(View.VISIBLE);
+            contactUser.setVisibility(View.GONE);
+        }
+        editBtn = findViewById(R.id.itemDetails_BTN_editEntry);
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openEditItemDialog();
+            }
+        });
+        removeBtn = findViewById(R.id.itemDetails_BTN_removeEntry);
+        removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeItem();
+            }
+        });
+
+    }
+
+    /**
+     * A method to remove the current item
+     */
+    private void removeItem() {
+        Log.d(TAG, "removeItem: ");
+        Toast.makeText(this, "Opening remove item dialog", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * A method to open edit item dialog
+     */
+    private void openEditItemDialog() {
+        Log.d(TAG, "openEditItemDialog: ");
+        Toast.makeText(this, "Opening edit item dialog", Toast.LENGTH_SHORT).show();
     }
 
     /**

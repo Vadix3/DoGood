@@ -12,6 +12,10 @@
     <color name="clear">#00BB86FC</color>
     <color name="light_teal">#A8FFFA</color>
 
+    <color name="editBtnColor">#FF6E40</color>
+    <color name="removeBtnColor">#FF1744</color>
+
+
     <color name="colorBackroundLogin">#10002F</color>
 
 </resources>
