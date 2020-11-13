@@ -1,6 +1,9 @@
 package com.example.dogood.activities;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -8,6 +11,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,8 +21,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
+import com.example.dogood.Dialogs.AreYouSureDialog;
 import com.example.dogood.Dialogs.ItemPhotoDialog;
+import com.example.dogood.Dialogs.NewAccountDialog;
 import com.example.dogood.R;
+import com.example.dogood.interfaces.ItemDeleteListener;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.User;
@@ -31,11 +38,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
-public class ItemDetailsActivity extends AppCompatActivity {
+public class ItemDetailsActivity extends AppCompatActivity implements ItemDeleteListener {
     private static final String TAG = "Dogood";
     private static final String GIVE_ITEM = "giveItem";
     private static final String ASK_ITEM = "askItem";
     private static final String OWNER_USER = "ownerUser";
+    private static final String ITEM_TO_DEAL_WITH = "item_to_deal_with";
+    private static final String IS_GIVE_ITEM = "is_give_item";
+    private static final String TO_DELETE = "to_delete";
+
+    private static final int ITEM_DETAILS_RESULT_CODE = 1014;
 
     private Context context = getBaseContext();
 
@@ -73,7 +85,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String itemJson;
         if (getIntent().getStringExtra(GIVE_ITEM) != null) {
-            Log.d(TAG, "checkReceivedItem: Got give item");
             myGiveItem = gson.fromJson(getIntent().getStringExtra(GIVE_ITEM), GiveItem.class);
             itemUser = myGiveItem.getGiver();
         } else {
@@ -193,7 +204,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         removeEditLayout = findViewById(R.id.itemDetails_LAY_removeEditLayout);
         if (ownerUser) {
             removeEditLayout.setVisibility(View.VISIBLE);
-            contactUser.setVisibility(View.GONE);
+            contactUser.setVisibility(View.INVISIBLE);
         }
         editBtn = findViewById(R.id.itemDetails_BTN_editEntry);
         editBtn.setOnClickListener(new View.OnClickListener() {
@@ -217,7 +228,20 @@ public class ItemDetailsActivity extends AppCompatActivity {
      */
     private void removeItem() {
         Log.d(TAG, "removeItem: ");
-        Toast.makeText(this, "Opening remove item dialog", Toast.LENGTH_SHORT).show();
+        String currentItemName = "";
+        if (myGiveItem != null) {
+            currentItemName = myGiveItem.getName();
+        } else {
+            currentItemName = myAskItem.getName();
+        }
+        AreYouSureDialog areYouSureDialog = new AreYouSureDialog(this, currentItemName);
+        areYouSureDialog.show();
+        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.8);
+        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
+        areYouSureDialog.getWindow().setLayout(width, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        areYouSureDialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        areYouSureDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        areYouSureDialog.getWindow().setDimAmount(0.5f);
     }
 
     /**
@@ -234,5 +258,26 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private void openContactUserDialog() {
         Log.d(TAG, "openContactUserDialog: Contacting: " + itemUser.toString());
         //TODO: check if request is discrete or not
+    }
+
+    @Override
+    public void deleteSelectedItem() {
+        Log.d(TAG, "deleteSelectedItem: ");
+        //TODO: Delete item from user,firestore,storage
+        Gson gson = new Gson();
+        Intent resultIntent = new Intent();
+        String itemJson = "";
+        if (myGiveItem != null) {
+            itemJson = gson.toJson(myGiveItem);
+            resultIntent.putExtra(IS_GIVE_ITEM, true);
+        } else {
+            itemJson = gson.toJson(myAskItem);
+            resultIntent.putExtra(IS_GIVE_ITEM, false);
+        }
+        resultIntent.putExtra(TO_DELETE, true);
+        Log.d(TAG, "deleteSelectedItem: Seding item json: "+itemJson);
+        resultIntent.putExtra(ITEM_TO_DEAL_WITH, itemJson);
+        setResult(ITEM_DETAILS_RESULT_CODE, resultIntent);
+        finish();
     }
 }

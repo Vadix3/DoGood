@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -18,13 +17,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +31,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.dogood.Dialogs.NewAccountDialog;
 import com.example.dogood.Dialogs.PhotoModeDialog;
 import com.example.dogood.R;
 import com.example.dogood.interfaces.PhotoModeListener;
@@ -58,7 +56,6 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeListener {
@@ -127,17 +124,17 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
      */
     private void initViews() {
         Log.d(TAG, "initViews: Creating views");
-        itemPhoto = findViewById(R.id.addgiveitem_IMG_itemPhoto);
+        itemPhoto = findViewById(R.id.editItem_IMG_itemPhoto);
         itemPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openPhotoDialog();
             }
         });
-        itemName = findViewById(R.id.addgiveitem_EDT_itemName);
-        itemDescription = findViewById(R.id.addgiveitem_EDT_itemDescription);
-        itemPrice = findViewById(R.id.addgiveitem_EDT_itemPrice);
-        freeItem = findViewById(R.id.addAskItem_CHK_isDescrete);
+        itemName = findViewById(R.id.editItem_EDT_itemName);
+        itemDescription = findViewById(R.id.editItem_EDT_itemDescription);
+        itemPrice = findViewById(R.id.editItem_EDT_itemPrice);
+        freeItem = findViewById(R.id.editItem_CHK_isDescrete);
         freeItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -152,9 +149,9 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
                 }
             }
         });
-        condition = findViewById(R.id.addgiveitem_LST_conditionSpinner);
-        category = findViewById(R.id.addgiveitem_LST_categorySpinner);
-        submitBtn = findViewById(R.id.addgiveitem_BTN_submitBtn);
+        condition = findViewById(R.id.editItem_LST_conditionSpinner);
+        category = findViewById(R.id.editItem_LST_categorySpinner);
+        submitBtn = findViewById(R.id.editItem_BTN_submitBtn);
         initCategorySpinner();
         initConditionSpinner();
 
@@ -162,6 +159,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
             @Override
             public void onClick(View view) {
                 checkForValidInput();
+                submitBtn.setEnabled(false);
             }
         });
     }
@@ -286,35 +284,41 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
         if (itemName.getText().toString().equals("")) {
             Log.d(TAG, "checkForValidInput: Empty item name");
             itemName.setError(getString(R.string.please_enter_item_name));
+            submitBtn.setEnabled(true);
             return;
         }
         if (itemDescription.getText().toString().equals("")) {
             Log.d(TAG, "checkForValidInput: Empty item description");
             itemDescription.setError(getString(R.string.please_enter_item_decription));
+            submitBtn.setEnabled(true);
             return;
         }
         if (condition.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.select_condition))) {
             Log.d(TAG, "checkForValidInput: Condition not selected");
             ((TextView) condition.getSelectedView()).setError("Please select a condition");
+            submitBtn.setEnabled(true);
             return;
         }
         if (category.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.select_categories))) {
             Log.d(TAG, "checkForValidInput: Category not selected");
             ((TextView) category.getSelectedView()).setError("Please select a category");
+            submitBtn.setEnabled(true);
             return;
         }
         if (itemPrice.getText().toString().equals("") && !freeItem.isChecked()) {
             Log.d(TAG, "checkForValidInput: Item price is not selected but not free");
             itemPrice.setError("Please enter price (Be reasonable!)");
+            submitBtn.setEnabled(true);
             return;
         }
         if (userCustomImage == null) {
             Log.d(TAG, "checkForValidInput: User did not upload item photo");
+            submitBtn.setEnabled(true);
             return;
         }
 
         Log.d(TAG, "checkForValidInput: Passed all checks!");
-
+        Toast.makeText(this, "Uploading item", Toast.LENGTH_LONG).show();
 //        checkForFirebaseAuthLogin(); TODO: Fix google and fb here
         uploadBitmapToStorage();
     }

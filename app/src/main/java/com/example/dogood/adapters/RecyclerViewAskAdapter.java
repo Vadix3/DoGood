@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogood.R;
 import com.example.dogood.activities.ItemDetailsActivity;
+import com.example.dogood.interfaces.ItemDetailsListener;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.User;
@@ -70,17 +71,7 @@ public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAsk
      */
     private void openItemDetails(int position) {
         Log.d(TAG, "openItemDetails: ");
-        Intent intent = new Intent(context, ItemDetailsActivity.class);
-        Gson gson = new Gson();
-        String itemJson = gson.toJson(items.get(position));
-        Log.d(TAG, "openItemDetails: Owner: "+items.get(position).getRequester().toString());
-        Log.d(TAG, "openItemDetails: Me: "+myUser.toString());
-        if (items.get(position).getRequester().getEmail().equals(myUser.getEmail())) {
-            Log.d(TAG, "openItemDetails: Owner user");
-            intent.putExtra(OWNER_USER, true);
-        }
-        intent.putExtra(ASK_ITEM, itemJson);
-        context.startActivity(intent);
+        ((ItemDetailsListener) context).getSelectedItem(position,false);
     }
 
     @Override

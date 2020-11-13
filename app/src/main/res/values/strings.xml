@@ -104,8 +104,12 @@
     <string name="price">Price: </string>
     <string name="description">Description: </string>
 
-    <string name="remove_item">Remove item </string>
-    <string name="edit_item">Edit item </string>
+    <string name="remove_item">Remove item</string>
+    <string name="edit_item">Edit item</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="are_you_sure">Are you sure you want to delete</string>
 
 
 </resources>

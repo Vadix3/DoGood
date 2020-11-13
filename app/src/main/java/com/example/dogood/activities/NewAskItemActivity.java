@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -112,7 +111,7 @@ public class NewAskItemActivity extends AppCompatActivity {
         itemName = findViewById(R.id.addAskItem_EDT_itemName);
         itemDescription = findViewById(R.id.addAskItem_EDT_itemDescription);
         itemCategory = findViewById(R.id.addAskItem_LST_categorySpinner);
-        isDiscrete = findViewById(R.id.addAskItem_CHK_isDescrete);
+        isDiscrete = findViewById(R.id.editItem_CHK_isDescrete);
         submitBtn = findViewById(R.id.addAskItem_BTN_submitBtn);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override

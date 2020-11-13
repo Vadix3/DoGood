@@ -1,7 +1,9 @@
 package com.example.dogood.objects;
 
 
-public class AskItem {
+import java.io.Serializable;
+
+public class AskItem implements Serializable {
     //TODO: Generate ID
     private String id; // Id sample: "A21" - Ask item 21
     private String name;

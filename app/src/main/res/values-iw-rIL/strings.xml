@@ -80,4 +80,9 @@
 
     <string name="remove_item">מחיקת פריט</string>
     <string name="edit_item">עריכת פריט</string>
+
+    <string name="yes">כן</string>
+    <string name="no">לא</string>
+    <string name="are_you_sure">בטוח למחוק את </string>
+
 </resources>

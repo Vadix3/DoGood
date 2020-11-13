@@ -22,11 +22,13 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.example.dogood.activities.ItemDetailsActivity;
 import com.example.dogood.fragments.AskItemFragment;
 import com.example.dogood.fragments.Fragment_ask_give_profile;
 import com.example.dogood.fragments.Fragment_profile;
 import com.example.dogood.fragments.GiveItemFragment;
 import com.example.dogood.fragments.HomeTabFragment;
+import com.example.dogood.interfaces.ItemDetailsListener;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.FirestoreDataContainer;
 import com.example.dogood.objects.GiveItem;
@@ -50,23 +52,25 @@ import java.util.ArrayList;
 
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ItemDetailsListener {
     private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
     private static final String NEW_ASK_ITEM = "112";
-    private static final String GIVE_ITEMS_ARRAY = "giveItems";
     private static final String ITEMS_DATA_CONTAINER = "dataContainer";
-    private static final String USERS_ARRAY = "usersArray";
     private static final String USERS_COLLECTION = "users/";
     private static final String LOGIN_USER_EXTRA = "loginUser";
-    private static final String PENDING_USER_DETAILS = "usersArray";
-    private static final String ITEM_COUNT = "itemCount";
-
+    private static final String OWNER_USER = "ownerUser";
+    private static final String GIVE_ITEM = "giveItem";
+    private static final String ASK_ITEM = "askItem";
+    private static final String ITEM_TO_DEAL_WITH = "item_to_deal_with";
+    private static final String TO_DELETE = "to_delete";
+    private static final String IS_GIVE_ITEM = "is_give_item";
 
 
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
     private static final int UPDATE_PROFILE_RESULT_CODE = 1013;
+    private static final int ITEM_DETAILS_RESULT_CODE = 1014;
 
 
     private static final int SEARCH_IN_GIVE_ITEMS = 11;
@@ -74,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean showingResults = false; // A boolean var to indicate that search results are showing.
 
-    private boolean isProfileFragmentShowing =false;
-    private boolean isGiveItemFragmentShowing =false;
-    private boolean isAskItemFragmentShowing =false;
-    private boolean isHomeFragmentShowing =false;
+    private boolean isProfileFragmentShowing = false;
+    private boolean isGiveItemFragmentShowing = false;
+    private boolean isAskItemFragmentShowing = false;
+    private boolean isHomeFragmentShowing = false;
 
     //private MaterialToolbar main_TLB_title;
     private Toolbar main_TLB_head;
@@ -229,10 +233,10 @@ public class MainActivity extends AppCompatActivity {
                             main_TLB_head.setTitle(getResources().getString(R.string.home));
                             showFragment(mainFragment);
 
-                            isProfileFragmentShowing =false;
-                            isGiveItemFragmentShowing =false;
-                            isAskItemFragmentShowing =false;
-                            isHomeFragmentShowing =true;
+                            isProfileFragmentShowing = false;
+                            isGiveItemFragmentShowing = false;
+                            isAskItemFragmentShowing = false;
+                            isHomeFragmentShowing = true;
                         }
                         break;
                     case R.id.bottom_menu_give:
@@ -244,10 +248,10 @@ public class MainActivity extends AppCompatActivity {
                                 setGiveFragment(giveItems);
                                 showFragment(giveFragment);
 
-                                isProfileFragmentShowing =false;
-                                isGiveItemFragmentShowing =true;
-                                isAskItemFragmentShowing =false;
-                                isHomeFragmentShowing =false;
+                                isProfileFragmentShowing = false;
+                                isGiveItemFragmentShowing = true;
+                                isAskItemFragmentShowing = false;
+                                isHomeFragmentShowing = false;
                             }
                         }
                         break;
@@ -260,10 +264,10 @@ public class MainActivity extends AppCompatActivity {
                                 setAskFragment(askItems);
                                 showFragment(askFragment);
 
-                                isProfileFragmentShowing =false;
-                                isGiveItemFragmentShowing =false;
-                                isAskItemFragmentShowing =true;
-                                isHomeFragmentShowing =false;
+                                isProfileFragmentShowing = false;
+                                isGiveItemFragmentShowing = false;
+                                isAskItemFragmentShowing = true;
+                                isHomeFragmentShowing = false;
                             }
                         }
                         break;
@@ -273,10 +277,10 @@ public class MainActivity extends AppCompatActivity {
                             main_TLB_head.setTitle(getResources().getString(R.string.profile));
                             showFragment(profileFragment);
 
-                            isProfileFragmentShowing =true;
-                            isGiveItemFragmentShowing =false;
-                            isAskItemFragmentShowing =false;
-                            isHomeFragmentShowing =false;
+                            isProfileFragmentShowing = true;
+                            isGiveItemFragmentShowing = false;
+                            isAskItemFragmentShowing = false;
+                            isHomeFragmentShowing = false;
                         }
                         break;
                 }
@@ -303,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setProfileFragment() {
         Log.d(TAG, "onNavigationItemSelected: profile ");
-        fragment_profile = new Fragment_profile(myUser,giveItems.size(),askItems.size());
+        fragment_profile = new Fragment_profile(myUser, giveItems.size(), askItems.size());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_profilePageFragment, fragment_profile);
         transaction.commit();
@@ -728,7 +732,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "onActivityResult: User canceled new item input");
                 }
-                //TODO: Add switch for profile page
                 break;
             case UPDATE_PROFILE_RESULT_CODE:
                 Log.d(TAG, "onActivityResult: UPDATE_PROFILE_RESULT_CODE");
@@ -750,10 +753,112 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "onActivityResult: User canceled update profile");
                 }
+                break;
+            case ITEM_DETAILS_RESULT_CODE:
+                Log.d(TAG, "onActivityResult: Got from item details");
+                if (data != null) {
+                    String tempJson = data.getStringExtra(ITEM_TO_DEAL_WITH);
+                    boolean isGiveItem = data.getBooleanExtra(IS_GIVE_ITEM, false);
+                    if (data.getBooleanExtra(TO_DELETE, false)) {
+                        Log.d(TAG, "onActivityResult: Deleting: " + tempJson);
+                        deleteSelectedItem(tempJson, isGiveItem);
+                    } else {
+                        Log.d(TAG, "onActivityResult: Editing: " + tempJson);
+                        updateSelectedItem(tempJson, isGiveItem);
+                    }
+
+                    updateUserInFirestore();
+                    saveItemsToFirestore();
+                    updateFragments();
+                } else {
+                    Log.d(TAG, "onActivityResult: User did not do anything special");
+                }
+                break;
         }
     }
 
-    /** A method to get the current time in a string format*/
+    private void updateSelectedItem(String tempJson, boolean isGiveItem) {
+        Log.d(TAG, "updateSelectedItem: Updating: " + tempJson);
+        Gson gson = new Gson();
+        if (isGiveItem) {
+            GiveItem tempItem = gson.fromJson(tempJson, GiveItem.class);
+            Log.d(TAG, "onActivityResult: Got give item: " + tempItem.toString());
+
+            for (int i = 0; i < giveItems.size(); i++) {
+                if (giveItems.get(i).getId().equals(tempItem.getId())) {
+                    giveItems.set(i, tempItem);
+                }
+            }
+
+            for (int i = 0; i < myUser.getGiveItems().size(); i++) {
+                if (myUser.getGiveItems().get(i).getId().equals(tempItem.getId())) {
+                    myUser.getGiveItems().set(i, tempItem);
+                }
+            }
+            Toast.makeText(this, tempItem.getName() + " Updated successfully!", Toast.LENGTH_SHORT).show();
+        } else {
+            AskItem tempItem = gson.fromJson(tempJson, AskItem.class);
+            Log.d(TAG, "onActivityResult: Got ask item: " + tempItem.toString());
+
+            for (int i = 0; i < askItems.size(); i++) {
+                if (askItems.get(i).getId().equals(tempItem.getId())) {
+                    askItems.set(i, tempItem);
+                }
+            }
+            for (int i = 0; i < myUser.getAskItems().size(); i++) {
+                if (myUser.getAskItems().get(i).getId().equals(tempItem.getId())) {
+                    myUser.getAskItems().set(i, tempItem);
+                }
+            }
+            Toast.makeText(this, tempItem.getName() + " Removed successfully!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * A method to delete selected item from existance
+     */
+    private void deleteSelectedItem(String tempJson, boolean isGiveItem) {
+        Log.d(TAG, "deleteSelectedItem: Deleting: " + tempJson);
+        Gson gson = new Gson();
+        if (isGiveItem) {
+            GiveItem tempItem = gson.fromJson(tempJson, GiveItem.class);
+            Log.d(TAG, "onActivityResult: Got give item: " + tempItem.toString());
+
+            for (int i = 0; i < giveItems.size(); i++) {
+                if (giveItems.get(i).getId().equals(tempItem.getId())) {
+                    giveItems.remove(i);
+                }
+            }
+
+            for (int i = 0; i < myUser.getGiveItems().size(); i++) {
+                if (myUser.getGiveItems().get(i).getId().equals(tempItem.getId())) {
+                    myUser.getGiveItems().remove(i);
+                }
+            }
+            Toast.makeText(this, tempItem.getName() + " Removed successfully!", Toast.LENGTH_SHORT).show();
+        } else {
+            AskItem tempItem = gson.fromJson(tempJson, AskItem.class);
+            Log.d(TAG, "onActivityResult: Got ask item: " + tempItem.toString());
+
+            for (int i = 0; i < askItems.size(); i++) {
+                if (askItems.get(i).getId().equals(tempItem.getId())) {
+                    askItems.remove(i);
+                }
+            }
+            for (int i = 0; i < myUser.getAskItems().size(); i++) {
+                if (myUser.getAskItems().get(i).getId().equals(tempItem.getId())) {
+                    myUser.getAskItems().remove(i);
+                }
+            }
+
+            Toast.makeText(this, tempItem.getName() + " Removed successfully!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    /**
+     * A method to get the current time in a string format
+     */
     private String getCurrentDate() {
         String returnDate = "";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -795,12 +900,37 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
 
+    @Override
+    public void getSelectedItem(int position, boolean isGiveItem) {
+        Intent intent = new Intent(this, ItemDetailsActivity.class);
+        Gson gson = new Gson();
+
+        if (isGiveItem) {
+            Log.d(TAG, "getSelectedItem: " + giveItems.get(position).toString());
+            if (giveItems.get(position).getGiver().getEmail().equals(myUser.getEmail())) {
+                Log.d(TAG, "openItemDetails: Owner user");
+                intent.putExtra(OWNER_USER, true);
+            }
+            String itemJson = gson.toJson(giveItems.get(position));
+            intent.putExtra(GIVE_ITEM, itemJson);
+        } else {
+            Log.d(TAG, "getSelectedItem: " + askItems.get(position).toString());
+            if (askItems.get(position).getRequester().getEmail().equals(myUser.getEmail())) {
+                Log.d(TAG, "openItemDetails: Owner user");
+                intent.putExtra(OWNER_USER, true);
+            }
+            String itemJson = gson.toJson(askItems.get(position));
+            intent.putExtra(ASK_ITEM, itemJson);
+        }
+        startActivityForResult(intent, ITEM_DETAILS_RESULT_CODE);
     }
 
     public interface IOnBackPressed {
         /**
          * If you return true the back press will not be taken into account, otherwise the activity will act naturally
+         *
          * @return true if your processing has priority if not false
          */
         boolean onBackPressed();

@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import com.bumptech.glide.Glide;
 import com.example.dogood.R;
 import com.example.dogood.activities.ItemDetailsActivity;
+import com.example.dogood.interfaces.ItemDetailsListener;
 import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -83,15 +84,7 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
      */
     private void openItemDetails(int position) {
         Log.d(TAG, "openItemDetails: ");
-        Intent intent = new Intent(context, ItemDetailsActivity.class);
-        Gson gson = new Gson();
-        if(items.get(position).getGiver().getEmail().equals(myUser.getEmail())){
-            Log.d(TAG, "openItemDetails: Owner user");
-            intent.putExtra(OWNER_USER,true);
-        }
-        String itemJson = gson.toJson(items.get(position));
-        intent.putExtra(GIVE_ITEM, itemJson);
-        context.startActivity(intent);
+        ((ItemDetailsListener) context).getSelectedItem(position,true);
     }
 
     /**

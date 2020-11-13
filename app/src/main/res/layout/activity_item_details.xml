@@ -18,8 +18,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/itemDetails_LBL_itemName"
@@ -121,7 +120,7 @@
         app:layout_constraintVertical_bias="0.8">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/itemDetails_BTN_editEntry"
+            android:id="@+id/itemDetails_BTN_removeEntry"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
@@ -133,7 +132,7 @@
             app:cornerRadius="20dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/itemDetails_BTN_removeEntry"
+            android:id="@+id/itemDetails_BTN_editEntry"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
