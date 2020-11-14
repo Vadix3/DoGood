@@ -54,6 +54,8 @@ public class Fragment_ask_give_profile extends Fragment implements MainActivity.
     }
 
     public Fragment_ask_give_profile(User user, int giveItemsArraySize, int askItemsArraySize) {
+        Log.d(TAG, "Fragment_ask_give_profile: ask items size: " + askItemsArraySize
+                + " give items size: " + giveItemsArraySize);
         this.myUser = user;
         this.giveItemsArraySize = giveItemsArraySize;
         this.askItemsArraySize = askItemsArraySize;

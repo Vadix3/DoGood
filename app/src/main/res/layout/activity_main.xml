@@ -11,7 +11,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <!--TODO: Arrribute Good Ware,Flaticon,DinosoftLabs,Smartline-->
+    <!--TODO: Arrribute Good Ware,Those Icons,Flaticon,DinosoftLabs,photo3idea_studio,Smartline,Eucalyp,Pixel perfect-->
 
     <FrameLayout
         android:id="@+id/main_LAY_mainPageFragment"

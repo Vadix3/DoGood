@@ -198,7 +198,7 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
                 startActivity(loginIntent);
                 finish();
                 //TODO: RETURN AUTO LOGIN
-                mAuth.signOut();
+//                mAuth.signOut();
             } else {
                 Log.d(TAG, "onStart: Came from main, not logging in");
                 mAuth.signOut();

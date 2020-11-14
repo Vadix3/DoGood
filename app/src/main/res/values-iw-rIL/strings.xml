@@ -88,6 +88,9 @@
     <string name="contact_us">צרו קשר:</string>
     <string name="regarding_item">בנוגע לפריט:</string>
 
-
+    <string name="name2">שם: </string>
+    <string name="email2">אימייל: </string>
+    <string name="phone2">טלפון: </string>
+    <string name="city2">עיר: </string>
 
 </resources>

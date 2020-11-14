@@ -84,7 +84,7 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
      */
     private void openItemDetails(int position) {
         Log.d(TAG, "openItemDetails: ");
-        ((ItemDetailsListener) context).getSelectedItem(position,true);
+        ((ItemDetailsListener) context).getSelectedItem(items.get(position),null,true);
     }
 
     /**

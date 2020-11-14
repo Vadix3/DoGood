@@ -26,8 +26,10 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/askRow_IMG_itemCategoryPic"
                 android:layout_width="130dp"
+                android:padding="10dp"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
+                android:background="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

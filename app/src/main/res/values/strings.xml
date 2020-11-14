@@ -115,6 +115,18 @@
     <string name="our_email" translatable="false">dogoodapp1@gmail.com</string>
 
     <string name="regarding_item">Regarding item:</string>
+    <string name="ils" translatable="false">ILS</string>
+
+    <string name="name2">Name: </string>
+    <string name="email2">Email: </string>
+    <string name="phone2">Phone: </string>
+    <string name="city2">City: </string>
+
+    <string name="contact_giver">Contact Giver</string>
+    <string name="contact_asker">Contact Asker</string>
+
+
+
 
 
 

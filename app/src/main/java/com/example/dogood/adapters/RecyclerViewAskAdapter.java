@@ -57,7 +57,8 @@ public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAsk
         holder.itemName.setText(temp.getName());
         holder.itemCity.setText(temp.getCity());
         holder.postDate.setText(temp.getDate());
-        holder.itemPhoto.setImageResource(R.color.colorPrimary);
+        getItemCategory(holder.itemPhoto, position);
+
         holder.rowCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,11 +68,78 @@ public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAsk
     }
 
     /**
+     * A method to init category image
+     */
+    private void getItemCategory(ShapeableImageView itemPhoto, int position) {
+        Log.d(TAG, "getItemCategory: ");
+        AskItem item = items.get(position);
+        String category = item.getCategory();
+
+        if (category.equals(context.getString(R.string.clothes))) {
+            itemPhoto.setImageResource(R.drawable.ic_clothes);
+            return;
+        }
+        if (category.equals(context.getString(R.string.office_supplies))) {
+            itemPhoto.setImageResource(R.drawable.ic_office_supplies);
+            return;
+        }
+        if (category.equals(context.getString(R.string.medical_equipment))) {
+            itemPhoto.setImageResource(R.drawable.ic_medical_equipment);
+            return;
+        }
+        if (category.equals(context.getString(R.string.gaming))) {
+            itemPhoto.setImageResource(R.drawable.ic_gaming);
+            return;
+        }
+        if (category.equals(context.getString(R.string.electronics))) {
+            itemPhoto.setImageResource(R.drawable.ic_electronics);
+            return;
+        }
+        if (category.equals(context.getString(R.string.appliances))) {
+            itemPhoto.setImageResource(R.drawable.ic_appliances);
+            return;
+        }
+        if (category.equals(context.getString(R.string.gift_cards))) {
+            itemPhoto.setImageResource(R.drawable.ic_gift_cards);
+            return;
+        }
+        if (category.equals(context.getString(R.string.lighting))) {
+            itemPhoto.setImageResource(R.drawable.ic_lighting);
+            return;
+        }
+        if (category.equals(context.getString(R.string.games_and_toys))) {
+            itemPhoto.setImageResource(R.drawable.ic_games_and_toys);
+            return;
+        }
+        if (category.equals(context.getString(R.string.cellular))) {
+            itemPhoto.setImageResource(R.drawable.ic_cellular);
+            return;
+        }
+        if (category.equals(context.getString(R.string.books))) {
+            itemPhoto.setImageResource(R.drawable.ic_books);
+            return;
+        }
+        if (category.equals(context.getString(R.string.baby_supplies))) {
+            itemPhoto.setImageResource(R.drawable.ic_baby_supplies);
+            return;
+        }
+        if (category.equals(context.getString(R.string.computers))) {
+            itemPhoto.setImageResource(R.drawable.ic_computers);
+            return;
+        }
+        if (category.equals(context.getString(R.string.other))) {
+            itemPhoto.setImageResource(R.drawable.ic_other);
+            return;
+        }
+
+    }
+
+    /**
      * A method to open the item details activity
      */
     private void openItemDetails(int position) {
         Log.d(TAG, "openItemDetails: ");
-        ((ItemDetailsListener) context).getSelectedItem(position,false);
+        ((ItemDetailsListener) context).getSelectedItem(null, items.get(position), false);
     }
 
     @Override

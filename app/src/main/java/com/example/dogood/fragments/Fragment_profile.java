@@ -1,54 +1,51 @@
 package com.example.dogood.fragments;
 
 
-/*
-
-        <FrameLayout
-            android:id="@+id/profile_LAY_post"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
- */
-
-import android.content.Intent;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.dogood.MainActivity;
+import com.bumptech.glide.Glide;
+import com.example.dogood.Dialogs.PhotoModeDialog;
 import com.example.dogood.R;
-import com.example.dogood.activities.Activity_updateAccount;
+import com.example.dogood.Dialogs.UpdateAccountDialog;
 import com.example.dogood.adapters.ViewPagerAdapter;
 import com.example.dogood.objects.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
-//public class Fragment_profile extends Fragment implements MainActivity.IOnBackPressed {
 public class Fragment_profile extends Fragment {
 
     private static final String TAG = "Fragment_profile";
 
     protected View view;
-
     private static final int UPDATE_PROFILE_RESULT_CODE = 1013;
-    private static final String ITEM_COUNT = "itemCount";
+    private Context context;
 
-
-    private ImageView profile_IMG_picture;
+    private ShapeableImageView profile_IMG_picture;
     private TextView profile_LBL_name;
     private TextView profile_LBL_city;
     private TextView profile_LBL_phone;
@@ -56,6 +53,7 @@ public class Fragment_profile extends Fragment {
     //private FrameLayout profile_LAY_post;
     private MaterialButton profile_BTN_update;
     private ViewPager2 viewPager;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
 
 
     private Fragment_ask_give_profile fragment_ask_give_profile;
@@ -64,15 +62,32 @@ public class Fragment_profile extends Fragment {
     private int giveItemsArraySize; // The size of the total give items
     private int askItemsArraySIze; // The size of the total ask items
 
+
     public Fragment_profile() {
     }
 
-    public Fragment_profile(User user, int giveItemsArraySize, int askItemsArraySize) {
+    public Fragment_profile(User user, int giveItemsArraySize, int askItemsArraySize,Context context) {
         this.mUser = user;
         this.giveItemsArraySize = giveItemsArraySize;
         this.askItemsArraySIze = askItemsArraySize;
+        this.context=context;
     }
 
+    /**
+     * A method to open photo choices dialog
+     */
+    private void openPhotoDialog() {
+        Log.d(TAG, "openPhotoDialog: ");
+        //TODO: fix quality
+        PhotoModeDialog photoModeDialog = new PhotoModeDialog(getContext());
+        photoModeDialog.show();
+        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.8);
+        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
+        photoModeDialog.getWindow().setLayout(width, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        photoModeDialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        photoModeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        photoModeDialog.getWindow().setDimAmount(0.9f);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +96,7 @@ public class Fragment_profile extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
+        Log.d(TAG, "onCreateView profile fragment");
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_profile, container, false);
         }
@@ -93,23 +108,20 @@ public class Fragment_profile extends Fragment {
         profile_BTN_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog(view);
+                openEditUserDialog();
             }
         });
 
         profile_IMG_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addPicture();
+                openPhotoDialog();
             }
         });
 
         return view;
     }
 
-    private void addPicture() {
-
-    }
 
     private void updateUser() {
         Log.d(TAG, "updateUser: ");
@@ -142,6 +154,7 @@ public class Fragment_profile extends Fragment {
 
     private void findViews() {
         profile_IMG_picture = view.findViewById(R.id.profile_IMG_picture);
+        getUserProfilePhoto();
         profile_LBL_name = view.findViewById(R.id.profile_LBL_name);
         profile_LBL_city = view.findViewById(R.id.profile_LBL_city);
         profile_LBL_phone = view.findViewById(R.id.profile_LBL_phone);
@@ -153,6 +166,37 @@ public class Fragment_profile extends Fragment {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getFragmentManager(), getLifecycle(), mUser);
         viewPager.setAdapter(viewPagerAdapter);
     }
+    /**
+     * A method to get the item photo from the storage
+     */
+    private void getUserProfilePhoto() {
+        Log.d(TAG, "getPhotoFromStorage: Fetching photo from storage");
+
+        String itemID = mUser.getEmail();
+
+        String path = "gs://" + getString(R.string.google_storage_bucket) + "/" + itemID + ".jpg";
+        Log.d(TAG, "getPhotoFromStorage: Fetching: " + path);
+        StorageReference gsReference = storage.getReferenceFromUrl(path);
+        gsReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.d(TAG, "onSuccess: " + uri);
+                // create a ProgressDrawable object which we will show as placeholder
+                CircularProgressDrawable drawable = new CircularProgressDrawable(context);
+                drawable.setColorSchemeColors(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.black);
+                drawable.setCenterRadius(30f);
+                drawable.setStrokeWidth(5f);
+                // set all other properties as you would see fit and start it
+                drawable.start();
+                Glide.with(context).load(uri).placeholder(drawable).into(profile_IMG_picture);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d(TAG, "onFailure: Exception: " + exception.getMessage());
+            }
+        });
+    }
 
 
     private void addGiveItemsFragment() {
@@ -163,9 +207,15 @@ public class Fragment_profile extends Fragment {
         transaction.commit();
     }
 
-    private void openDialog(View view) {
-        Intent intent = new Intent(getActivity(), Activity_updateAccount.class);
-        startActivityForResult(intent, UPDATE_PROFILE_RESULT_CODE);
+    private void openEditUserDialog() {
+        UpdateAccountDialog updateAccountDialog = new UpdateAccountDialog(context, mUser);
+        updateAccountDialog.show();
+        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.5);
+        int width = (int) (getResources().getDisplayMetrics().widthPixels);
+        updateAccountDialog.getWindow().setLayout(width, height);
+        updateAccountDialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        updateAccountDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        updateAccountDialog.getWindow().setDimAmount(0.8f);
     }
 
     public Bitmap stringToBitMap(String encodedString) {
@@ -179,11 +229,4 @@ public class Fragment_profile extends Fragment {
             return null;
         }
     }
-//
-//
-//    @Override
-//    public boolean onBackPressed() {
-//        Log.d(TAG, "onBackPressed: from profile");
-//        return fragment_ask_give_profile.onBackPressed();
-//    }
 }

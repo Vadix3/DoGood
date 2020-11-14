@@ -367,7 +367,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
      * A method to upload picture to Firebase Storage
      */
     private void uploadBitmapToStorage() {
-        Log.d(TAG, "uploadBitmapToStorage: Uploading bitmap to storage: ID: G"+itemCount);
+        Log.d(TAG, "uploadBitmapToStorage: Uploading bitmap to storage: ID: G" + itemCount);
         CircularProgressDrawable drawable = new CircularProgressDrawable(NewGiveItemActivity.this);
         drawable.setColorSchemeColors(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.black);
         drawable.setCenterRadius(30f);
@@ -551,6 +551,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
                         Log.i("TAG", "Some exception " + e);
                     }
                 }
+                break;
         }
     }
 

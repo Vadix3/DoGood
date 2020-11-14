@@ -2,16 +2,26 @@ package com.example.dogood;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,13 +32,15 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.dogood.activities.ItemDetailsActivity;
 import com.example.dogood.fragments.AskItemFragment;
-import com.example.dogood.fragments.Fragment_ask_give_profile;
 import com.example.dogood.fragments.Fragment_profile;
 import com.example.dogood.fragments.GiveItemFragment;
 import com.example.dogood.fragments.HomeTabFragment;
+import com.example.dogood.interfaces.EditProfileListener;
 import com.example.dogood.interfaces.ItemDetailsListener;
+import com.example.dogood.interfaces.PhotoModeListener;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.FirestoreDataContainer;
 import com.example.dogood.objects.GiveItem;
@@ -36,15 +48,27 @@ import com.example.dogood.objects.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -52,7 +76,7 @@ import java.util.ArrayList;
 
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
-public class MainActivity extends AppCompatActivity implements ItemDetailsListener {
+public class MainActivity extends AppCompatActivity implements ItemDetailsListener, PhotoModeListener, EditProfileListener {
     private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
     private static final String NEW_ASK_ITEM = "112";
@@ -71,8 +95,11 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
     private static final int UPDATE_PROFILE_RESULT_CODE = 1013;
     private static final int ITEM_DETAILS_RESULT_CODE = 1014;
-    private static final int ITEM_EDIT_RESULT_CODE = 1015;
 
+    private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
+    private static final int STORAGE_PERMISSION_SETTINGS_REQUSETCODE = 133;
+    private static final int CAMERA_PICTURE_REQUEST = 124;
+    private static final int STORAGE_PICTURE_REQUEST = 125;
 
     private static final int SEARCH_IN_GIVE_ITEMS = 11;
     private static final int SEARCH_IN_ASK_ITEMS = 12;
@@ -114,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     private User myUser; // The current user that using the app
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
 
 
     @Override
@@ -308,7 +336,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
      */
     private void setProfileFragment() {
         Log.d(TAG, "onNavigationItemSelected: profile ");
-        fragment_profile = new Fragment_profile(myUser, giveItems.size(), askItems.size());
+        fragment_profile = new Fragment_profile(myUser, giveItems.size(), askItems.size(), this);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_profilePageFragment, fragment_profile);
         transaction.commit();
@@ -675,7 +703,43 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.d(TAG, "onActivityResult: request code: " + requestCode + " Result code: " + resultCode);
         super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case CAMERA_PERMISSION_SETTINGS_REQUSETCODE:
+                Log.d(TAG, "onActivityResult: I came from app settings: camera");
+                break;
+            case STORAGE_PERMISSION_SETTINGS_REQUSETCODE:
+                Log.d(TAG, "onActivityResult: I came from app settings: storage");
+                break;
+            case CAMERA_PICTURE_REQUEST:
+                Log.d(TAG, "onActivityResult: I came from camera");
+                ShapeableImageView userPhoto = fragment_profile.getView().findViewById(R.id.profile_IMG_picture);
+                if (data != null) {
+                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                    userPhoto.setStrokeWidth(20);
+                    userPhoto.setStrokeColor(getColorStateList(R.color.colorPrimaryDark));
+                    userPhoto.setImageBitmap(bitmap);
+                    uploadBitmapToStorage(bitmap);
+                }
+                break;
+            case STORAGE_PICTURE_REQUEST:
+                Log.d(TAG, "onActivityResult: I came from storage");
+                if (data != null) {
+                    Uri selectedImage = data.getData();
+                    try {
+                        ShapeableImageView profilePhoto = fragment_profile.getView().findViewById(R.id.profile_IMG_picture);
 
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        profilePhoto.setStrokeWidth(20);
+                        profilePhoto.setStrokeColor(getColorStateList(R.color.colorPrimaryDark));
+                        profilePhoto.setImageBitmap(bitmap);
+                        uploadBitmapToStorage(bitmap);
+
+                    } catch (IOException e) {
+                        Log.i("TAG", "Some exception " + e);
+                    }
+                }
+                break;
+        }
         switch (resultCode) {
 
             /** We got from voice listener*/
@@ -734,27 +798,6 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     Log.d(TAG, "onActivityResult: User canceled new item input");
                 }
                 break;
-            case UPDATE_PROFILE_RESULT_CODE:
-                Log.d(TAG, "onActivityResult: UPDATE_PROFILE_RESULT_CODE");
-                if (data != null) {
-                    String name = (String) data.getExtras().get("name");
-                    String phone = (String) data.getExtras().get("phone");
-                    String city = (String) data.getExtras().get("city");
-                    String photo = (String) data.getExtras().get("photo");
-
-                    myUser.setName(name);
-                    myUser.setPhone(phone);
-                    myUser.setCity(city);
-                    if (photo != null) {
-                        myUser.setPhoto(photo);
-                    }
-                    //end
-                    updateUserInFirestore();
-                    setProfileFragment();
-                } else {
-                    Log.d(TAG, "onActivityResult: User canceled update profile");
-                }
-                break;
             case ITEM_DETAILS_RESULT_CODE:
                 Log.d(TAG, "onActivityResult: Got from item details");
                 if (data != null) {
@@ -778,6 +821,49 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
         }
     }
 
+
+    /**
+     * A method to upload picture to Firebase Storage
+     */
+    private void uploadBitmapToStorage(Bitmap bitmap) {
+
+        final String itemID = myUser.getEmail();
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://" + getString(R.string.google_storage_bucket));
+
+        // Create a reference to "mountains.jpg"
+        StorageReference tempRef = storageRef.child(itemID + ".jpg");
+
+        // Create a reference to 'images/mountains.jpg'
+        StorageReference tempImagesRef = storageRef.child("images/" + itemID + ".jpg");
+
+        // While the file names are the same, the references point to different files
+        tempRef.getName().equals(tempImagesRef.getName());    // true
+        tempRef.getPath().equals(tempImagesRef.getPath());    // false
+
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = tempRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d(TAG, "onFailure: Upload failed: " + exception.getMessage());
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d(TAG, "onSuccess: Image upload successful!");
+            }
+        });
+    }
+
+    /**
+     * A method to update the received item
+     */
     private void updateSelectedItem(String tempJson, boolean isGiveItem) {
         Log.d(TAG, "updateSelectedItem: Updating: " + tempJson);
         Gson gson = new Gson();
@@ -816,7 +902,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     }
 
     /**
-     * A method to delete selected item from existance
+     * A method to delete selected item from existence
      */
     private void deleteSelectedItem(String tempJson, boolean isGiveItem) {
         Log.d(TAG, "deleteSelectedItem: Deleting: " + tempJson);
@@ -904,28 +990,179 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     }
 
     @Override
-    public void getSelectedItem(int position, boolean isGiveItem) {
+    public void getSelectedItem(GiveItem gotGiveItem, AskItem gotAskItem, boolean isGiveItem) {
         Intent intent = new Intent(this, ItemDetailsActivity.class);
         Gson gson = new Gson();
 
         if (isGiveItem) {
-            Log.d(TAG, "getSelectedItem: " + giveItems.get(position).toString());
-            if (giveItems.get(position).getGiver().getEmail().equals(myUser.getEmail())) {
+            Log.d(TAG, "getSelectedItem: " + gotGiveItem.toString());
+            if (gotGiveItem.getGiver().getEmail().equals(myUser.getEmail())) {
                 Log.d(TAG, "openItemDetails: Owner user");
                 intent.putExtra(OWNER_USER, true);
             }
-            String itemJson = gson.toJson(giveItems.get(position));
+            String itemJson = gson.toJson(gotGiveItem);
             intent.putExtra(GIVE_ITEM, itemJson);
         } else {
-            Log.d(TAG, "getSelectedItem: " + askItems.get(position).toString());
-            if (askItems.get(position).getRequester().getEmail().equals(myUser.getEmail())) {
+            Log.d(TAG, "getSelectedItem: " + gotAskItem.toString());
+            if (gotAskItem.getRequester().getEmail().equals(myUser.getEmail())) {
                 Log.d(TAG, "openItemDetails: Owner user");
                 intent.putExtra(OWNER_USER, true);
             }
-            String itemJson = gson.toJson(askItems.get(position));
+            String itemJson = gson.toJson(gotAskItem);
             intent.putExtra(ASK_ITEM, itemJson);
         }
         startActivityForResult(intent, ITEM_DETAILS_RESULT_CODE);
+    }
+
+    @Override
+    public void photoMode(Boolean fromCamera) {
+        if (fromCamera) {
+            Log.d(TAG, "photoMode: Taking picture from camera");
+            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "onClick: User already given permission, moving straight to camera");
+                openCamera();
+            } else {
+                checkingForCameraPermissions();
+            }
+        } else {
+            Log.d(TAG, "photoMode: Fetching picture from storage");
+            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "onClick: User already given permission, moving straight to storage");
+                openStorage();
+            } else {
+                checkingForStoragePermissions();
+            }
+        }
+    }
+
+    /**
+     * A method to open the storage to fetch a photo
+     */
+    private void openStorage() {
+        Log.d(TAG, "openStorage: opening storage");
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(pickPhoto, STORAGE_PICTURE_REQUEST);
+    }
+
+    /**
+     * A method to check for camera permissions
+     */
+    private void checkingForCameraPermissions() {
+        Log.d(TAG, "checkingForCameraPermissions: checking for users permissions");
+
+        Dexter.withContext(this)
+                .withPermission(Manifest.permission.CAMERA)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        Log.d(TAG, "onPermissionGranted: User given permission");
+                        openCamera();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            Log.d(TAG, "onPermissionDenied: User denied permission permanently!");
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setTitle("Permission Denied")
+                                    .setMessage("Camera permission is required to take a photo of your item.\n" +
+                                            "Please allow camera permissions in app settings.")
+                                    .setNegativeButton("Cancel", null)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Log.d(TAG, "onClick: Opening settings activity");
+                                            Intent intent = new Intent();
+                                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                            intent.setData(Uri.fromParts("package", getPackageName(), null));
+                                            startActivityForResult(intent, CAMERA_PERMISSION_SETTINGS_REQUSETCODE);
+                                        }
+                                    }).show();
+                        } else {
+                            Log.d(TAG, "onPermissionDenied: User denied permission!");
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+    }
+
+    /**
+     * A method to check for storage access permissions
+     */
+    private void checkingForStoragePermissions() {
+        Log.d(TAG, "checkingForStoragePermissions: checking for users permissions");
+
+        Dexter.withContext(this)
+                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        Log.d(TAG, "onPermissionGranted: User given permission");
+                        openCamera();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            Log.d(TAG, "onPermissionDenied: User denied permission permanently!");
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setTitle("Permission Denied")
+                                    .setMessage("Storage permission is required to add a photo of your item.\n" +
+                                            "Please allow storage permissions in app settings.")
+                                    .setNegativeButton("Cancel", null)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Log.d(TAG, "onClick: Opening settings activity");
+                                            Intent intent = new Intent();
+                                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                            intent.setData(Uri.fromParts("package", getPackageName(), null));
+                                            startActivityForResult(intent, STORAGE_PERMISSION_SETTINGS_REQUSETCODE);
+                                        }
+                                    }).show();
+                        } else {
+                            Log.d(TAG, "onPermissionDenied: User denied permission!");
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+    }
+
+    /**
+     * A method to open the camera
+     */
+    private void openCamera() {
+        Log.d(TAG, "openCamera: opening camera");
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_PICTURE_REQUEST);
+    }
+
+    @Override
+    public void getDetails(String updatedName, String updatedCity, String updatedPhone) {
+
+        if (!updatedName.equals("")) {
+            myUser.setName(updatedName);
+        }
+        if (!updatedPhone.equals("")) {
+            myUser.setPhone(updatedPhone);
+        }
+        if (!updatedCity.equals("")) {
+            myUser.setCity(updatedCity);
+        }
+
+        updateUserInFirestore();
+        setProfileFragment();
     }
 
     public interface IOnBackPressed {

@@ -48,14 +48,13 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDelete
     private static final String ITEM_TO_DEAL_WITH = "item_to_deal_with";
     private static final String IS_GIVE_ITEM = "is_give_item";
     private static final String TO_DELETE = "to_delete";
-    private static final String TO_EDIT = "to_edit";
 
 
     private static final int ITEM_DETAILS_RESULT_CODE = 1014;
     private static final int ITEM_EDIT_RESULT_CODE = 1015;
 
 
-    private Context context = getBaseContext();
+    private Context context = this;
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private TextView itemName, itemState, itemPrice, itemDescription, itemDate;
@@ -113,13 +112,13 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDelete
         if (myGiveItem != null) {
             Log.d(TAG, "updateUI: Updating UI to match give item");
             itemName.setText(myGiveItem.getName());
-            itemState.setText(getString(R.string.condition) + myGiveItem.getState());
+            itemState.setText(getString(R.string.condition) + " " + myGiveItem.getState());
             if (myGiveItem.getPrice().equals("")) {
                 itemPrice.setText(getString(R.string.price) + " " + getString(R.string.free));
             } else
-                itemPrice.setText(getString(R.string.price) + myGiveItem.getPrice());
+                itemPrice.setText(getString(R.string.price) + " " + myGiveItem.getPrice() + " " + getString(R.string.ils));
             itemDescription.setText(getString(R.string.description) + "\n" + myGiveItem.getDescription());
-            itemDate.setText(getString(R.string.post_date) + myGiveItem.getDate());
+            itemDate.setText(getString(R.string.post_date) + " " + myGiveItem.getDate());
             getPhotoFromStorage();
 
         } else {
@@ -129,7 +128,9 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDelete
             itemDate.setText(getString(R.string.post_date) + myAskItem.getDate());
             itemState.setVisibility(View.GONE);
             itemPrice.setVisibility(View.GONE);
-            contactUser.setText("Contact Asker");
+            contactUser.setText(getString(R.string.contact_asker));
+            itemPhoto.setPadding(100, 100, 100, 100);
+            getItemCategory(itemPhoto, myAskItem);
         }
     }
 
@@ -252,6 +253,72 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDelete
     }
 
     /**
+     * A method to init category image
+     */
+    private void getItemCategory(ShapeableImageView itemPhoto, AskItem item) {
+        Log.d(TAG, "getItemCategory: ");
+        String category = item.getCategory();
+
+        if (category.equals(context.getString(R.string.clothes))) {
+            itemPhoto.setImageResource(R.drawable.ic_clothes);
+            return;
+        }
+        if (category.equals(context.getString(R.string.office_supplies))) {
+            itemPhoto.setImageResource(R.drawable.ic_office_supplies);
+            return;
+        }
+        if (category.equals(context.getString(R.string.medical_equipment))) {
+            itemPhoto.setImageResource(R.drawable.ic_medical_equipment);
+            return;
+        }
+        if (category.equals(context.getString(R.string.gaming))) {
+            itemPhoto.setImageResource(R.drawable.ic_gaming);
+            return;
+        }
+        if (category.equals(context.getString(R.string.electronics))) {
+            itemPhoto.setImageResource(R.drawable.ic_electronics);
+            return;
+        }
+        if (category.equals(context.getString(R.string.appliances))) {
+            itemPhoto.setImageResource(R.drawable.ic_appliances);
+            return;
+        }
+        if (category.equals(context.getString(R.string.gift_cards))) {
+            itemPhoto.setImageResource(R.drawable.ic_gift_cards);
+            return;
+        }
+        if (category.equals(context.getString(R.string.lighting))) {
+            itemPhoto.setImageResource(R.drawable.ic_lighting);
+            return;
+        }
+        if (category.equals(context.getString(R.string.games_and_toys))) {
+            itemPhoto.setImageResource(R.drawable.ic_games_and_toys);
+            return;
+        }
+        if (category.equals(context.getString(R.string.cellular))) {
+            itemPhoto.setImageResource(R.drawable.ic_cellular);
+            return;
+        }
+        if (category.equals(context.getString(R.string.books))) {
+            itemPhoto.setImageResource(R.drawable.ic_books);
+            return;
+        }
+        if (category.equals(context.getString(R.string.baby_supplies))) {
+            itemPhoto.setImageResource(R.drawable.ic_baby_supplies);
+            return;
+        }
+        if (category.equals(context.getString(R.string.computers))) {
+            itemPhoto.setImageResource(R.drawable.ic_computers);
+            return;
+        }
+        if (category.equals(context.getString(R.string.other))) {
+            itemPhoto.setImageResource(R.drawable.ic_other);
+            return;
+        }
+
+    }
+
+    /**
      * A method to open edit item activity
      */
     private void openEditItemActivity() {
@@ -292,7 +359,8 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDelete
         int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
         dialog.getWindow().setLayout(width, RelativeLayout.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-        dialog.getWindow().setDimAmount(0.5f);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setDimAmount(0.7f);
     }
 
     @Override
