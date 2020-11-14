@@ -111,5 +111,11 @@
     <string name="no">No</string>
     <string name="are_you_sure">Are you sure you want to delete</string>
 
+    <string name="contact_us">Contact us at:</string>
+    <string name="our_email" translatable="false">dogoodapp1@gmail.com</string>
+
+    <string name="regarding_item">Regarding item:</string>
+
+
 
 </resources>

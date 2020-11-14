@@ -22,6 +22,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.example.dogood.Dialogs.AreYouSureDialog;
+import com.example.dogood.Dialogs.ContactUserDialog;
 import com.example.dogood.Dialogs.ItemPhotoDialog;
 import com.example.dogood.R;
 import com.example.dogood.interfaces.EditedItemListener;
@@ -273,13 +274,30 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDelete
      */
     private void openContactUserDialog() {
         Log.d(TAG, "openContactUserDialog: Contacting: " + itemUser.toString());
-        //TODO: check if request is discrete or not
+        ContactUserDialog dialog;
+        if (myAskItem != null) {
+            if (myAskItem.isDiscreteRequest()) {
+                Log.d(TAG, "openContactUserDialog: contacting asker without requester name");
+                dialog = new ContactUserDialog(this, myAskItem.getName(), myAskItem.getId(), null);
+            } else {
+                Log.d(TAG, "openContactUserDialog: contacting asker with requester name");
+                dialog = new ContactUserDialog(this, myAskItem.getName(), myAskItem.getId(), itemUser);
+            }
+        } else {
+            Log.d(TAG, "openContactUserDialog: contacting giver");
+            dialog = new ContactUserDialog(this, myGiveItem.getName(), myGiveItem.getId(), itemUser);
+        }
+
+        dialog.show();
+        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
+        dialog.getWindow().setLayout(width, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        dialog.getWindow().setDimAmount(0.5f);
     }
 
     @Override
     public void deleteSelectedItem() {
         Log.d(TAG, "deleteSelectedItem: ");
-        //TODO: Delete item from user,firestore,storage
         Gson gson = new Gson();
         Intent resultIntent = new Intent();
         String itemJson = "";

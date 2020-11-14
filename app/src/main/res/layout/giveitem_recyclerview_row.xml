@@ -11,13 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:layout_alignParentTop="true"
-        app:strokeColor="@color/colorPrimary"
-        app:strokeWidth="2dp"
-        android:layout_margin="3dp"
         android:clickable="true"
         android:foreground="?attr/selectableItemBackground"
         app:cardElevation="5dp"
-        app:cardMaxElevation="0dp">
+        app:cardMaxElevation="0dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,8 +26,6 @@
                 android:id="@+id/giveRow_IMG_itemPicture"
                 android:layout_width="130dp"
                 android:layout_height="match_parent"
-                app:strokeColor="@color/colorPrimary"
-                app:strokeWidth="4dp"
                 android:scaleType="fitXY"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

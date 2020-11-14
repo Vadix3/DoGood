@@ -11,13 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:layout_alignParentTop="true"
-        android:layout_margin="3dp"
         android:clickable="true"
         android:foreground="?attr/selectableItemBackground"
         app:cardElevation="5dp"
         app:cardMaxElevation="0dp"
-        app:strokeColor="@color/colorPrimary"
-        app:strokeWidth="2dp">
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -32,9 +32,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:strokeColor="@color/colorPrimary"
-                app:strokeWidth="4dp" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/askRow_LAY_nameCityDate"
