@@ -108,10 +108,10 @@ public class NewAskItemActivity extends AppCompatActivity {
      */
     private void initViews() {
         Log.d(TAG, "initViews: initing views");
-        itemName = findViewById(R.id.addAskItem_EDT_itemName);
-        itemDescription = findViewById(R.id.addAskItem_EDT_itemDescription);
-        itemCategory = findViewById(R.id.addAskItem_LST_categorySpinner);
-        isDiscrete = findViewById(R.id.editItem_CHK_isDescrete);
+        itemName = findViewById(R.id.editItem_EDT_AskitemName);
+        itemDescription = findViewById(R.id.editItem_EDT_askItemDescription);
+        itemCategory = findViewById(R.id.editItem_LST_AskCategorySpinner);
+        isDiscrete = findViewById(R.id.editItem_CHK_askIsDiscrete);
         submitBtn = findViewById(R.id.addAskItem_BTN_submitBtn);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override

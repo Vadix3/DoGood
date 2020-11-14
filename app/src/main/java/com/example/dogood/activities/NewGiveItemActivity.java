@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.example.dogood.Dialogs.PhotoModeDialog;
 import com.example.dogood.R;
@@ -134,7 +135,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
         itemName = findViewById(R.id.editItem_EDT_itemName);
         itemDescription = findViewById(R.id.editItem_EDT_itemDescription);
         itemPrice = findViewById(R.id.editItem_EDT_itemPrice);
-        freeItem = findViewById(R.id.editItem_CHK_isDescrete);
+        freeItem = findViewById(R.id.editItem_CHK_askIsDiscrete);
         freeItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -367,6 +368,14 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
      */
     private void uploadBitmapToStorage() {
         Log.d(TAG, "uploadBitmapToStorage: Uploading bitmap to storage: ID: G"+itemCount);
+        CircularProgressDrawable drawable = new CircularProgressDrawable(NewGiveItemActivity.this);
+        drawable.setColorSchemeColors(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.black);
+        drawable.setCenterRadius(30f);
+        drawable.setStrokeWidth(5f);
+        drawable.start();
+        submitBtn.setBackgroundDrawable(drawable);
+        submitBtn.setText("Uploading item");
+
         final String itemID = "G" + itemCount;
         // Create a storage reference from our app
         StorageReference storageRef = storage.getReferenceFromUrl("gs://" + getString(R.string.google_storage_bucket));

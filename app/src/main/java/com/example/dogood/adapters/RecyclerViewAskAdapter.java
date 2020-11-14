@@ -27,8 +27,8 @@ import java.util.ArrayList;
 
 public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAskAdapter.ViewHolder> {
     private static final String TAG = "Dogood";
+    private static final String GIVE_ITEM = "giveItem";
     private static final String ASK_ITEM = "askItem";
-    private static final String OWNER_USER = "ownerUser";
 
     private Context context;
     private ArrayList<AskItem> items;

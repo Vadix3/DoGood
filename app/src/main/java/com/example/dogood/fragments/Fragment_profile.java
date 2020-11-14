@@ -37,7 +37,9 @@ import com.example.dogood.objects.User;
 import com.google.android.material.button.MaterialButton;
 
 
-public class Fragment_profile extends Fragment implements MainActivity.IOnBackPressed {
+//public class Fragment_profile extends Fragment implements MainActivity.IOnBackPressed {
+public class Fragment_profile extends Fragment {
+
     private static final String TAG = "Fragment_profile";
 
     protected View view;
@@ -148,7 +150,7 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
         profile_BTN_update = view.findViewById(R.id.profile_BTN_update);
 
         viewPager = view.findViewById(R.id.viewPager);
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getFragmentManager(),getLifecycle(), mUser);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getFragmentManager(), getLifecycle(), mUser);
         viewPager.setAdapter(viewPagerAdapter);
     }
 
@@ -177,11 +179,11 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
             return null;
         }
     }
-
-
-    @Override
-    public boolean onBackPressed() {
-        Log.d(TAG, "onBackPressed: from profile");
-        return fragment_ask_give_profile.onBackPressed();
-    }
+//
+//
+//    @Override
+//    public boolean onBackPressed() {
+//        Log.d(TAG, "onBackPressed: from profile");
+//        return fragment_ask_give_profile.onBackPressed();
+//    }
 }

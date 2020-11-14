@@ -2,18 +2,18 @@ package com.example.dogood.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,8 +23,8 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import com.bumptech.glide.Glide;
 import com.example.dogood.Dialogs.AreYouSureDialog;
 import com.example.dogood.Dialogs.ItemPhotoDialog;
-import com.example.dogood.Dialogs.NewAccountDialog;
 import com.example.dogood.R;
+import com.example.dogood.interfaces.EditedItemListener;
 import com.example.dogood.interfaces.ItemDeleteListener;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.GiveItem;
@@ -33,10 +33,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.api.Distribution;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
+
+import java.io.IOException;
 
 public class ItemDetailsActivity extends AppCompatActivity implements ItemDeleteListener {
     private static final String TAG = "Dogood";
@@ -46,8 +47,12 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDelete
     private static final String ITEM_TO_DEAL_WITH = "item_to_deal_with";
     private static final String IS_GIVE_ITEM = "is_give_item";
     private static final String TO_DELETE = "to_delete";
+    private static final String TO_EDIT = "to_edit";
+
 
     private static final int ITEM_DETAILS_RESULT_CODE = 1014;
+    private static final int ITEM_EDIT_RESULT_CODE = 1015;
+
 
     private Context context = getBaseContext();
 
@@ -64,6 +69,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDelete
     private AskItem myAskItem = null;
     private User itemUser;
     private boolean ownerUser = false;
+    private boolean itemChanged = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,13 +89,13 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDelete
     private void checkReceivedItem() {
         Log.d(TAG, "checkReceivedItem: ");
         Gson gson = new Gson();
-        String itemJson;
         if (getIntent().getStringExtra(GIVE_ITEM) != null) {
             myGiveItem = gson.fromJson(getIntent().getStringExtra(GIVE_ITEM), GiveItem.class);
             itemUser = myGiveItem.getGiver();
         } else {
             Log.d(TAG, "checkReceivedItem: Got ask item");
             myAskItem = gson.fromJson(getIntent().getStringExtra(ASK_ITEM), AskItem.class);
+            Log.d(TAG, "checkReceivedItem: " + myAskItem.toString());
             itemUser = myAskItem.getRequester();
         }
         updateUI();
@@ -210,7 +216,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDelete
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openEditItemDialog();
+                openEditItemActivity();
             }
         });
         removeBtn = findViewById(R.id.itemDetails_BTN_removeEntry);
@@ -245,11 +251,21 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDelete
     }
 
     /**
-     * A method to open edit item dialog
+     * A method to open edit item activity
      */
-    private void openEditItemDialog() {
-        Log.d(TAG, "openEditItemDialog: ");
-        Toast.makeText(this, "Opening edit item dialog", Toast.LENGTH_SHORT).show();
+    private void openEditItemActivity() {
+        Log.d(TAG, "openEditItemActivity: ");
+        Intent intent = new Intent(this, EditItemActivity.class);
+        Gson gson = new Gson();
+        if (myAskItem != null) {
+            intent.putExtra(GIVE_ITEM, "");
+            intent.putExtra(ASK_ITEM, gson.toJson(myAskItem));
+        } else {
+            intent.putExtra(GIVE_ITEM, gson.toJson(myGiveItem));
+            intent.putExtra(ASK_ITEM, "");
+        }
+
+        startActivityForResult(intent, ITEM_EDIT_RESULT_CODE);
     }
 
     /**
@@ -275,9 +291,52 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDelete
             resultIntent.putExtra(IS_GIVE_ITEM, false);
         }
         resultIntent.putExtra(TO_DELETE, true);
-        Log.d(TAG, "deleteSelectedItem: Seding item json: "+itemJson);
+        Log.d(TAG, "deleteSelectedItem: Seding item json: " + itemJson);
         resultIntent.putExtra(ITEM_TO_DEAL_WITH, itemJson);
         setResult(ITEM_DETAILS_RESULT_CODE, resultIntent);
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case ITEM_EDIT_RESULT_CODE:
+                Log.d(TAG, "onActivityResult: I came from edit item activity");
+                if (data != null) {
+                    itemChanged = true;
+                    Gson gson = new Gson();
+                    if (data.getStringExtra(GIVE_ITEM) != null) {
+                        myGiveItem = gson.fromJson(data.getStringExtra(GIVE_ITEM), GiveItem.class);
+                    } else {
+                        myAskItem = gson.fromJson(data.getStringExtra(ASK_ITEM), AskItem.class);
+                    }
+                    updateUI();
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (itemChanged) {
+            Log.d(TAG, "onBackPressed: Item has been changed, need to update");
+            Gson gson = new Gson();
+            Intent resultIntent = new Intent();
+            String itemJson = "";
+            if (myGiveItem != null) {
+                itemJson = gson.toJson(myGiveItem);
+                resultIntent.putExtra(IS_GIVE_ITEM, true);
+            } else {
+                itemJson = gson.toJson(myAskItem);
+                resultIntent.putExtra(IS_GIVE_ITEM, false);
+            }
+            Log.d(TAG, "deleteSelectedItem: Seding item json: " + itemJson);
+            resultIntent.putExtra(ITEM_TO_DEAL_WITH, itemJson);
+            setResult(ITEM_DETAILS_RESULT_CODE, resultIntent);
+            finish();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
     private static final int UPDATE_PROFILE_RESULT_CODE = 1013;
     private static final int ITEM_DETAILS_RESULT_CODE = 1014;
+    private static final int ITEM_EDIT_RESULT_CODE = 1015;
 
 
     private static final int SEARCH_IN_GIVE_ITEMS = 11;
@@ -810,7 +811,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     myUser.getAskItems().set(i, tempItem);
                 }
             }
-            Toast.makeText(this, tempItem.getName() + " Removed successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, tempItem.getName() + " Updated successfully!", Toast.LENGTH_SHORT).show();
         }
     }
 

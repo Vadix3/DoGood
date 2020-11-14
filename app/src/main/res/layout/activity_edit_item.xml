@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="5dp">
+    android:paddingBottom="20dp"
+    android:layout_height="match_parent">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/editItem_IMG_itemPhoto"
@@ -12,15 +12,16 @@
         android:layout_height="199dp"
         android:background="@drawable/photo_empty_frame"
         android:clickable="true"
-        android:scaleType="fitXY"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/editItem_EDT_itemName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.03" />
+        app:layout_constraintVertical_bias="0.03"
+        app:layout_constraintVertical_chainStyle="spread" />
 
 
     <EditText
@@ -70,7 +71,8 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/editItem_BTN_submitBtn"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +94,7 @@
             android:padding="15dp" />
 
         <CheckBox
-            android:id="@+id/editItem_CHK_askIsDiscrete"
+            android:id="@+id/editItem_CHK_isFree"
             android:layout_width="wrap_content"
             android:layout_height="53dp"
             android:checked="true"
@@ -135,20 +137,92 @@
         app:layout_constraintTop_toBottomOf="@+id/editItem_LST_conditionSpinner"
         app:layout_constraintVertical_bias="0.041" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/editItem_BTN_submitBtn"
+    <EditText
+        android:id="@+id/editItem_EDT_AskitemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        app:cornerRadius="20dp"
-        android:text="@string/submit"
+        android:background="@drawable/round_edt_border_edges"
+        android:drawablePadding="10dp"
+        android:elevation="10dp"
+        android:gravity="center"
+        android:hint="@string/item_name"
+        android:inputType="textCapSentences"
+        android:padding="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.446" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
 
 
+    <EditText
+        android:id="@+id/editItem_EDT_askItemDescription"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_edt_border_edges"
+        android:drawablePadding="10dp"
+        android:elevation="10dp"
+        android:gravity="center"
+        android:hint="@string/item_description"
+        android:inputType="textCapSentences"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editItem_EDT_AskitemName"
+        app:layout_constraintVertical_bias="0.032" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/editItem_LST_AskCategorySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_edt_border_edges"
+        android:dropDownVerticalOffset="40dp"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editItem_EDT_askItemDescription"
+        app:layout_constraintVertical_bias="0.02" />
+
+    <CheckBox
+        android:id="@+id/editItem_CHK_askIsDiscrete"
+        android:layout_width="wrap_content"
+        android:layout_height="53dp"
+        android:checked="true"
+        android:text="@string/discrete_request"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editItem_LST_AskCategorySpinner"
+        app:layout_constraintVertical_bias="0.042" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/editItem_BTN_submitBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/submit"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

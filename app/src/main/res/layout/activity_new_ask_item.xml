@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/addAskItem_EDT_itemName"
+        android:id="@+id/editItem_EDT_AskitemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -27,7 +27,7 @@
 
 
     <EditText
-        android:id="@+id/addAskItem_EDT_itemDescription"
+        android:id="@+id/editItem_EDT_askItemDescription"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginLeft="10dp"
@@ -43,11 +43,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addAskItem_EDT_itemName"
+        app:layout_constraintTop_toBottomOf="@+id/editItem_EDT_AskitemName"
         app:layout_constraintVertical_bias="0.032" />
 
     <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/addAskItem_LST_categorySpinner"
+        android:id="@+id/editItem_LST_AskCategorySpinner"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginLeft="10dp"
@@ -60,11 +60,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addAskItem_EDT_itemDescription"
+        app:layout_constraintTop_toBottomOf="@+id/editItem_EDT_askItemDescription"
         app:layout_constraintVertical_bias="0.02" />
 
     <CheckBox
-        android:id="@+id/editItem_CHK_isDescrete"
+        android:id="@+id/editItem_CHK_askIsDiscrete"
         android:layout_width="wrap_content"
         android:layout_height="53dp"
         android:checked="true"
@@ -75,7 +75,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addAskItem_LST_categorySpinner"
+        app:layout_constraintTop_toBottomOf="@+id/editItem_LST_AskCategorySpinner"
         app:layout_constraintVertical_bias="0.042" />
 
     <com.google.android.material.button.MaterialButton
