@@ -7,10 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="colorPrimary">#00B8D4</color>
+    <color name="colorPrimary">#40C4FF</color>
     <color name="colorPrimaryDark">#0091EA</color>
+    <color name="colorPrimaryDark2">#B2EBF2</color>
+
     <color name="clear">#00BB86FC</color>
     <color name="light_teal">#A8FFFA</color>
+    <color name="grey_text">#00222222</color>
 
     <color name="editBtnColor">#FF6E40</color>
     <color name="removeBtnColor">#FF1744</color>
