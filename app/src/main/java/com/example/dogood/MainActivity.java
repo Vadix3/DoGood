@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -75,6 +76,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import guy4444.smartrate.SmartRate;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class MainActivity extends AppCompatActivity implements ItemDetailsListener, PhotoModeListener, EditProfileListener {
@@ -562,7 +564,17 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
             return true;
         }
         if (id == R.id.menu_rate){
-            Toast.makeText(this, "Action clicked rate", Toast.LENGTH_LONG).show();
+            SmartRate.Rate(MainActivity.this
+                    , Color.parseColor("#40C4FF")
+                    , -1
+                    , new SmartRate.CallBack_UserRating() {
+                        @Override
+                        public void userRating(int rating) {
+                            Toast.makeText(MainActivity.this, "Rating: " + rating + " Stars", Toast.LENGTH_LONG).show();
+                            //saveUserRating(rating);
+                        }
+                    }
+            );
             return true;
         }
         if (id == R.id.menu_share){
