@@ -87,7 +87,7 @@ import guy4444.smartrate.SmartRate;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class MainActivity extends AppCompatActivity implements ItemDetailsListener, PhotoModeListener, EditProfileListener {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
     private static final String NEW_ASK_ITEM = "112";
     private static final String ITEMS_DATA_CONTAINER = "dataContainer";
@@ -260,8 +260,11 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     private void updateFragments() {
         Log.d(TAG, "updateFragments: Updating fragments");
         setProfileFragment();
+        Log.d(TAG, "updateFragments: give items: "+giveItems.toString());
         setGiveFragment(giveItems);
         setHomeFragment();
+        Log.d(TAG, "updateFragments: ask items: "+askItems.toString());
+
         setAskFragment(askItems);
     }
 
@@ -392,11 +395,13 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
      */
     private void setHomeFragment() {
         Log.d(TAG, "onNavigationItemSelected: home");
-        homeTabFragment = new HomeTabFragment(this, myUser, askItems.get(askItems.size() - 1)
-                , giveItems.get(giveItems.size() - 1));
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_LAY_mainPageFragment, homeTabFragment);
-        transaction.commit();
+        if(askItems.size()>0&&giveItems.size()>0){
+            homeTabFragment = new HomeTabFragment(this, myUser, askItems.get(askItems.size() - 1)
+                    , giveItems.get(giveItems.size() - 1));
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_LAY_mainPageFragment, homeTabFragment);
+            transaction.commit();
+        }
     }
 
     /**
@@ -419,6 +424,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     FirestoreDataContainer container = snapshot.toObject(FirestoreDataContainer.class);
                     giveItems = container.getGiveItems();
                     askItems = container.getAskItems();
+                    Log.d(TAG, "onEvent: Got give items: " + giveItems.toString());
                     updateFragments();
                 } else {
                     Log.d(TAG, "Current data: null");
@@ -469,6 +475,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     private void saveItemsToFirestore() {
         Log.d(TAG, "saveItemsToFirestore: Saving items to firestore: ");
 
+        Log.d(TAG, "saveItemsToFirestore: Saving: "+giveItems.toString()+"\n"+askItems.toString());
         FirestoreDataContainer dataContainer = new FirestoreDataContainer(giveItems, askItems);
 
         // Save arrays
@@ -478,7 +485,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
+                        Log.d(TAG, "onFailure: Exception: "+e.toString());
                     }
                 });
     }
@@ -523,6 +530,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                         Log.d(TAG, "onSuccess: null give items");
                     } else {
                         giveItems = container.getGiveItems();
+                        Log.d(TAG, "onSuccess: Got give items: " + giveItems.toString());
                     }
                     if (container.getAskItems() == null) {
                         Log.d(TAG, "onSuccess: null ask items");
@@ -593,7 +601,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
             Toast.makeText(this, getString(R.string.talk_to_your_around_tanks_you), Toast.LENGTH_LONG).show();
             return true;
         }
-        if (id == R.id.menu_about){
+        if (id == R.id.menu_about) {
             AboutUsDialog aboutUsDialog = new AboutUsDialog(this);
             aboutUsDialog.show();
             int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.8);
@@ -833,9 +841,10 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     }.getType();
                     GiveItem temp = gson.fromJson(gotNewItem, itemType);
                     temp.setDate(getCurrentDate());
-                    temp.setId("G" + giveItems.size());
-                    giveItems.add(temp);
+                    temp.setId("G" + this.giveItems.size());
+                    this.giveItems.add(temp);
                     myUser.addGiveItem(temp);
+                    updateFragments();
                     updateUserInFirestore();
                     saveItemsToFirestore();
                 } else {
@@ -853,10 +862,11 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     }.getType();
                     AskItem temp = gson.fromJson(gotNewItem, itemType);
                     temp.setDate(getCurrentDate());
-                    temp.setId("G" + askItems.size());
-                    Log.d(TAG, "onActivityResult: Got item as item: " + temp.toString());
+                    temp.setId("G" + this.askItems.size());
                     askItems.add(temp);
+                    Log.d(TAG, "onActivityResult: Ask items now: "+askItems.toString());
                     myUser.addAskItem(temp);
+                    updateFragments();
                     updateUserInFirestore();
                     saveItemsToFirestore();
                 } else {

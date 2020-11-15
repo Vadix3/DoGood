@@ -244,7 +244,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
                         Log.d(TAG, "onPermissionGranted: User given permission");
-                        openCamera();
+                        openStorage();
                     }
 
                     @Override

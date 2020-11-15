@@ -2,6 +2,7 @@ package com.example.dogood.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -27,24 +28,34 @@ import com.bumptech.glide.Glide;
 import com.example.dogood.Dialogs.PhotoModeDialog;
 import com.example.dogood.R;
 import com.example.dogood.Dialogs.UpdateAccountDialog;
+import com.example.dogood.activities.NewAskItemActivity;
+import com.example.dogood.activities.NewGiveItemActivity;
 import com.example.dogood.adapters.ViewPagerAdapter;
 import com.example.dogood.objects.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
 
 
 public class Fragment_profile extends Fragment {
 
-    private static final String TAG = "Fragment_profile";
+    private static final String TAG = "Dogood";
+    private static final int ASK_FRAGMENT = 0;
+    private static final int GIVE_FRAGMENT = 1;
+    private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
+    private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
+    private static final int UPDATE_PROFILE_RESULT_CODE = 1013;
+
+    private static final String ITEM_COUNT = "itemCount";
+    public static final String CURRENT_USER = "currentUser";
 
     protected View view;
-    private static final int UPDATE_PROFILE_RESULT_CODE = 1013;
     private Context context;
-
     private ShapeableImageView profile_IMG_picture;
     private TextView profile_LBL_name;
     private TextView profile_LBL_city;
@@ -54,9 +65,7 @@ public class Fragment_profile extends Fragment {
     private MaterialButton profile_BTN_update;
     private ViewPager2 viewPager;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-
-
-    private Fragment_ask_give_profile fragment_ask_give_profile;
+    private FloatingActionButton addBtn;
 
     private User mUser;
     private int giveItemsArraySize; // The size of the total give items
@@ -66,11 +75,11 @@ public class Fragment_profile extends Fragment {
     public Fragment_profile() {
     }
 
-    public Fragment_profile(User user, int giveItemsArraySize, int askItemsArraySize,Context context) {
+    public Fragment_profile(User user, int giveItemsArraySize, int askItemsArraySize, Context context) {
         this.mUser = user;
         this.giveItemsArraySize = giveItemsArraySize;
         this.askItemsArraySIze = askItemsArraySize;
-        this.context=context;
+        this.context = context;
     }
 
     /**
@@ -103,7 +112,6 @@ public class Fragment_profile extends Fragment {
 
         findViews();
         updateUser();
-        //addGiveItemsFragment();
 
         profile_BTN_update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,13 +167,61 @@ public class Fragment_profile extends Fragment {
         profile_LBL_city = view.findViewById(R.id.profile_LBL_city);
         profile_LBL_phone = view.findViewById(R.id.profile_LBL_phone);
         profile_LBL_mail = view.findViewById(R.id.profile_LBL_mail);
-        //profile_LAY_post = view.findViewById(R.id.profile_LAY_post);
         profile_BTN_update = view.findViewById(R.id.profile_BTN_update);
-
+        addBtn = view.findViewById(R.id.profile_BTN_addItemButton);
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkCurrentFragment();
+            }
+        });
         viewPager = view.findViewById(R.id.viewPager);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getFragmentManager(), getLifecycle(), mUser);
         viewPager.setAdapter(viewPagerAdapter);
     }
+
+    /**
+     * A method to check what is the current fragment showing
+     */
+    private void checkCurrentFragment() {
+        int currentFragment = viewPager.getCurrentItem();
+        if (currentFragment == ASK_FRAGMENT) {
+            Log.d(TAG, "checkCurrentFragment: Ask fragment");
+            openAddAskItemActivity();
+        } else {
+            Log.d(TAG, "checkCurrentFragment: Give fragment");
+            openAddGiveItemActivity();
+        }
+
+    }
+
+    /**
+     * A method to move to add item activity
+     */
+    private void openAddAskItemActivity() {
+        Log.d(TAG, "openAddItemActivity: ");
+        Intent intent = new Intent(getActivity(), NewAskItemActivity.class);
+        Gson gson = new Gson();
+        String userJson = gson.toJson(mUser);
+        intent.putExtra(CURRENT_USER, userJson);
+        intent.putExtra(ITEM_COUNT, askItemsArraySIze);
+        startActivityForResult(intent, NEW_ASK_ITEM_RESULT_CODE);
+    }
+
+    /**
+     * A method to move to add item activity
+     */
+    private void openAddGiveItemActivity() {
+        Log.d(TAG, "openAddItemActivity: ");
+        Intent intent = new Intent(getActivity(), NewGiveItemActivity.class);
+        Gson gson = new Gson();
+        String userJson = gson.toJson(mUser);
+        intent.putExtra(CURRENT_USER, userJson);
+        intent.putExtra(ITEM_COUNT, giveItemsArraySize);
+        startActivityForResult(intent, NEW_GIVE_ITEM_RESULT_CODE);
+    }
+
+
     /**
      * A method to get the item photo from the storage
      */
@@ -198,14 +254,6 @@ public class Fragment_profile extends Fragment {
         });
     }
 
-
-    private void addGiveItemsFragment() {
-        Log.d(TAG, "initItemsFragment: Initing main list with: ");
-        fragment_ask_give_profile = new Fragment_ask_give_profile(mUser, giveItemsArraySize, askItemsArraySIze);
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        //  transaction.replace(R.id.profile_LAY_post, fragment_ask_give_profile);
-        transaction.commit();
-    }
 
     private void openEditUserDialog() {
         UpdateAccountDialog updateAccountDialog = new UpdateAccountDialog(context, mUser);

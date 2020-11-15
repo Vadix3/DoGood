@@ -26,7 +26,6 @@ public class AskItemFragment extends Fragment {
     private static final String TAG = "Dogood";
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
     private static final String ITEM_COUNT = "itemCount";
-
     public static final String CURRENT_USER = "currentUser";
 
     protected View view;
