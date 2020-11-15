@@ -1,21 +1,19 @@
 package com.example.dogood.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.dogood.Dialogs.ForgotPasswordDialog;
 import com.example.dogood.Dialogs.NewAccountDialog;
 import com.example.dogood.interfaces.NewAccountDialogListener;
 import com.example.dogood.MainActivity;
@@ -32,7 +31,6 @@ import com.example.dogood.objects.User;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
@@ -58,8 +56,6 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class Activity_login extends AppCompatActivity implements NewAccountDialogListener {
@@ -298,7 +294,12 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
     private void findViews() {
 
         mAuth = FirebaseAuth.getInstance();
-
+        login_LBL_forgot = findViewById(R.id.login_LBL_forgot);
+        login_BTN_login = findViewById(R.id.login_BTN_login);
+        login_IMG_facebookLogin = findViewById(R.id.login_IMG_facebookLogin);
+        login_IMG_googleLogin = findViewById(R.id.login_IMG_googleLogin);
+        login_LBL_createCount = findViewById(R.id.login_LBL_createCount);
+        login_EDT_password = findViewById(R.id.login_EDT_password);
         login_EDT_mail = findViewById(R.id.login_EDT_mail);
         login_EDT_mail.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
@@ -316,7 +317,7 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
 
             }
         });
-        login_EDT_password = findViewById(R.id.login_EDT_password);
+        
         login_EDT_password.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -333,17 +334,37 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
 
             }
         });
-        login_LBL_forgot = findViewById(R.id.login_LBL_forgot);
-        login_BTN_login = findViewById(R.id.login_BTN_login);
-        login_IMG_facebookLogin = findViewById(R.id.login_IMG_facebookLogin);
+      
+        
         login_IMG_facebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LoginManager.getInstance().logInWithReadPermissions(Activity_login.this, Arrays.asList("public_profile", "user_friends", "email"));
             }
         });
-        login_IMG_googleLogin = findViewById(R.id.login_IMG_googleLogin);
-        login_LBL_createCount = findViewById(R.id.login_LBL_createCount);
+        
+        login_LBL_forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                forgotPassword();
+            }
+        });
+    }
+
+    private void forgotPassword() {
+        ForgotPasswordDialog dialog = new ForgotPasswordDialog(this, mAuth);
+        dialog.show();
+        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.6);
+        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
+        dialog.getWindow().setLayout(width, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        dialog.getWindow().setDimAmount(0.9f);
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                login_LBL_forgot.setEnabled(true);
+            }
+        });
     }
 
     @Override

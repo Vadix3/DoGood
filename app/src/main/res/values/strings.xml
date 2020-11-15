@@ -162,6 +162,8 @@
     <string name="items_im_giving">Items I am giving</string>
     <string name="items_i_need">Items I need</string>
     <string name="hey_to_mail">Hey , I\'m interested by</string>
+    <string name="send">send</string>
+    <string name="sent_rest_email">Sent reset email!</string>
 
 
 </resources>

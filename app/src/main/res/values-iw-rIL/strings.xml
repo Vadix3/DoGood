@@ -126,5 +126,8 @@
     <string name="email_address_does_not_exist">"כתובת דוא\"ל לא קיימת! "</string>
     <string name="items_im_giving">פריטים שאני נותן</string>
     <string name="items_i_need">פריטים שאני צריך</string>
+    <string name="hey_to_mail">"היי, אני מתעניית/ן ב  "</string>
+    <string name="send">לשלוח</string>
+    <string name="sent_rest_email">"נשלח אימייל לאיפוס! "</string>
 
 </resources>
