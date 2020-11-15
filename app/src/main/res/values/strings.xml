@@ -135,6 +135,8 @@
     <string name="permission_denied">Permission Denied</string>
     <string name="permission_denied_explication_storage">\"Storage permission is required to add a photo of your item.\n\" + \"Please allow storage permissions in app settings.\"</string>
     <string name="permission_denied_explication_camera">\"Camera permission is required to take a photo of your item.\n\" + \"Please allow camera permissions in app settings.\"</string>
+    <string name="about">About us</string>
+    <string name="uploading_item">Uploading item</string>
 
 
     <string name="hello">Hello</string>

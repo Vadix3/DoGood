@@ -1,6 +1,7 @@
 package com.example.dogood.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Optional;
 
 public class NewAskItemActivity extends AppCompatActivity {
     private static final String TAG = "Dogood";
@@ -43,6 +46,9 @@ public class NewAskItemActivity extends AppCompatActivity {
 
     private User currentUser;
 
+    private ArrayList<String> categoriesUS;
+    private ArrayList<String> categories;
+
     private int itemCount = 0;
 
     @Override
@@ -64,7 +70,7 @@ public class NewAskItemActivity extends AppCompatActivity {
      */
     private void initCategorySpinner() {
         Log.d(TAG, "initCategotySpinner: Initing category spinner");
-        ArrayList<String> categories = new ArrayList<>();
+        categories = new ArrayList<>();
         categories.add(getString(R.string.select_categories));
         categories.add(getString(R.string.clothes));
         categories.add(getString(R.string.office_supplies));
@@ -80,6 +86,23 @@ public class NewAskItemActivity extends AppCompatActivity {
         categories.add(getString(R.string.baby_supplies));
         categories.add(getString(R.string.computers));
         categories.add(getString(R.string.other));
+
+        categoriesUS = new ArrayList<>();
+        categoriesUS.add("Select categories");
+        categoriesUS.add("Clothes");
+        categoriesUS.add("Office supplies");
+        categoriesUS.add("Medical_equipment");
+        categoriesUS.add("Gaming");
+        categoriesUS.add("Electronics");
+        categoriesUS.add("Appliances");
+        categoriesUS.add("Gift cards");
+        categoriesUS.add("Lighting");
+        categoriesUS.add("Games and Toys");
+        categoriesUS.add("Cellular");
+        categoriesUS.add("Books");
+        categoriesUS.add("Baby Supplies");
+        categoriesUS.add("Computers");
+        categoriesUS.add("Other");
 
 
         //create an ArrayAdapter from the String Array
@@ -150,7 +173,7 @@ public class NewAskItemActivity extends AppCompatActivity {
         }
 
         Log.d(TAG, "checkAndSendData: Current user: "+currentUser.toString());
-        AskItem temp = new AskItem("123", itemName.getText().toString(), itemCategory.getSelectedItem().toString()
+        AskItem temp = new AskItem("123", itemName.getText().toString(), categoriesUS.get((int) itemCategory.getSelectedItemId()).toString()
                 , currentUser.getCity(), itemDescription.getText().toString(), "20-12-20", currentUser, tempDiscrete);
 
         Intent resultIntent = new Intent();
@@ -160,4 +183,5 @@ public class NewAskItemActivity extends AppCompatActivity {
         setResult(NEW_ASK_ITEM_RESULT_CODE, resultIntent);
         finish();
     }
+
 }

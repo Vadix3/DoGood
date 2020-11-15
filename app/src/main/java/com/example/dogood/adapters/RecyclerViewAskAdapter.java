@@ -75,59 +75,62 @@ public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAsk
         AskItem item = items.get(position);
         String category = item.getCategory();
 
-        if (category.equals(context.getString(R.string.clothes))) {
+        if (category.equals("Clothes")) {
             itemPhoto.setImageResource(R.drawable.ic_clothes);
             return;
         }
-        if (category.equals(context.getString(R.string.office_supplies))) {
+        if (category.equals("Office supplies")) {
             itemPhoto.setImageResource(R.drawable.ic_office_supplies);
             return;
         }
-        if (category.equals(context.getString(R.string.medical_equipment))) {
+        if (category.equals("Medical equipment")) {
             itemPhoto.setImageResource(R.drawable.ic_medical_equipment);
             return;
         }
-        if (category.equals(context.getString(R.string.gaming))) {
+        if (category.equals("Gaming")) {
             itemPhoto.setImageResource(R.drawable.ic_gaming);
             return;
         }
-        if (category.equals(context.getString(R.string.electronics))) {
+        if (category.equals("Electronics")) {
             itemPhoto.setImageResource(R.drawable.ic_electronics);
             return;
         }
-        if (category.equals(context.getString(R.string.appliances))) {
+        if (category.equals("Appliances")) {
             itemPhoto.setImageResource(R.drawable.ic_appliances);
             return;
         }
-        if (category.equals(context.getString(R.string.gift_cards))) {
+        if (category.equals("Gift cards")) {
             itemPhoto.setImageResource(R.drawable.ic_gift_cards);
             return;
         }
-        if (category.equals(context.getString(R.string.lighting))) {
+        if (category.equals("Lighting")) {
             itemPhoto.setImageResource(R.drawable.ic_lighting);
             return;
         }
-        if (category.equals(context.getString(R.string.games_and_toys))) {
+        if (category.equals("Games and Toys")) {
             itemPhoto.setImageResource(R.drawable.ic_games_and_toys);
             return;
         }
-        if (category.equals(context.getString(R.string.cellular))) {
+        if (category.equals("Cellular")) {
             itemPhoto.setImageResource(R.drawable.ic_cellular);
             return;
         }
-        if (category.equals(context.getString(R.string.books))) {
+        if (category.equals("Books")) {
             itemPhoto.setImageResource(R.drawable.ic_books);
             return;
         }
-        if (category.equals(context.getString(R.string.baby_supplies))) {
+        if (category.equals("Baby Supplies")) {
             itemPhoto.setImageResource(R.drawable.ic_baby_supplies);
             return;
         }
-        if (category.equals(context.getString(R.string.computers))) {
+        if (category.equals("Computers")) {
             itemPhoto.setImageResource(R.drawable.ic_computers);
             return;
         }
-        if (category.equals(context.getString(R.string.other))) {
+        if (category.equals("Other")) {
+            itemPhoto.setImageResource(R.drawable.ic_other);
+            return;
+        }else {
             itemPhoto.setImageResource(R.drawable.ic_other);
             return;
         }

@@ -32,6 +32,12 @@
             android:title="@string/logout"
             app:showAsAction="ifRoom"/>
 
+        <item
+            android:id="@+id/menu_about"
+            android:icon="@drawable/ic_about"
+            android:title="@string/about"
+            app:showAsAction="ifRoom"/>
+
     </menu>
     </item>
 

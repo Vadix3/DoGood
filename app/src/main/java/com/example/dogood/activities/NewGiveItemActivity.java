@@ -88,6 +88,8 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
     private User currentUser;
 
     private int itemCount = 0;
+    private ArrayList<String> categoriesUS;
+    private ArrayList<String> conditionsUS;
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -205,11 +207,10 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
                         if (response.isPermanentlyDenied()) {
                             Log.d(TAG, "onPermissionDenied: User denied permission permanently!");
                             AlertDialog.Builder builder = new AlertDialog.Builder(NewGiveItemActivity.this);
-                            builder.setTitle("Permission Denied")
-                                    .setMessage("Camera permission is required to take a photo of your item.\n" +
-                                            "Please allow camera permissions in app settings.")
-                                    .setNegativeButton("Cancel", null)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            builder.setTitle(getString(R.string.permission_denied))
+                                    .setMessage(getString(R.string.permission_denied_explication_camera))
+                                    .setNegativeButton(getString(R.string.cancel), null)
+                                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             Log.d(TAG, "onClick: Opening settings activity");
@@ -251,11 +252,10 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
                         if (response.isPermanentlyDenied()) {
                             Log.d(TAG, "onPermissionDenied: User denied permission permanently!");
                             AlertDialog.Builder builder = new AlertDialog.Builder(NewGiveItemActivity.this);
-                            builder.setTitle("Permission Denied")
-                                    .setMessage("Storage permission is required to add a photo of your item.\n" +
-                                            "Please allow storage permissions in app settings.")
-                                    .setNegativeButton("Cancel", null)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            builder.setTitle(getString(R.string.permission_denied))
+                                    .setMessage(getString(R.string.permission_denied_explication_storage))
+                                    .setNegativeButton(getString(R.string.cancel), null)
+                                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             Log.d(TAG, "onClick: Opening settings activity");
@@ -319,7 +319,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
         }
 
         Log.d(TAG, "checkForValidInput: Passed all checks!");
-        Toast.makeText(this, "Uploading item", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getText(R.string.uploading_item), Toast.LENGTH_LONG).show();
 //        checkForFirebaseAuthLogin(); TODO: Fix google and fb here
         uploadBitmapToStorage();
     }
@@ -374,7 +374,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
         drawable.setStrokeWidth(5f);
         drawable.start();
         submitBtn.setBackgroundDrawable(drawable);
-        submitBtn.setText("Uploading item");
+        submitBtn.setText(getString(R.string.uploading_item));
 
         final String itemID = "G" + itemCount;
         // Create a storage reference from our app
@@ -407,8 +407,9 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.d(TAG, "onSuccess: Image upload successful!");
                 // TODO: Fix google and facebook photo issues
-                GiveItem temp = new GiveItem(itemID, itemName.getText().toString(), category.getSelectedItem().toString()
-                        , condition.getSelectedItem().toString(), itemPrice.getText().toString(), itemDescription.getText().toString()
+
+                GiveItem temp = new GiveItem(itemID, itemName.getText().toString(), categoriesUS.get((int) category.getSelectedItemId()).toString()
+                        , conditionsUS.get((int) condition.getSelectedItemId()).toString(), itemPrice.getText().toString(), itemDescription.getText().toString()
                         , "Test", "test-date-27/10", currentUser);
                 returnGivenItem(temp);
             }
@@ -450,6 +451,12 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
         conditions.add(getString(R.string.new_item));
         conditions.add(getString(R.string.used_item));
         conditions.add(getString(R.string.opened_item));
+
+        conditionsUS = new ArrayList<>();
+        conditionsUS.add("Select condition");
+        conditionsUS.add("New");
+        conditionsUS.add("Used");
+        conditionsUS.add("opened but not used");
 
         //create an ArrayAdapter from the String Array
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
@@ -494,6 +501,25 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
         categories.add(getString(R.string.baby_supplies));
         categories.add(getString(R.string.computers));
         categories.add(getString(R.string.other));
+
+        categoriesUS = new ArrayList<>();
+        categoriesUS.add("Select categories");
+        categoriesUS.add("Clothes");
+        categoriesUS.add("Office supplies");
+        categoriesUS.add("Medical_equipment");
+        categoriesUS.add("Gaming");
+        categoriesUS.add("Electronics");
+        categoriesUS.add("Appliances");
+        categoriesUS.add("Gift cards");
+        categoriesUS.add("Lighting");
+        categoriesUS.add("Games and Toys");
+        categoriesUS.add("Cellular");
+        categoriesUS.add("Books");
+        categoriesUS.add("Baby Supplies");
+        categoriesUS.add("Computers");
+        categoriesUS.add("Other");
+
+
 
 
         //create an ArrayAdapter from the String Array

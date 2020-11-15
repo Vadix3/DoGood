@@ -108,6 +108,7 @@
     <string name="permission_denied">"ההרשאה נדחתה "</string>
     <string name="permission_denied_explication_storage">"נדרשת הרשאת אחסון כדי להוסיף תמונה של הפריט שלך. אפשר הרשאות אחסון בהגדרות האפליקציה. "</string>
     <string name="permission_denied_explication_camera">"נדרשת הרשאת מצלמה לצילום הפריט שלך. אנא הרשה מצלמות בהגדרות האפליקציה. "</string>
+    <string name="about">עלינו</string>
 
     <string name="hello">שלום</string>
 
