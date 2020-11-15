@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     private Toolbar main_TLB_head;
     private MaterialSearchView main_SRC_search;
     private MenuItem searchItem;
+    private MenuItem optionsItem;
+
     private ConstraintLayout main_LAY_main;
 
     private FrameLayout mainFragment;
@@ -268,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                 switch (item.getItemId()) {
                     case R.id.bottom_menu_home:
                         searchItem.setVisible(false);
+                        optionsItem.setVisible(true);
                         if (mainFragment != null) {
                             main_TLB_head.setTitle(getResources().getString(R.string.home));
                             showFragment(mainFragment);
@@ -280,6 +283,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                         break;
                     case R.id.bottom_menu_give:
                         searchItem.setVisible(true);
+                        optionsItem.setVisible(true);
                         if (giveFragment != null) {
                             if (giveFragment.getVisibility() != View.VISIBLE) {
                                 main_TLB_head.setTitle(getResources().getString(R.string.object_to_give));
@@ -296,6 +300,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                         break;
                     case R.id.bottom_menu_ask:
                         searchItem.setVisible(true);
+                        optionsItem.setVisible(true);
                         if (askFragment != null) {
                             if (askFragment.getVisibility() != View.VISIBLE) {
                                 main_TLB_head.setTitle(getResources().getString(R.string.object_to_ask));
@@ -312,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                         break;
                     case R.id.bottom_menu_profile:
                         searchItem.setVisible(false);
+                        optionsItem.setVisible(true);
                         if (profileFragment != null) {
                             main_TLB_head.setTitle(getResources().getString(R.string.profile));
                             showFragment(profileFragment);
@@ -545,7 +551,11 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
         getMenuInflater().inflate(R.menu.top_app_bar2, menu);
         searchItem = menu.findItem(R.id.action_search);
         searchItem.setVisible(false);
+        optionsItem=menu.findItem(R.id.action_more);
+        optionsItem.setVisible(true);
         main_SRC_search.setMenuItem(searchItem);
+
+
 
         return true;
 
