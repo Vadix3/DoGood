@@ -131,7 +131,6 @@ public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAsk
             itemPhoto.setImageResource(R.drawable.ic_other);
             return;
         }
-
     }
 
     /**

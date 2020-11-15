@@ -1,9 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/teal_200">
+    android:background="#dcf3fe">
 
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/home_IMG_mainPicture"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@drawable/main_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/home_IMG_appLogo"
+        android:layout_width="230dp"
+        android:layout_height="180dp"
+        android:src="@drawable/app_logo"
+        app:layout_constraintBottom_toBottomOf="@+id/home_IMG_mainPicture"
+        app:layout_constraintEnd_toEndOf="@+id/home_IMG_mainPicture"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/home_IMG_mainPicture"
+        app:layout_constraintTop_toTopOf="@+id/home_IMG_mainPicture"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/home_LAY_helloLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/home_IMG_mainPicture"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/home_IMG_mainPicture"
+        app:layout_constraintTop_toBottomOf="@+id/home_IMG_mainPicture"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <FrameLayout
+        android:id="@+id/home_LAY_lastGift"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/home_LAY_lastAsk"
+        app:layout_constraintTop_toBottomOf="@+id/home_IMG_mainPicture"
+        app:layout_constraintVertical_bias="0.9" />
+
+    <FrameLayout
+        android:id="@+id/home_LAY_lastAsk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintEnd_toStartOf="@+id/home_LAY_lastGift"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_IMG_mainPicture"
+        app:layout_constraintVertical_bias="0.9" />
+
+    <!--    <fragment-->
+    <!--        android:id="@+id/home_LAY_lastGiveItem"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/adView"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.5"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/home_LAY_lastAskItem"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/home_IMG_mainPicture"-->
+    <!--        app:layout_constraintVertical_bias="0.9"-->
+    <!--        tools:layout="@layout/fragment_last_giveitem" />-->
+
+    <!--    <fragment-->
+    <!--        android:id="@+id/home_LAY_lastAskItem"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/adView"-->
+    <!--        app:layout_constraintEnd_toStartOf="@+id/home_LAY_lastGiveItem"-->
+    <!--        app:layout_constraintHorizontal_bias="0.5"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/home_IMG_mainPicture"-->
+    <!--        app:layout_constraintVertical_bias="0.9"-->
+    <!--        tools:layout="@layout/fragment_last_askitem" />-->
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:adSize="BANNER"
+        app:adUnitId="@string/test_app_id"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.99" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

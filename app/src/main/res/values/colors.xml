@@ -22,4 +22,7 @@
 
     <color name="colorBackroundLogin">#10002F</color>
 
+    <color name="textColor">#808080</color>
+
+
 </resources>

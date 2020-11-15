@@ -47,6 +47,9 @@ import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.FirestoreDataContainer;
 import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.User;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -155,6 +158,11 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
         initViews();
         giveItems = new ArrayList<>();
         askItems = new ArrayList<>();
@@ -175,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
         String userJson = getIntent().getStringExtra(LOGIN_USER_EXTRA);
         myUser = gson.fromJson(userJson, User.class);
         Log.d(TAG, "initUser: Got user from login: " + myUser.toString());
+        main_TLB_head.setTitle(getString(R.string.hello) + " " + myUser.getName().split(" ", 2)[0] + "!");
 
         String containerPath = USERS_COLLECTION + myUser.getEmail();
 
@@ -209,7 +218,6 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                 fetchItemsFromFirestore(); // Get data from firestore and initialize the fragments
                 initListChangeListener(); // Init listener for item change detection
                 searchAction();
-                initPageFragments();
                 initBottomNavigationMenu(); // initialize bottom navigation menu
                 //TODO: Problem when I'm pressing tabs before data loads, maybe stall bottom menu somehow?
             }
@@ -271,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     case R.id.bottom_menu_home:
                         searchItem.setVisible(false);
                         if (mainFragment != null) {
-                            main_TLB_head.setTitle(getResources().getString(R.string.home));
+                            main_TLB_head.setTitle(getString(R.string.hello) + " " + myUser.getName().split(" ", 2)[0] + "!");
                             showFragment(mainFragment);
                             isProfileFragmentShowing = false;
                             isGiveItemFragmentShowing = false;
@@ -380,7 +388,8 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
      */
     private void setHomeFragment() {
         Log.d(TAG, "onNavigationItemSelected: home");
-        homeTabFragment = new HomeTabFragment();
+        homeTabFragment = new HomeTabFragment(this, myUser, askItems.get(askItems.size() - 1)
+                , giveItems.get(giveItems.size() - 1));
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_mainPageFragment, homeTabFragment);
         transaction.commit();
@@ -426,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
         bottomNavigationView = findViewById(R.id.main_bottom_navigation);
         bottomNavigationView.setVisibility(View.GONE);
         main_TLB_head = findViewById(R.id.main_TLB_head);
-
+        main_TLB_head.setTitle("");
         setSupportActionBar(main_TLB_head);
 
 
@@ -461,12 +470,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
         // Save arrays
         db.collection("data").document(ITEMS_DATA_CONTAINER)
                 .set(dataContainer)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                    }
-                })
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully written!"))
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -546,10 +550,9 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
         getMenuInflater().inflate(R.menu.top_app_bar2, menu);
         searchItem = menu.findItem(R.id.action_search);
         searchItem.setVisible(false);
-        optionsItem=menu.findItem(R.id.action_more);
+        optionsItem = menu.findItem(R.id.action_more);
         optionsItem.setVisible(true);
         main_SRC_search.setMenuItem(searchItem);
-
 
 
         return true;
@@ -560,15 +563,15 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.menu_logout){
+        if (id == R.id.menu_logout) {
             Toast.makeText(this, "Action clicked logout", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MainActivity.this, Activity_login.class);
-            intent.putExtra(LOGOUT,LOGOUT_CODE);
+            intent.putExtra(LOGOUT, LOGOUT_CODE);
             startActivity(intent);
             finish();
             return true;
         }
-        if (id == R.id.menu_rate){
+        if (id == R.id.menu_rate) {
             SmartRate.Rate(MainActivity.this
                     , Color.parseColor("#40C4FF")
                     , -1
@@ -582,9 +585,9 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
             );
             return true;
         }
-        if (id == R.id.menu_share){
+        if (id == R.id.menu_share) {
             Toast.makeText(this, "Action clicked share", Toast.LENGTH_LONG).show();
-            return true ;
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

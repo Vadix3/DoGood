@@ -95,4 +95,11 @@
     <string name="contact_giver">"צרו קשר עם הנותן "</string>
     <string name="contact_asker">"צור קשר עם השואל "</string>
 
+    <string name="hello">שלום</string>
+
+    <string name="latest_gift">פריט מתנה אחרון</string>
+    <string name="latest_request">בקשה אחרונה</string>
+
+
+
 </resources>
