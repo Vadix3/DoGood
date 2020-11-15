@@ -33,6 +33,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.dogood.activities.Activity_login;
 import com.example.dogood.activities.ItemDetailsActivity;
 import com.example.dogood.fragments.AskItemFragment;
 import com.example.dogood.fragments.Fragment_profile;
@@ -77,7 +78,7 @@ import java.util.ArrayList;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class MainActivity extends AppCompatActivity implements ItemDetailsListener, PhotoModeListener, EditProfileListener {
-    private static final String TAG = "Dogood";
+    private static final String TAG = "MainActivity";
     private static final String NEW_GIVE_ITEM = "111";
     private static final String NEW_ASK_ITEM = "112";
     private static final String ITEMS_DATA_CONTAINER = "dataContainer";
@@ -89,12 +90,14 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     private static final String ITEM_TO_DEAL_WITH = "item_to_deal_with";
     private static final String TO_DELETE = "to_delete";
     private static final String IS_GIVE_ITEM = "is_give_item";
+    private static final String LOGOUT = "logout";
 
 
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
     private static final int UPDATE_PROFILE_RESULT_CODE = 1013;
     private static final int ITEM_DETAILS_RESULT_CODE = 1014;
+    private static final int LOGOUT_CODE = 1015;
 
     private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
     private static final int STORAGE_PERMISSION_SETTINGS_REQUSETCODE = 133;
@@ -152,6 +155,11 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
         giveItems = new ArrayList<>();
         askItems = new ArrayList<>();
         initUser();
+        initMenu();
+    }
+
+    private void initMenu() {
+        setSupportActionBar(main_TLB_head);
     }
 
     /**
@@ -532,13 +540,36 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "onCreateOptionsMenu: ");
-        getMenuInflater().inflate(R.menu.top_app_bar, menu);
+        getMenuInflater().inflate(R.menu.top_app_bar2, menu);
         searchItem = menu.findItem(R.id.action_search);
         searchItem.setVisible(false);
         main_SRC_search.setMenuItem(searchItem);
 
         return true;
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.menu_logout){
+            Toast.makeText(this, "Action clicked logout", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(MainActivity.this, Activity_login.class);
+            intent.putExtra(LOGOUT,LOGOUT_CODE);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+        if (id == R.id.menu_rate){
+            Toast.makeText(this, "Action clicked rate", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        if (id == R.id.menu_share){
+            Toast.makeText(this, "Action clicked share", Toast.LENGTH_LONG).show();
+            return true ;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -667,7 +698,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                 results.add(item.getName());
             }
         } else {
-            Log.d(TAG, "getResultNames: extracting from ask items");
+            Log.d(TAG, "getResultNames: extracting from give items");
             for (GiveItem item : giveResults) {
                 results.add(item.getName());
             }

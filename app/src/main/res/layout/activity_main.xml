@@ -113,6 +113,9 @@
             android:background="@color/colorPrimary"
             app:title="@string/app_name"
             android:elevation="4dp"
+            app:menu="@menu/top_app_bar2"
+            android:theme="@style/ToolBarStyle"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dialog"
             app:titleTextColor="@color/white" />
 
         <com.miguelcatalan.materialsearchview.MaterialSearchView
@@ -120,6 +123,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="visible" />
+
+
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

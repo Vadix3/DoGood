@@ -64,8 +64,11 @@ import java.util.Arrays;
 
 public class Activity_login extends AppCompatActivity implements NewAccountDialogListener {
 
-    private static final String TAG = "Dogood";
+    private static final String TAG = "Activity_login";
     private static final String LOGIN_USER_EXTRA = "loginUser";
+    private static final String LOGOUT = "logout";
+
+    private static final int LOGOUT_CODE = 1015;
 
     private User myUser = new User(); // A user to move with to the main page
 
@@ -182,8 +185,12 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
             Log.d(TAG, "onStart: FIREBASE: User not signed in yet");
         } else {
             Log.d(TAG, "onStart: FIREBASE: User logged in");
-            int check = getIntent().getIntExtra("LOGGED_OUT", 0);
-            if (check != 1) {
+            int check = getIntent().getIntExtra(LOGOUT, 0);
+            if(check == LOGOUT_CODE){
+                Log.d(TAG, "onStart: Came from main, not logging in");
+                mAuth.signOut();
+                onStart();
+            } else if (check != 1) {
                 Log.d(TAG, "onStart: Did not came from main, logging in");
 
 
@@ -199,9 +206,6 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
                 finish();
                 //TODO: RETURN AUTO LOGIN
 //                mAuth.signOut();
-            } else {
-                Log.d(TAG, "onStart: Came from main, not logging in");
-                mAuth.signOut();
             }
         }
     }
@@ -356,6 +360,12 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
             handleGoogleSignInResult(task);
         }
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == LOGOUT_CODE){
+            Log.d(TAG, "onActivityResult: form main Activity");
+            Toast.makeText(this, "bye bye", Toast.LENGTH_LONG).show();
+            FirebaseAuth.getInstance().signOut();
+        }
     }
 
     private void handleGoogleSignInResult(Task<GoogleSignInAccount> completedTask) {
