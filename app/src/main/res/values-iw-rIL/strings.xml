@@ -94,5 +94,19 @@
     <string name="city2">עיר: </string>
     <string name="contact_giver">"צרו קשר עם הנותן "</string>
     <string name="contact_asker">"צור קשר עם השואל "</string>
+    <string name="results">תוצאה :</string>
+    <string name="item_added_successfully">"הפריט נוסף בהצלחה ! "</string>
+    <string name="updated_successfully">" עודכן בהצלחה ! "</string>
+    <string name="removed_successfully">" הוסר בהצלחה !  "</string>
+    <string name="rating">דרוג :</string>
+    <string name="stars">כוכבים</string>
+    <string name="talk_to_your_around_tanks_you">דבר עם הסובבים אותך, תודה !</string>
+    <string name="ils">ש\"ח</string>
+    <string name="share" translatable="false">לשטף</string>
+    <string name="rate" translatable="false">ציון</string>
+    <string name="ok">בסדר</string>
+    <string name="permission_denied">"ההרשאה נדחתה "</string>
+    <string name="permission_denied_explication_storage">"נדרשת הרשאת אחסון כדי להוסיף תמונה של הפריט שלך. אפשר הרשאות אחסון בהגדרות האפליקציה. "</string>
+    <string name="permission_denied_explication_camera">"נדרשת הרשאת מצלמה לצילום הפריט שלך. אנא הרשה מצלמות בהגדרות האפליקציה. "</string>
 
 </resources>

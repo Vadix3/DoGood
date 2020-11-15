@@ -9,7 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -33,7 +32,6 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.dogood.activities.Activity_login;
 import com.example.dogood.activities.ItemDetailsActivity;
 import com.example.dogood.fragments.AskItemFragment;
@@ -561,7 +559,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
         int id = item.getItemId();
 
         if(id == R.id.menu_logout){
-            Toast.makeText(this, "Action clicked logout", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.logout), Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MainActivity.this, Activity_login.class);
             intent.putExtra(LOGOUT,LOGOUT_CODE);
             startActivity(intent);
@@ -575,7 +573,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     , new SmartRate.CallBack_UserRating() {
                         @Override
                         public void userRating(int rating) {
-                            Toast.makeText(MainActivity.this, "Rating: " + rating + " Stars", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, getString(R.string.rating) + rating + getString(R.string.stars), Toast.LENGTH_LONG).show();
                             //saveUserRating(rating);
                         }
                     }
@@ -583,7 +581,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
             return true;
         }
         if (id == R.id.menu_share){
-            Toast.makeText(this, "Action clicked share", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.talk_to_your_around_tanks_you), Toast.LENGTH_LONG).show();
             return true ;
         }
         return super.onOptionsItemSelected(item);
@@ -601,7 +599,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.d(TAG, "onQueryTextSubmit: ");
-                main_TLB_head.setTitle("Results: " + query);
+                main_TLB_head.setTitle(getString(R.string.results) + query);
                 showingResults = true;
                 if (askFragment.getVisibility() == View.VISIBLE) { // search in ask array
                     Log.d(TAG, "onQueryTextChange: Ask fragment is showing");
@@ -646,7 +644,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     Log.d(TAG, "onItemClick: " + askResults.get(position).getName());
                                     showingResults = true;
-                                    main_TLB_head.setTitle("Results: " + suggestions[position]);
+                                    main_TLB_head.setTitle(getString(R.string.results) + suggestions[position]);
                                     main_SRC_search.closeSearch();
                                 }
                             });
@@ -669,7 +667,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     Log.d(TAG, "onItemClick: " + giveResults.get(position).getName());
                                     showingResults = true;
-                                    main_TLB_head.setTitle("Results: " + suggestions[position]);
+                                    main_TLB_head.setTitle(getString(R.string.results) + suggestions[position]);
                                     main_SRC_search.closeSearch();
                                 }
                             });
@@ -810,7 +808,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                 if (data != null) {
                     String gotNewItem = data.getStringExtra(NEW_GIVE_ITEM);
                     Log.d(TAG, "onActivityResult: Got new give item: " + gotNewItem);
-                    Toast.makeText(this, "Item added successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.item_added_successfully), Toast.LENGTH_SHORT).show();
                     Gson gson = new Gson();
                     Type itemType = new TypeToken<GiveItem>() {
                     }.getType();
@@ -830,7 +828,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                 if (data != null) {
                     String gotNewItem = data.getStringExtra(NEW_ASK_ITEM);
                     Log.d(TAG, "onActivityResult: Got ask item: " + gotNewItem);
-                    Toast.makeText(this, "Item added successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.item_added_successfully), Toast.LENGTH_SHORT).show();
                     Gson gson = new Gson();
                     Type itemType = new TypeToken<AskItem>() {
                     }.getType();
@@ -930,7 +928,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     myUser.getGiveItems().set(i, tempItem);
                 }
             }
-            Toast.makeText(this, tempItem.getName() + " Updated successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, tempItem.getName() + getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
         } else {
             AskItem tempItem = gson.fromJson(tempJson, AskItem.class);
             Log.d(TAG, "onActivityResult: Got ask item: " + tempItem.toString());
@@ -945,7 +943,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     myUser.getAskItems().set(i, tempItem);
                 }
             }
-            Toast.makeText(this, tempItem.getName() + " Updated successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, tempItem.getName() + getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -970,7 +968,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     myUser.getGiveItems().remove(i);
                 }
             }
-            Toast.makeText(this, tempItem.getName() + " Removed successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, tempItem.getName() + getString(R.string.removed_successfully), Toast.LENGTH_SHORT).show();
         } else {
             AskItem tempItem = gson.fromJson(tempJson, AskItem.class);
             Log.d(TAG, "onActivityResult: Got ask item: " + tempItem.toString());
@@ -986,7 +984,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                 }
             }
 
-            Toast.makeText(this, tempItem.getName() + " Removed successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, tempItem.getName() + getString(R.string.removed_successfully), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1012,11 +1010,11 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
         showingResults = false;
         if (giveFragment.getVisibility() == View.VISIBLE) {
             setGiveFragment(giveItems);
-            main_TLB_head.setTitle("Given Items");
+            main_TLB_head.setTitle(getString(R.string.object_to_give));
             main_TLB_head.setNavigationIcon(null);
         } else {
             setAskFragment(askItems);
-            main_TLB_head.setTitle("Needed Items");
+            main_TLB_head.setTitle(getString(R.string.object_to_ask));
             main_TLB_head.setNavigationIcon(null);
         }
     }
@@ -1115,11 +1113,10 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                         if (response.isPermanentlyDenied()) {
                             Log.d(TAG, "onPermissionDenied: User denied permission permanently!");
                             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setTitle("Permission Denied")
-                                    .setMessage("Camera permission is required to take a photo of your item.\n" +
-                                            "Please allow camera permissions in app settings.")
-                                    .setNegativeButton("Cancel", null)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            builder.setTitle(getString(R.string.permission_denied))
+                                    .setMessage(getString(R.string.permission_denied_explication_camera))
+                                    .setNegativeButton(getString(R.string.cancel), null)
+                                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             Log.d(TAG, "onClick: Opening settings activity");
@@ -1161,11 +1158,10 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                         if (response.isPermanentlyDenied()) {
                             Log.d(TAG, "onPermissionDenied: User denied permission permanently!");
                             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setTitle("Permission Denied")
-                                    .setMessage("Storage permission is required to add a photo of your item.\n" +
-                                            "Please allow storage permissions in app settings.")
-                                    .setNegativeButton("Cancel", null)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            builder.setTitle(getString(R.string.permission_denied))
+                                    .setMessage(getString(R.string.permission_denied_explication_storage))
+                                    .setNegativeButton(getString(R.string.cancel), null)
+                                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             Log.d(TAG, "onClick: Opening settings activity");
