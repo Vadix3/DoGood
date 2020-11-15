@@ -21,7 +21,7 @@
         app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_container" />
+        app:layout_constraintTop_toBottomOf="@id/giveFragment_LAY_sortFilterFragment" />
 
     <FrameLayout
         android:id="@+id/main_LAY_givePageFragment"
@@ -32,7 +32,7 @@
         app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_container" />
+        app:layout_constraintTop_toBottomOf="@id/giveFragment_LAY_sortFilterFragment" />
 
     <FrameLayout
         android:id="@+id/main_LAY_askPageFragment"
@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_container" />
+        app:layout_constraintTop_toBottomOf="@id/giveFragment_LAY_sortFilterFragment" />
 
     <FrameLayout
         android:id="@+id/main_LAY_profilePageFragment"
@@ -54,7 +54,7 @@
         app:layout_constraintBottom_toTopOf="@+id/main_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_container" />
+        app:layout_constraintTop_toBottomOf="@id/giveFragment_LAY_sortFilterFragment" />
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         android:id="@+id/main_BAR_progressBar"
@@ -84,6 +84,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1"
         app:menu="@menu/bottom_navigation_menu" />
+
+    <RelativeLayout
+        android:id="@+id/giveFragment_LAY_sortFilterFragment"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <FrameLayout
         android:id="@+id/toolbar_container"
