@@ -7,8 +7,8 @@
     <string name="profile">Profile</string>
     <string name="logout">Logout</string>
     <string name="communicate" translatable="false">Communicate</string>
-    <string name="share" translatable="false">Share</string>
-    <string name="rate" translatable="false">Rate</string>
+    <string name="share">Share</string>
+    <string name="rate">Rate</string>
 
     <string name="navigation_drawer_open" translatable="false">Navigation drawer open</string>
     <string name="navigation_drawer_close" translatable="false">Navigation drawer close</string>
@@ -115,7 +115,7 @@
     <string name="our_email" translatable="false">dogoodapp1@gmail.com</string>
 
     <string name="regarding_item">Regarding item:</string>
-    <string name="ils" translatable="false">ILS</string>
+    <string name="ils">ILS</string>
 
     <string name="name2">Name: </string>
     <string name="email2">Email: </string>
@@ -124,15 +124,17 @@
 
     <string name="contact_giver">Contact Giver</string>
     <string name="contact_asker">Contact Asker</string>
-
-    <string name="hello">Hello</string>
-    <string name="latest_gift">Latest Gift</string>
-    <string name="latest_request">Latest Request</string>
-
-
-    <string name="test_app_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="app_id" translatable="false">ca-app-pub-7740925847001376~9529536357</string>
-    <string name="bottom_banner_id" translatable="false">ca-app-pub-7740925847001376/7777470981</string>
+    <string name="results">"Results: "</string>
+    <string name="item_added_successfully">Item added successfully !</string>
+    <string name="updated_successfully">" Updated successfully !"</string>
+    <string name="removed_successfully">" Removed successfully !"</string>
+    <string name="rating">"Rating: "</string>
+    <string name="stars">" Stars"</string>
+    <string name="talk_to_your_around_tanks_you">Talk to your arounds , tanks you !</string>
+    <string name="ok">Ok</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="permission_denied_explication_storage">\"Storage permission is required to add a photo of your item.\n\" + \"Please allow storage permissions in app settings.\"</string>
+    <string name="permission_denied_explication_camera">\"Camera permission is required to take a photo of your item.\n\" + \"Please allow camera permissions in app settings.\"</string>
 
 
 </resources>
