@@ -36,9 +36,11 @@
 
     <TextView
         android:id="@+id/itemDetails_LBL_itemDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:background="@drawable/round_thin_border_edges"
+        android:padding="10dp"
+        android:paddingStart="20dp"
         android:text="A used white Samsung microwave, works fine."
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/itemDetails_LBL_itemState"
@@ -50,8 +52,11 @@
 
     <TextView
         android:id="@+id/itemDetails_LBL_itemState"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/round_thin_border_edges"
+        android:padding="10dp"
+        android:paddingStart="20dp"
         android:text="Condition: Used"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/itemDetails_LBL_itemDate"
@@ -63,8 +68,11 @@
 
     <TextView
         android:id="@+id/itemDetails_LBL_itemPrice"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/round_thin_border_edges"
+        android:padding="10dp"
+        android:paddingStart="20dp"
         android:text="Price: Free"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/itemDetails_BTN_contactGiver"
@@ -76,8 +84,11 @@
 
     <TextView
         android:id="@+id/itemDetails_LBL_itemDate"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/round_thin_border_edges"
+        android:padding="10dp"
+        android:paddingStart="20dp"
         android:text="Post date: 17/11/20"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/itemDetails_LBL_itemPrice"

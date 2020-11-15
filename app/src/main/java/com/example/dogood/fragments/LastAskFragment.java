@@ -15,9 +15,11 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.example.dogood.R;
+import com.example.dogood.interfaces.ItemDetailsListener;
 import com.example.dogood.objects.AskItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -29,7 +31,7 @@ public class LastAskFragment extends Fragment {
     private Context context;
     private AskItem item;
     protected View view;
-
+    private MaterialCardView mainLayout;
     private TextView itemName;
     private ShapeableImageView itemPhoto;
 
@@ -60,6 +62,13 @@ public class LastAskFragment extends Fragment {
         Log.d(TAG, "initViews: ");
         itemName = view.findViewById(R.id.lastAsk_LBL_itemName);
         itemPhoto = view.findViewById(R.id.lastAsk_IMG_itemPhoto);
+        mainLayout=view.findViewById(R.id.lastAsk_LAY_cardview);
+        mainLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ItemDetailsListener) context).getSelectedItem(null,item,false);
+            }
+        });
         itemName.setText(item.getName());
         getItemCategory(itemPhoto);
     }

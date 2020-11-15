@@ -159,4 +159,8 @@
     <string name="wrong_password">Wrong password</string>
     <string name="email_address_does_not_exist">Email address does not exist !</string>
 
+    <string name="items_im_giving">Items I am giving</string>
+    <string name="items_i_need">Items I need</string>
+
+
 </resources>

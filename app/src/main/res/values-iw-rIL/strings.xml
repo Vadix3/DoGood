@@ -124,6 +124,7 @@
     <string name="connection_timeout">"אזל זמן לחיבור "</string>
     <string name="wrong_password">"סיסמה שגויה "</string>
     <string name="email_address_does_not_exist">"כתובת דוא\"ל לא קיימת! "</string>
-
+    <string name="items_im_giving">פריטים שאני נותן</string>
+    <string name="items_i_need">פריטים שאני צריך</string>
 
 </resources>

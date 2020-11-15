@@ -61,6 +61,7 @@ public class Fragment_profile extends Fragment {
     private TextView profile_LBL_city;
     private TextView profile_LBL_phone;
     private TextView profile_LBL_mail;
+    private TextView listType;
     //private FrameLayout profile_LAY_post;
     private MaterialButton profile_BTN_update;
     private ViewPager2 viewPager;
@@ -164,6 +165,7 @@ public class Fragment_profile extends Fragment {
         profile_IMG_picture = view.findViewById(R.id.profile_IMG_picture);
         getUserProfilePhoto();
         profile_LBL_name = view.findViewById(R.id.profile_LBL_name);
+        listType = view.findViewById(R.id.profile_LBL_listType);
         profile_LBL_city = view.findViewById(R.id.profile_LBL_city);
         profile_LBL_phone = view.findViewById(R.id.profile_LBL_phone);
         profile_LBL_mail = view.findViewById(R.id.profile_LBL_mail);
@@ -178,6 +180,17 @@ public class Fragment_profile extends Fragment {
         viewPager = view.findViewById(R.id.viewPager);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getFragmentManager(), getLifecycle(), mUser);
         viewPager.setAdapter(viewPagerAdapter);
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (position == GIVE_FRAGMENT) {
+                    listType.setText(getContext().getString(R.string.items_im_giving));
+                } else {
+                    listType.setText(getContext().getString(R.string.items_i_need));
+                }
+            }
+        });
     }
 
     /**
