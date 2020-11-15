@@ -41,6 +41,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -75,9 +76,9 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
     private ShapeableImageView itemPhoto;
-    private EditText itemName;
+    private TextInputLayout itemName;
     private EditText itemPrice;
-    private EditText itemDescription;
+    private TextInputLayout itemDescription;
     private CheckBox freeItem;
     private Spinner condition;
     private Spinner category;
@@ -282,13 +283,13 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
      */
     private void checkForValidInput() {
         Log.d(TAG, "checkForValidInput: Checking user input");
-        if (itemName.getText().toString().equals("")) {
+        if (itemName.getEditText().getText().toString().equals("")) {
             Log.d(TAG, "checkForValidInput: Empty item name");
             itemName.setError(getString(R.string.please_enter_item_name));
             submitBtn.setEnabled(true);
             return;
         }
-        if (itemDescription.getText().toString().equals("")) {
+        if (itemDescription.getEditText().getText().toString().equals("")) {
             Log.d(TAG, "checkForValidInput: Empty item description");
             itemDescription.setError(getString(R.string.please_enter_item_decription));
             submitBtn.setEnabled(true);
@@ -408,8 +409,8 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
                 Log.d(TAG, "onSuccess: Image upload successful!");
                 // TODO: Fix google and facebook photo issues
 
-                GiveItem temp = new GiveItem(itemID, itemName.getText().toString(), categoriesUS.get((int) category.getSelectedItemId()).toString()
-                        , conditionsUS.get((int) condition.getSelectedItemId()).toString(), itemPrice.getText().toString(), itemDescription.getText().toString()
+                GiveItem temp = new GiveItem(itemID, itemName.getEditText().getText().toString(), categoriesUS.get((int) category.getSelectedItemId()).toString()
+                        , conditionsUS.get((int) condition.getSelectedItemId()).toString(), itemPrice.getText().toString(), itemDescription.getEditText().getText().toString()
                         , "Test", "test-date-27/10", currentUser);
                 returnGivenItem(temp);
             }

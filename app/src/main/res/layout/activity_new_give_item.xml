@@ -23,46 +23,72 @@
         app:layout_constraintVertical_bias="0.03" />
 
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editItem_EDT_itemName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/round_edt_border_edges"
-        android:drawablePadding="10dp"
-        android:elevation="10dp"
         android:gravity="center"
         android:hint="@string/item_name"
-        android:inputType="textCapSentences"
         android:padding="15dp"
+        android:textColorHint="@color/black"
+        app:boxCornerRadiusBottomEnd="15dp"
+        app:boxCornerRadiusBottomStart="15dp"
+        app:boxCornerRadiusTopEnd="15dp"
+        app:boxCornerRadiusTopStart="15dp"
+        app:boxStrokeColor="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/editItem_EDT_itemDescription"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.322"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editItem_IMG_itemPhoto"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.035"
+        app:startIconDrawable="@drawable/ic_gift_start"
+        app:startIconTint="@color/colorPrimary">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences" />
 
-    <EditText
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editItem_EDT_itemDescription"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/round_edt_border_edges"
+        android:layout_height="140dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:drawablePadding="10dp"
         android:elevation="10dp"
         android:gravity="center"
         android:hint="@string/item_description"
-        android:inputType="textCapSentences"
         android:padding="15dp"
+        android:textColorHint="@color/black"
+        app:boxCornerRadiusBottomEnd="15dp"
+        app:boxCornerRadiusBottomStart="15dp"
+        app:boxCornerRadiusTopEnd="15dp"
+        app:boxCornerRadiusTopStart="15dp"
+        app:boxStrokeColor="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/editItem_LST_conditionSpinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editItem_EDT_itemName"
-        app:layout_constraintVertical_bias="0.029" />
+        app:layout_constraintVertical_bias="0.020"
+        app:startIconDrawable="@drawable/ic_description"
+        app:startIconTint="@color/colorPrimary">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:inputType="textCapSentences" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -97,7 +123,7 @@
             android:layout_height="53dp"
             android:checked="true"
             android:text="@string/free_item"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/black"
             android:textSize="15sp" />
 
 

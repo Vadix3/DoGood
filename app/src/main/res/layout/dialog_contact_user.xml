@@ -56,6 +56,8 @@
         android:paddingTop="20dp"
         android:paddingEnd="10dp"
         android:paddingBottom="20dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
         android:text="Giving@user.com"
         android:textIsSelectable="true"
         android:textSize="20sp"
@@ -88,7 +90,8 @@
         android:background="@drawable/round_thin_border_edges"
         android:gravity="center"
         android:paddingStart="10dp"
-
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
         android:paddingTop="20dp"
         android:paddingEnd="10dp"
         android:paddingBottom="20dp"

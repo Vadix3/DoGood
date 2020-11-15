@@ -19,6 +19,7 @@ import com.example.dogood.R;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.User;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -38,8 +39,8 @@ public class NewAskItemActivity extends AppCompatActivity {
 
     private static final String ITEM_COUNT = "itemCount";
 
-    private EditText itemName;
-    private EditText itemDescription;
+    private TextInputLayout itemName;
+    private TextInputLayout itemDescription;
     private Spinner itemCategory;
     private CheckBox isDiscrete;
     private MaterialButton submitBtn;
@@ -152,12 +153,12 @@ public class NewAskItemActivity extends AppCompatActivity {
 
         boolean tempDiscrete = false;
 
-        if (itemName.getText().toString().equals("")) {
+        if (itemName.getEditText().getText().toString().equals("")) {
             Log.d(TAG, "checkForValidInput: Empty item name");
             itemName.setError(getString(R.string.please_enter_item_name));
             return;
         }
-        if (itemDescription.getText().toString().equals("")) {
+        if (itemDescription.getEditText().getText().toString().equals("")) {
             Log.d(TAG, "checkForValidInput: Empty item description");
             itemDescription.setError(getString(R.string.please_enter_item_decription));
             return;
@@ -173,8 +174,8 @@ public class NewAskItemActivity extends AppCompatActivity {
         }
 
         Log.d(TAG, "checkAndSendData: Current user: "+currentUser.toString());
-        AskItem temp = new AskItem("123", itemName.getText().toString(), categoriesUS.get((int) itemCategory.getSelectedItemId()).toString()
-                , currentUser.getCity(), itemDescription.getText().toString(), "20-12-20", currentUser, tempDiscrete);
+        AskItem temp = new AskItem("123", itemName.getEditText().getText().toString(), categoriesUS.get((int) itemCategory.getSelectedItemId()).toString()
+                , currentUser.getCity(), itemDescription.getEditText().getText().toString(), "20-12-20", currentUser, tempDiscrete);
 
         Intent resultIntent = new Intent();
         Gson gson = new Gson();

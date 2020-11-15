@@ -2,6 +2,8 @@ package com.example.dogood.Dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -52,6 +54,30 @@ public class ContactUserDialog extends Dialog {
             userCityLbl.setVisibility(View.GONE);
             userPhoneLbl.setVisibility(View.GONE);
         }
+        userPhoneLbl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri number = Uri.parse("tel:"+user.getPhone());
+                Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+                context.startActivity(callIntent);
+
+            }
+        });
+        userEmailLbl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+                /* Fill it with Data */
+                emailIntent.setType("plain/text");
+                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{user.getEmail()});
+                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, itemName);
+                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, context.getString(R.string.hey_to_mail)+ " "+itemName);
+
+                /* Send it off to the Activity-Chooser */
+                context.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            }
+        });
 
     }
 }

@@ -5,54 +5,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editItem_EDT_AskitemName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/round_edt_border_edges"
-        android:drawablePadding="10dp"
-        android:elevation="10dp"
         android:gravity="center"
         android:hint="@string/item_name"
-        android:inputType="textCapSentences"
+        android:textColorHint="@color/black"
+        app:boxCornerRadiusBottomEnd="15dp"
+        app:boxCornerRadiusBottomStart="15dp"
+        app:boxCornerRadiusTopEnd="15dp"
+        app:boxCornerRadiusTopStart="15dp"
+        android:layout_marginTop="15dp"
+        app:boxStrokeColor="@color/colorPrimary"
+        app:startIconDrawable="@drawable/ic_donation_start"
+        app:startIconTint="@color/colorPrimary"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:padding="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.023">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences" />
 
-    <EditText
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editItem_EDT_askItemDescription"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="140dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/round_edt_border_edges"
-        android:drawablePadding="10dp"
-        android:elevation="10dp"
         android:gravity="center"
         android:hint="@string/item_description"
-        android:inputType="textCapSentences"
+        android:textColorHint="@color/black"
+        app:boxCornerRadiusBottomEnd="15dp"
+        app:boxCornerRadiusBottomStart="15dp"
+        app:boxCornerRadiusTopEnd="15dp"
+        app:boxCornerRadiusTopStart="15dp"
+        app:boxStrokeColor="@color/colorPrimary"
+        app:startIconDrawable="@drawable/ic_description"
+        app:startIconTint="@color/colorPrimary"
         android:padding="15dp"
+        android:elevation="10dp"
+        android:drawablePadding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editItem_EDT_AskitemName"
-        app:layout_constraintVertical_bias="0.032" />
+        app:layout_constraintVertical_bias="0.02">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:inputType="textCapSentences" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/editItem_LST_AskCategorySpinner"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/round_edt_border_edges"
         android:dropDownVerticalOffset="40dp"
         android:padding="15dp"
@@ -69,7 +97,7 @@
         android:layout_height="53dp"
         android:checked="true"
         android:text="@string/discrete_request"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
