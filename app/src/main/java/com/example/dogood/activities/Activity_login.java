@@ -361,11 +361,6 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
         }
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == LOGOUT_CODE){
-            Log.d(TAG, "onActivityResult: form main Activity");
-            Toast.makeText(this, "bye bye", Toast.LENGTH_LONG).show();
-            FirebaseAuth.getInstance().signOut();
-        }
     }
 
     private void handleGoogleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -419,7 +414,7 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
                             setFirebaseUserParams(user);
                             login_EDT_mail.getEditText().setText(myUser.getEmail());
                             login_EDT_password.getEditText().setText(myUser.getPassword());
-                            Toast.makeText(Activity_login.this, "User Created Successfully!"
+                            Toast.makeText(Activity_login.this, getString(R.string.user_created_successfully)
                                     , Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -430,14 +425,14 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
                 Log.d(TAG, "createUserWithEmail:failure" + e.getMessage());
                 login_EDT_mail.getEditText().setText("");
                 login_EDT_password.getEditText().setText("");
-                if (e.getMessage().equalsIgnoreCase("The email address is already in use by another account.")) {
-                    Toast.makeText(Activity_login.this, "There is an account with that email!"
+                if (e.getMessage().equalsIgnoreCase(getString(R.string.email_already_use))) {
+                    Toast.makeText(Activity_login.this, getString(R.string.there_is_an_account_with_that_email)
                             , Toast.LENGTH_SHORT).show();
                     login_EDT_mail.getEditText().setText(myUser.getEmail());
                 }
-                if (e.getMessage().equalsIgnoreCase("The email address is badly formatted.")) {
+                if (e.getMessage().equalsIgnoreCase(getString(R.string.the_email_address_is_badly_formatted))) {
                     Log.d(TAG, "createUserWithEmail: Failure: email badly formatted");
-                    Toast.makeText(Activity_login.this, "Please enter a valid email address"
+                    Toast.makeText(Activity_login.this, getString(R.string.please_enter_a_valid_email_address)
                             , Toast.LENGTH_SHORT).show();
                     login_BTN_login.setClickable(true);
                 }
@@ -520,14 +515,14 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
                             if (e.getMessage().equalsIgnoreCase(
                                     "An internal error has occurred. [ Unable to resolve" +
                                             " host \"www.googleapis.com\":No address associated with hostname ]")) {
-                                Toast.makeText(Activity_login.this, "Connection Timeout", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Activity_login.this, getString(R.string.connection_timeout), Toast.LENGTH_SHORT).show();
                             }
                             if (e.getMessage().equalsIgnoreCase(
                                     "The password is invalid or the user does not have a password.")) {
-                                login_EDT_password.setError("Wrong password");
+                                login_EDT_password.setError(getString(R.string.wrong_password));
                             }
                             if (e.getMessage().equals("There is no user record corresponding to this identifier. The user may have been deleted.")) {
-                                login_EDT_mail.setError("Email address does not exist!");
+                                login_EDT_mail.setError(getString(R.string.email_address_does_not_exist));
                             }
                         }
                     }

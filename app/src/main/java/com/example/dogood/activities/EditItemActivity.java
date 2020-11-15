@@ -82,6 +82,9 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
     private boolean isGiveItem = false;
     private Bitmap userCustomImage;
 
+    private ArrayList<String> categoriesUS;
+    private ArrayList<String> conditionsUS;
+
 
     private MaterialButton submitBtn;
 
@@ -231,19 +234,19 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
             }
             if (giveConditionSpinner.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.select_condition))) {
                 Log.d(TAG, "checkForValidInput: Condition not selected");
-                ((TextView) giveConditionSpinner.getSelectedView()).setError("Please select a condition");
+                ((TextView) giveConditionSpinner.getSelectedView()).setError(getString(R.string.please_select_a_condition));
                 submitBtn.setEnabled(true);
                 return;
             }
             if (giveCategorySpinner.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.select_categories))) {
                 Log.d(TAG, "checkForValidInput: Category not selected");
-                ((TextView) giveCategorySpinner.getSelectedView()).setError("Please select a category");
+                ((TextView) giveCategorySpinner.getSelectedView()).setError(getString(R.string.please_select_a_category));
                 submitBtn.setEnabled(true);
                 return;
             }
             if (giveItemPrice.getText().toString().equals("") && !isFree.isChecked()) {
                 Log.d(TAG, "checkForValidInput: Item price is not selected but not free");
-                giveItemPrice.setError("Please enter price (Be reasonable!)");
+                giveItemPrice.setError(getString(R.string.be_reasonable));
                 submitBtn.setEnabled(true);
                 return;
             }
@@ -254,7 +257,7 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
             }
 
             Log.d(TAG, "checkForValidInput: Passed all checks!");
-            Toast.makeText(EditItemActivity.this, "Uploading item", Toast.LENGTH_LONG).show();
+            Toast.makeText(EditItemActivity.this, getString(R.string.uploading_item), Toast.LENGTH_LONG).show();
             submitBtn.setEnabled(false);
             CircularProgressDrawable drawable = new CircularProgressDrawable(EditItemActivity.this);
             drawable.setColorSchemeColors(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.black);
@@ -286,7 +289,7 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
             }
             if (askCategorySpinner.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.select_categories))) {
                 Log.d(TAG, "checkForValidInput: Category not selected");
-                ((TextView) askCategorySpinner.getSelectedView()).setError("Please select a category");
+                ((TextView) askCategorySpinner.getSelectedView()).setError(getString(R.string.please_select_a_category));
                 return;
             }
             if (isDescrete.isChecked()) {
@@ -379,6 +382,23 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
         categories.add(getString(R.string.computers));
         categories.add(getString(R.string.other));
 
+        categoriesUS = new ArrayList<>();
+        categoriesUS.add("Select categories");
+        categoriesUS.add("Clothes");
+        categoriesUS.add("Office supplies");
+        categoriesUS.add("Medical_equipment");
+        categoriesUS.add("Gaming");
+        categoriesUS.add("Electronics");
+        categoriesUS.add("Appliances");
+        categoriesUS.add("Gift cards");
+        categoriesUS.add("Lighting");
+        categoriesUS.add("Games and Toys");
+        categoriesUS.add("Cellular");
+        categoriesUS.add("Books");
+        categoriesUS.add("Baby Supplies");
+        categoriesUS.add("Computers");
+        categoriesUS.add("Other");
+
 
         //create an ArrayAdapter from the String Array
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
@@ -401,6 +421,13 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
         conditions.add(getString(R.string.new_item));
         conditions.add(getString(R.string.used_item));
         conditions.add(getString(R.string.opened_item));
+
+        conditionsUS = new ArrayList<>();
+        conditionsUS.add("Select condition");
+        conditionsUS.add("New");
+        conditionsUS.add("Used");
+        conditionsUS.add("opened but not used");
+
 
         //create an ArrayAdapter from the String Array
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
@@ -456,8 +483,8 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
         Log.d(TAG, "updateGiveItem: Updating give item");
 
         giveItem.setName(giveItemName.getText().toString());
-        giveItem.setCategory(giveCategorySpinner.getSelectedItem().toString());
-        giveItem.setState(giveConditionSpinner.getSelectedItem().toString());
+        giveItem.setCategory(categoriesUS.get((int) giveCategorySpinner.getSelectedItemId()).toString());
+        giveItem.setState(conditionsUS.get((int) giveConditionSpinner.getSelectedItemId()).toString());
         giveItem.setPrice(giveItemPrice.getText().toString());
         giveItem.setDescription(giveItemDescription.getText().toString());
 
@@ -549,11 +576,10 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
                         if (response.isPermanentlyDenied()) {
                             Log.d(TAG, "onPermissionDenied: User denied permission permanently!");
                             AlertDialog.Builder builder = new AlertDialog.Builder(EditItemActivity.this);
-                            builder.setTitle("Permission Denied")
-                                    .setMessage("Camera permission is required to take a photo of your item.\n" +
-                                            "Please allow camera permissions in app settings.")
-                                    .setNegativeButton("Cancel", null)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            builder.setTitle(getString(R.string.permission_denied))
+                                    .setMessage(getString(R.string.permission_denied_explication_camera))
+                                    .setNegativeButton(getString(R.string.cancel), null)
+                                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             Log.d(TAG, "onClick: Opening settings activity");
@@ -595,11 +621,10 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
                         if (response.isPermanentlyDenied()) {
                             Log.d(TAG, "onPermissionDenied: User denied permission permanently!");
                             AlertDialog.Builder builder = new AlertDialog.Builder(EditItemActivity.this);
-                            builder.setTitle("Permission Denied")
-                                    .setMessage("Storage permission is required to add a photo of your item.\n" +
-                                            "Please allow storage permissions in app settings.")
-                                    .setNegativeButton("Cancel", null)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            builder.setTitle(getString(R.string.permission_denied))
+                                    .setMessage(getString(R.string.permission_denied_explication_storage))
+                                    .setNegativeButton(R.string.cancel, null)
+                                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             Log.d(TAG, "onClick: Opening settings activity");

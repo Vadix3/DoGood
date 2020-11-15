@@ -296,19 +296,19 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
         }
         if (condition.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.select_condition))) {
             Log.d(TAG, "checkForValidInput: Condition not selected");
-            ((TextView) condition.getSelectedView()).setError("Please select a condition");
+            ((TextView) condition.getSelectedView()).setError(getString(R.string.please_select_a_condition));
             submitBtn.setEnabled(true);
             return;
         }
         if (category.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.select_categories))) {
             Log.d(TAG, "checkForValidInput: Category not selected");
-            ((TextView) category.getSelectedView()).setError("Please select a category");
+            ((TextView) category.getSelectedView()).setError(getString(R.string.please_select_a_category));
             submitBtn.setEnabled(true);
             return;
         }
         if (itemPrice.getText().toString().equals("") && !freeItem.isChecked()) {
             Log.d(TAG, "checkForValidInput: Item price is not selected but not free");
-            itemPrice.setError("Please enter price (Be reasonable!)");
+            itemPrice.setError(getString(R.string.be_reasonable));
             submitBtn.setEnabled(true);
             return;
         }

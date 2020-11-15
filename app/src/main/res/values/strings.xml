@@ -147,5 +147,16 @@
     <string name="test_app_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
     <string name="app_id" translatable="false">ca-app-pub-7740925847001376~9529536357</string>
     <string name="bottom_banner_id" translatable="false">ca-app-pub-7740925847001376/7777470981</string>
+    <string name="be_reasonable">Please enter price (Be reasonable!)</string>
+    <string name="please_select_a_condition">Please select a condition</string>
+    <string name="please_select_a_category">Please select a category</string>
+    <string name="user_created_successfully">User Created Successfully !</string>
+    <string name="email_already_use" translatable="false">The email address is already in use by another account.</string>
+    <string name="there_is_an_account_with_that_email">There is an account with that email !</string>
+    <string name="the_email_address_is_badly_formatted" translatable="false">The email address is badly formatted.</string>
+    <string name="please_enter_a_valid_email_address">Please enter a valid email address</string>
+    <string name="connection_timeout">Connection Timeout</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="email_address_does_not_exist">Email address does not exist !</string>
 
 </resources>

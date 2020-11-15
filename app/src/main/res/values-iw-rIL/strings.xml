@@ -114,7 +114,16 @@
 
     <string name="latest_gift">פריט מתנה אחרון</string>
     <string name="latest_request">בקשה אחרונה</string>
-
+    <string name="uploading_item">"מעלה פריט "</string>
+    <string name="be_reasonable">"אנא הכנס מחיר (היה סביר!) "</string>
+    <string name="please_select_a_condition">"אנא בחר תנאי "</string>
+    <string name="please_select_a_category">"אנא בחר קטגוריה "</string>
+    <string name="user_created_successfully">"המשתמש נוצר בהצלחה! "</string>
+    <string name="there_is_an_account_with_that_email">"יש חשבון עם הדוא\"ל הזה! "</string>
+    <string name="please_enter_a_valid_email_address">"אנא הזן כתובת דוא\"ל תקנית "</string>
+    <string name="connection_timeout">"אזל זמן לחיבור "</string>
+    <string name="wrong_password">"סיסמה שגויה "</string>
+    <string name="email_address_does_not_exist">"כתובת דוא\"ל לא קיימת! "</string>
 
 
 </resources>

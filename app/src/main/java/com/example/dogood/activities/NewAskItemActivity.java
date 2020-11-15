@@ -164,7 +164,7 @@ public class NewAskItemActivity extends AppCompatActivity {
         }
         if (itemCategory.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.select_categories))) {
             Log.d(TAG, "checkForValidInput: Category not selected");
-            ((TextView) itemCategory.getSelectedView()).setError("Please select a category");
+            ((TextView) itemCategory.getSelectedView()).setError(getString(R.string.please_select_a_category));
             return;
         }
         if (isDiscrete.isChecked()) {
