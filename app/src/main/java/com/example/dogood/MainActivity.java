@@ -270,11 +270,9 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                 switch (item.getItemId()) {
                     case R.id.bottom_menu_home:
                         searchItem.setVisible(false);
-                        optionsItem.setVisible(true);
                         if (mainFragment != null) {
                             main_TLB_head.setTitle(getResources().getString(R.string.home));
                             showFragment(mainFragment);
-
                             isProfileFragmentShowing = false;
                             isGiveItemFragmentShowing = false;
                             isAskItemFragmentShowing = false;
@@ -283,7 +281,6 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                         break;
                     case R.id.bottom_menu_give:
                         searchItem.setVisible(true);
-                        optionsItem.setVisible(true);
                         if (giveFragment != null) {
                             if (giveFragment.getVisibility() != View.VISIBLE) {
                                 main_TLB_head.setTitle(getResources().getString(R.string.object_to_give));
@@ -300,7 +297,6 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                         break;
                     case R.id.bottom_menu_ask:
                         searchItem.setVisible(true);
-                        optionsItem.setVisible(true);
                         if (askFragment != null) {
                             if (askFragment.getVisibility() != View.VISIBLE) {
                                 main_TLB_head.setTitle(getResources().getString(R.string.object_to_ask));
@@ -317,7 +313,6 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                         break;
                     case R.id.bottom_menu_profile:
                         searchItem.setVisible(false);
-                        optionsItem.setVisible(true);
                         if (profileFragment != null) {
                             main_TLB_head.setTitle(getResources().getString(R.string.profile));
                             showFragment(profileFragment);
