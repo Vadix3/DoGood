@@ -79,7 +79,7 @@
     <string name="price">Prix:</string>
     <string name="description">Description:</string>
     <string name="remove_item">Retirer l\'objet</string>
-    <string name="edit_item">Modifier l\'article</string>
+    <string name="edit_item">Modifier l\'objet</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="are_you_sure">Etes-vous sûr que vous voulez supprimer</string>

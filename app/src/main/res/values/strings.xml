@@ -7,12 +7,13 @@
     <string name="profile">Profile</string>
     <string name="logout">Logout</string>
     <string name="communicate" translatable="false">Communicate</string>
-    <string name="share">Share</string>
-    <string name="rate">Rate</string>
+
 
     <string name="navigation_drawer_open" translatable="false">Navigation drawer open</string>
     <string name="navigation_drawer_close" translatable="false">Navigation drawer close</string>
     <string name="menu">Menu</string>
+    <string name="share">Share</string>
+    <string name="rate">Rate</string>
 
 
     <!-- add items -->

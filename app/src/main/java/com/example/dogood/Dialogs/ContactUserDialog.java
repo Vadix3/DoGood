@@ -49,8 +49,8 @@ public class ContactUserDialog extends Dialog {
             userCityLbl.setText(context.getString(R.string.city2)+" "+user.getCity());
             userPhoneLbl.setText(context.getString(R.string.phone2)+" "+user.getPhone());
         } else {
-            userNameLbl.setText(context.getString(R.string.contact_us) + "\n" + context.getString(R.string.our_email));
-            userEmailLbl.setVisibility(View.GONE);
+            userNameLbl.setVisibility(View.GONE);
+            userEmailLbl.setText(context.getString(R.string.contact_us) + "\n" + context.getString(R.string.our_email));
             userCityLbl.setVisibility(View.GONE);
             userPhoneLbl.setVisibility(View.GONE);
         }
@@ -66,11 +66,17 @@ public class ContactUserDialog extends Dialog {
         userEmailLbl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String[] mail ;
+                if(userPhoneLbl.getVisibility() == View.GONE){
+                    mail = new String[]{context.getString(R.string.our_email)};
+                }else {
+                    mail = new String[]{user.getEmail()};
+                }
                 Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 
                 /* Fill it with Data */
                 emailIntent.setType("plain/text");
-                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{user.getEmail()});
+                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, mail);
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, itemName);
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, context.getString(R.string.hey_to_mail)+ " "+itemName);
 
