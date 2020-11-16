@@ -507,7 +507,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
         categoriesUS.add("Select categories");
         categoriesUS.add("Clothes");
         categoriesUS.add("Office supplies");
-        categoriesUS.add("Medical_equipment");
+        categoriesUS.add("Medical equipment");
         categoriesUS.add("Gaming");
         categoriesUS.add("Electronics");
         categoriesUS.add("Appliances");

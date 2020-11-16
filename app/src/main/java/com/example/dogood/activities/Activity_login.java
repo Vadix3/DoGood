@@ -536,6 +536,7 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
                             if (e.getMessage().equalsIgnoreCase(
                                     "An internal error has occurred. [ Unable to resolve" +
                                             " host \"www.googleapis.com\":No address associated with hostname ]")) {
+
                                 Toast.makeText(Activity_login.this, getString(R.string.connection_timeout), Toast.LENGTH_SHORT).show();
                             }
                             if (e.getMessage().equalsIgnoreCase(

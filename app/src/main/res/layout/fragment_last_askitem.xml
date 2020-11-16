@@ -11,7 +11,7 @@
         android:clickable="true"
         android:foreground="?attr/selectableItemBackground"
         android:layerType="hardware"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="15dp"
         app:cardElevation="5dp"
         app:cardMaxElevation="0dp"
         app:cardPreventCornerOverlap="false"
@@ -39,10 +39,11 @@
                     android:drawableStart="@drawable/ic_donation_start"
                     android:drawablePadding="5dp"
                     android:drawableTint="@color/white"
+                    android:lines="1"
                     android:gravity="center"
                     android:text="@string/latest_request"
                     android:textColor="@color/white"
-                    android:textSize="17sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:autoSizeMinTextSize="1px"
                     app:autoSizeTextType="uniform" />
@@ -65,7 +66,8 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="Refrigirator"
-                    android:textSize="20sp"
+                    android:textSize="19sp"
+                    android:lines="1"
                     android:textStyle="bold" />
 
                 <com.google.android.material.imageview.ShapeableImageView

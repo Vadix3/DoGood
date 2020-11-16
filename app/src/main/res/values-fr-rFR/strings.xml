@@ -64,7 +64,7 @@
     <string name="enter_phone_error">Veuillez saisir un numéro de téléphone</string>
     <string name="six_chars_password_error">Veuillez saisir au moins 6 caractères</string>
     <string name="null_password">Veuillez entrer un mot de passe</string>
-    <string name="confirm_password">Veuillez confirmer le mot de passe</string>
+    <string name="confirm_password">confirmer le mot de passe</string>
     <string name="password_no_match">Les mots de passe ne correspondent pas!</string>
     <string name="update_account">Compte mis à jour</string>
     <string name="please_update">Veuillez mettre à jour</string>
@@ -79,7 +79,7 @@
     <string name="price">Prix:</string>
     <string name="description">Description:</string>
     <string name="remove_item">Retirer l\'objet</string>
-    <string name="edit_item">Modifier l\'objet</string>
+    <string name="edit_item">"Modifier "</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="are_you_sure">Etes-vous sûr que vous voulez supprimer</string>
@@ -98,7 +98,7 @@
     <string name="removed_successfully">"Supprimé avec succès! "</string>
     <string name="rating">"Évaluation: "</string>
     <string name="stars">Étoiles</string>
-    <string name="talk_to_your_around_tanks_you">Parlez à votre entourage, merci à vous!</string>
+    <string name="talk_to_your_around_tanks_you">Parlez-en à votre entourage, merci à vous!</string>
     <string name="ok">Ok</string>
     <string name="permission_denied">"Permission refusée "</string>
     <string name="permission_denied_explication_storage">Une autorisation de stockage est requise pour ajouter une photo de votre article. Veuillez autoriser les autorisations de stockage dans les paramètres de l\'application.</string>
