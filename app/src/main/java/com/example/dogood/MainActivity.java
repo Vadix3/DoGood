@@ -1179,7 +1179,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
                         Log.d(TAG, "onPermissionGranted: User given permission");
-                        openCamera();
+                        openStorage();
                     }
 
                     @Override

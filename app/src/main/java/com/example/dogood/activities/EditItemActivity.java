@@ -265,7 +265,7 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
             drawable.setStrokeWidth(5f);
             drawable.start();
             submitBtn.setBackgroundDrawable(drawable);
-            submitBtn.setText("Uploading item");
+            submitBtn.setText( getString(R.string.uploading_item));
             if (isPictureChanged) {
                 Log.d(TAG, "checkForValidInput: Picture changed!");
                 uploadBitmapToStorage();
@@ -287,7 +287,7 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
                 askItemDescription.setError(getString(R.string.please_enter_item_decription));
                 return;
             }
-            if (askCategorySpinner.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.select_categories))) {
+            if (askCategorySpinner.getSelectedItem().toString().equalsIgnoreCase("Select category")) {
                 Log.d(TAG, "checkForValidInput: Category not selected");
                 ((TextView) askCategorySpinner.getSelectedView()).setError(getString(R.string.please_select_a_category));
                 return;
@@ -613,7 +613,7 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
                         Log.d(TAG, "onPermissionGranted: User given permission");
-                        openCamera();
+                        openStorage();
                     }
 
                     @Override

@@ -89,7 +89,7 @@
         android:id="@+id/linearLayout3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/viewPager"
+        android:layout_above="@id/profile_BTN_update"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/profile_IMG_font"
@@ -120,14 +120,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/items_im_giving"
+            android:lines="1"
             android:textColor="@color/white"
             android:textSize="30sp"/>
 
 
     </LinearLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/profile_LST_mainRecycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/profile_IMG_font"
@@ -136,22 +137,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_IMG_font">
 
-    </androidx.viewpager2.widget.ViewPager2>
+    </androidx.recyclerview.widget.RecyclerView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/profile_BTN_addItemButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/colorPrimary"
+        app:menu_backgroundColor="@android:color/transparent"
+        app:menu_colorNormal="@color/colorPrimary"
+        app:menu_fab_label=""
+        app:menu_icon="@drawable/ic_add_24px"
+        app:menu_openDirection="up"
+        app:fab_colorPressed="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.965"
-        app:layout_constraintHorizontal_bias="0.935"
-        app:srcCompat="@drawable/ic_add"
-        app:tint="@color/white" />
+        app:layout_constraintHorizontal_bias="0.935">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/profile_BTN_addItemButton_give"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_gift_start"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_label="@string/show_give_item"
+            app:fab_colorPressed="@color/colorPrimaryDark"
+            app:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/profile_BTN_addItemButton_ask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_donation_start"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_label="@string/show_ask_item"
+            app:fab_colorPressed="@color/colorPrimaryDark"
+            app:fab_size="mini" />
+
+    </com.github.clans.fab.FloatingActionMenu>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
