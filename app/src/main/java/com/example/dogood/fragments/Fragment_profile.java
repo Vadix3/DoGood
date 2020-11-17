@@ -17,38 +17,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.dogood.Dialogs.PhotoModeDialog;
-import com.example.dogood.MainActivity;
 import com.example.dogood.R;
 import com.example.dogood.Dialogs.UpdateAccountDialog;
 import com.example.dogood.activities.NewAskItemActivity;
 import com.example.dogood.activities.NewGiveItemActivity;
-import com.example.dogood.adapters.RecyclerViewAskAdapter;
-import com.example.dogood.adapters.RecyclerViewGiveAdapter;
 import com.example.dogood.adapters.ViewPagerAdapter;
 import com.example.dogood.objects.User;
-import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 
-public class Fragment_profile extends Fragment implements MainActivity.IOnBackPressed {
+public class Fragment_profile extends Fragment {
 
-    private static final String TAG = "Dogood";
+    private static final String TAG = "Fragment_profile";
     private static final int ASK_FRAGMENT = 0;
     private static final int GIVE_FRAGMENT = 1;
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
@@ -61,26 +61,19 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
     protected View view;
     private Context context;
     private ShapeableImageView profile_IMG_picture;
-    private TextView profile_LBL_name;
-    private TextView profile_LBL_city;
-    private TextView profile_LBL_phone;
-    private TextView profile_LBL_mail;
-    private TextView listType;
-    //private FrameLayout profile_LAY_post;
+    private MaterialTextView profile_LBL_name;
+    private MaterialTextView profile_LBL_city;
+    private MaterialTextView profile_LBL_phone;
+    private MaterialTextView profile_LBL_mail;
+    private TabLayout profile_LAY_tab;
     private MaterialButton profile_BTN_update;
+    private ViewPager2 viewPager;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-
-    private RecyclerView recyclerView;
-
-    private com.github.clans.fab.FloatingActionButton profile_BTN_addItemButton_ask;
-    private FloatingActionMenu profile_BTN_addItemButton;
-    private com.github.clans.fab.FloatingActionButton profile_BTN_addItemButton_give;
+    private FloatingActionButton addBtn;
 
     private User mUser;
     private int giveItemsArraySize; // The size of the total give items
     private int askItemsArraySIze; // The size of the total ask items
-    private int countAsk = 0;
-    private int countGive = 0;
 
 
     public Fragment_profile() {
@@ -107,7 +100,6 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
         photoModeDialog.getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
         photoModeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         photoModeDialog.getWindow().setDimAmount(0.9f);
-
     }
 
     @Override
@@ -173,73 +165,70 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
     }
 
     private void findViews() {
-        profile_BTN_addItemButton = view.findViewById(R.id.profile_BTN_addItemButton);
-        profile_BTN_addItemButton_ask = view.findViewById(R.id.profile_BTN_addItemButton_ask);
-        profile_BTN_addItemButton_give = view.findViewById(R.id.profile_BTN_addItemButton_give);
         profile_IMG_picture = view.findViewById(R.id.profile_IMG_picture);
-        recyclerView = view.findViewById(R.id.profile_LST_mainRecycler);
         getUserProfilePhoto();
         profile_LBL_name = view.findViewById(R.id.profile_LBL_name);
-        listType = view.findViewById(R.id.profile_LBL_listType);
+        profile_LAY_tab = view.findViewById(R.id.profile_LAY_tab);
         profile_LBL_city = view.findViewById(R.id.profile_LBL_city);
         profile_LBL_phone = view.findViewById(R.id.profile_LBL_phone);
         profile_LBL_mail = view.findViewById(R.id.profile_LBL_mail);
         profile_BTN_update = view.findViewById(R.id.profile_BTN_update);
+        addBtn = view.findViewById(R.id.profile_BTN_addItemButton);
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkCurrentFragment();
+            }
+        });
+        viewPager = view.findViewById(R.id.viewPager);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getFragmentManager(), getLifecycle(), mUser);
+        viewPager.setAdapter(viewPagerAdapter);
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (position == GIVE_FRAGMENT) {
+                    profile_LAY_tab.selectTab(profile_LAY_tab.getTabAt(position));
+                } else {
+                    profile_LAY_tab.selectTab(profile_LAY_tab.getTabAt(position));
+                }
+            }
+        });
 
-        profile_BTN_addItemButton_ask.setOnClickListener(actionAsk);
-        profile_BTN_addItemButton_give.setOnClickListener(actionGive);
-        populateItemsListGive();
+        profile_LAY_tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.d(TAG, "onTabSelected: "+tab.getPosition());
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
     }
 
-
-    View.OnClickListener actionGive = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            profile_BTN_addItemButton_give.setLabelText(getString(R.string.object_to_give));
-            listType.setText(getContext().getString(R.string.items_i_need));
-            listType.setText(getContext().getString(R.string.items_im_giving));
-            populateItemsListGive();
-            profile_BTN_addItemButton_give.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "onClick: ask item count = "+countGive);
-                    if(countGive%2 == 0){
-                        openAddGiveItemActivity();
-                        profile_BTN_addItemButton_give.setLabelText(getResources().getString(R.string.show_give_item));
-                    }else {
-                        populateItemsListGive();
-                        profile_BTN_addItemButton_give.setLabelText(getResources().getString(R.string.object_to_give));
-                    }
-                    countGive++;
-                }
-            });
+    /**
+     * A method to check what is the current fragment showing
+     */
+    private void checkCurrentFragment() {
+        int currentFragment = viewPager.getCurrentItem();
+        if (currentFragment == ASK_FRAGMENT) {
+            Log.d(TAG, "checkCurrentFragment: Ask fragment");
+            openAddAskItemActivity();
+        } else {
+            Log.d(TAG, "checkCurrentFragment: Give fragment");
+            openAddGiveItemActivity();
         }
-    };
 
-    View.OnClickListener actionAsk = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            profile_BTN_addItemButton_ask.setLabelText(getResources().getString(R.string.object_to_ask));
-            listType.setText(getContext().getString(R.string.items_i_need));
-            populateItemsListAsk();
-            profile_BTN_addItemButton_ask.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "onClick: ask item count = "+countAsk);
-                    if(countAsk%2 == 0){
-                        openAddAskItemActivity();
-                        profile_BTN_addItemButton_ask.setLabelText(getResources().getString(R.string.show_ask_item));
-                    }else {
-                        populateItemsListAsk();
-                        profile_BTN_addItemButton_ask.setLabelText(getResources().getString(R.string.object_to_ask));
-                    }
-                    countAsk++;
-                }
-            });
-        }
-    };
-
+    }
 
     /**
      * A method to move to add item activity
@@ -265,24 +254,6 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
         intent.putExtra(CURRENT_USER, userJson);
         intent.putExtra(ITEM_COUNT, giveItemsArraySize);
         startActivityForResult(intent, NEW_GIVE_ITEM_RESULT_CODE);
-    }
-
-    private void populateItemsListAsk() {
-        Log.d(TAG, "populateEventList: Populating list ");
-
-            recyclerView = view.findViewById(R.id.profile_LST_mainRecycler);
-            RecyclerViewAskAdapter recyclerViewAskAdapter = new RecyclerViewAskAdapter(context, mUser.getAskItems(),mUser);
-            recyclerView.setAdapter(recyclerViewAskAdapter);
-
-    }
-
-    private void populateItemsListGive() {
-        Log.d(TAG, "populateEventList: Populating list with:");
-
-            recyclerView = view.findViewById(R.id.profile_LST_mainRecycler);
-            RecyclerViewGiveAdapter recyclerViewGiveAdapter = new RecyclerViewGiveAdapter(context, mUser.getGiveItems(),mUser);
-            recyclerView.setAdapter(recyclerViewGiveAdapter);
-
     }
 
 
@@ -340,16 +311,5 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
             Log.d(TAG, "StringToBitMap: exception" + e.getMessage());
             return null;
         }
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        if (profile_BTN_addItemButton.isOpened()){
-            profile_BTN_addItemButton.close(true);
-            return true;
-        }else{
-            return false;
-        }
-
     }
 }

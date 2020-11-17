@@ -49,7 +49,7 @@
         app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/profile_LBL_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:textSize="25sp"
             android:textStyle="bold" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/profile_LBL_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/profile_LBL_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/profile_LBL_mail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -87,9 +87,9 @@
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/profile_BTN_update"
+        android:layout_above="@id/viewPager"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/profile_IMG_font"
@@ -115,19 +115,34 @@
             android:scaleType="fitXY"
             android:src="@drawable/ic_line" />
 
-        <TextView
-            android:id="@+id/profile_LBL_listType"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/profile_LAY_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tabMode="scrollable"
+            android:elevation="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:tabIndicatorColor="@color/white"
+            android:background="@color/colorPrimary"
+            app:tabSelectedTextColor="@color/white">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/items_i_need" />
+
+        <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/items_im_giving"
-            android:textColor="@color/white"
-            android:textSize="30sp"/>
+            />
 
-
+        </com.google.android.material.tabs.TabLayout>
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/profile_LST_mainRecycler"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/profile_IMG_font"
@@ -136,45 +151,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_IMG_font">
 
-    </androidx.recyclerview.widget.RecyclerView>
+    </androidx.viewpager2.widget.ViewPager2>
 
-    <com.github.clans.fab.FloatingActionMenu
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/profile_BTN_addItemButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:menu_backgroundColor="@android:color/transparent"
-        app:menu_colorNormal="@color/colorPrimary"
-        app:menu_fab_label=""
-        app:menu_icon="@drawable/ic_add_24px"
-        app:menu_openDirection="up"
-        app:fab_colorPressed="@color/colorPrimaryDark"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.965"
-        app:layout_constraintHorizontal_bias="0.935">
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/profile_BTN_addItemButton_give"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_gift_start"
-            app:fab_colorNormal="@color/colorPrimary"
-            app:fab_label="@string/show_give_item"
-            app:fab_colorPressed="@color/colorPrimaryDark"
-            app:fab_size="mini" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/profile_BTN_addItemButton_ask"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_donation_start"
-            app:fab_colorNormal="@color/colorPrimary"
-            app:fab_label="@string/show_ask_item"
-            app:fab_colorPressed="@color/colorPrimaryDark"
-            app:fab_size="mini" />
-
-    </com.github.clans.fab.FloatingActionMenu>
+        app:layout_constraintHorizontal_bias="0.935"
+        app:srcCompat="@drawable/ic_add"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

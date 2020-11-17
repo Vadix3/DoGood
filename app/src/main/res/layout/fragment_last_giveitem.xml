@@ -65,6 +65,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textStyle="bold"
+                    android:lines="1"
                     android:text="Refrigirator"
                     android:textSize="20sp" />
 
