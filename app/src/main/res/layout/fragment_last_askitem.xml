@@ -39,7 +39,6 @@
                     android:drawableStart="@drawable/ic_donation_start"
                     android:drawablePadding="5dp"
                     android:drawableTint="@color/white"
-                    android:lines="1"
                     android:gravity="center"
                     android:text="@string/latest_request"
                     android:textColor="@color/white"
@@ -67,7 +66,6 @@
                     android:gravity="center"
                     android:text="Refrigirator"
                     android:textSize="19sp"
-                    android:lines="1"
                     android:textStyle="bold" />
 
                 <com.google.android.material.imageview.ShapeableImageView
