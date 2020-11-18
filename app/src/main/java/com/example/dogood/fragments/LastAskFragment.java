@@ -112,6 +112,14 @@ public class LastAskFragment extends Fragment {
             itemPhoto.setImageResource(R.drawable.ic_lighting);
             return;
         }
+        if (category.equals("Food")) {
+            itemPhoto.setImageResource(R.drawable.ic_food);
+            return;
+        }
+        if (category.equals("Cosmetic")) {
+            itemPhoto.setImageResource(R.drawable.ic_cosmetic);
+            return;
+        }
         if (category.equals("Games and Toys")) {
             itemPhoto.setImageResource(R.drawable.ic_games_and_toys);
             return;
