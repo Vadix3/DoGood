@@ -21,6 +21,7 @@ import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.User;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -155,7 +156,7 @@ public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAsk
      */
     public class ViewHolder extends RecyclerView.ViewHolder { // To hold each row
 
-        TextView itemName, itemCategory, itemCity, itemDescription, postDate;
+        MaterialTextView itemName, itemCategory, itemCity, itemDescription, postDate;
         ShapeableImageView itemPhoto;
         MaterialCardView rowCard;
 

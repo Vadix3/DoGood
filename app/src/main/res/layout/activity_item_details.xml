@@ -20,7 +20,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+        android:maxLines="1"
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/itemDetails_LBL_itemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +37,10 @@
         app:layout_constraintTop_toBottomOf="@+id/itemDetails_IMG_itemPhoto"
         app:layout_constraintVertical_bias="0.131" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+        android:maxLines="4"
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/itemDetails_LBL_itemDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +56,10 @@
         app:layout_constraintTop_toBottomOf="@+id/itemDetails_LBL_itemName"
         app:layout_constraintVertical_bias="0.071" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+        android:maxLines="1"
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/itemDetails_LBL_itemState"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -66,7 +75,10 @@
         app:layout_constraintTop_toBottomOf="@+id/itemDetails_LBL_itemDescription"
         app:layout_constraintVertical_bias="0.057" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+        android:maxLines="1"
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/itemDetails_LBL_itemPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,7 +94,10 @@
         app:layout_constraintTop_toBottomOf="@+id/itemDetails_LBL_itemDate"
         app:layout_constraintVertical_bias="0.08" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+        android:maxLines="1"
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/itemDetails_LBL_itemDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -7,6 +7,9 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:maxLines="1"
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/editItem_EDT_AskitemName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
@@ -40,6 +43,8 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/editItem_EDT_askItemDescription"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"

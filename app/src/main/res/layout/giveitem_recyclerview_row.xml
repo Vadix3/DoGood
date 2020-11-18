@@ -45,7 +45,10 @@
                 app:layout_constraintStart_toEndOf="@+id/giveRow_IMG_itemPicture"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
+                    android:maxLines="1"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeStepGranularity="1sp"
                     android:id="@+id/giveRow_LBL_itemName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -61,31 +64,40 @@
                     android:layout_marginTop="30dp"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
+                        android:maxLines="2"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeStepGranularity="1sp"
                         android:id="@+id/giveRow_LBL_itemState"
-                        android:layout_width="wrap_content"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="start"
-                        android:text="Used"
+                        android:lines="1"
+                        android:text="@string/opened_item"
                         android:textSize="18sp" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
+                        android:maxLines="1"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeStepGranularity="1sp"
                         android:id="@+id/giveRow_LBL_postDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_weight="1"
-                        android:maxLines="1"
                         android:text="14/10/20"
                         android:textSize="18sp" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
+                        android:maxLines="1"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeStepGranularity="1sp"
                         android:id="@+id/giveRow_LBL_itemPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:text="Free"
+                        android:text="@string/free"
                         android:textSize="18sp" />
 
                 </LinearLayout>

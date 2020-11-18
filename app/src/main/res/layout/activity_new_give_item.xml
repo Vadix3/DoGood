@@ -24,6 +24,9 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:maxLines="1"
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/editItem_EDT_itemName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
@@ -54,6 +57,8 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/editItem_EDT_itemDescription"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
@@ -112,6 +117,9 @@
             android:padding="15dp" />
 
         <CheckBox
+            android:maxLines="1"
+            app:autoSizeTextType="uniform"
+            app:autoSizeStepGranularity="1sp"
             android:id="@+id/editItem_CHK_askIsDiscrete"
             android:layout_width="wrap_content"
             android:layout_height="53dp"

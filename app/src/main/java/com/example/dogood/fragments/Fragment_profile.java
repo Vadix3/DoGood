@@ -65,8 +65,8 @@ public class Fragment_profile extends Fragment {
     private MaterialTextView profile_LBL_city;
     private MaterialTextView profile_LBL_phone;
     private MaterialTextView profile_LBL_mail;
-    private TabLayout profile_LAY_tab;
     private MaterialButton profile_BTN_update;
+    private TabLayout profile_LAY_tab;
     private ViewPager2 viewPager;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FloatingActionButton addBtn;
@@ -166,7 +166,6 @@ public class Fragment_profile extends Fragment {
 
     private void findViews() {
         profile_IMG_picture = view.findViewById(R.id.profile_IMG_picture);
-        getUserProfilePhoto();
         profile_LBL_name = view.findViewById(R.id.profile_LBL_name);
         profile_LAY_tab = view.findViewById(R.id.profile_LAY_tab);
         profile_LBL_city = view.findViewById(R.id.profile_LBL_city);
@@ -174,13 +173,16 @@ public class Fragment_profile extends Fragment {
         profile_LBL_mail = view.findViewById(R.id.profile_LBL_mail);
         profile_BTN_update = view.findViewById(R.id.profile_BTN_update);
         addBtn = view.findViewById(R.id.profile_BTN_addItemButton);
+        viewPager = view.findViewById(R.id.viewPager);
+        getUserProfilePhoto();
+
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkCurrentFragment();
             }
         });
-        viewPager = view.findViewById(R.id.viewPager);
+
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getFragmentManager(), getLifecycle(), mUser);
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

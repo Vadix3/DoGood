@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
@@ -57,7 +58,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements ItemDelete
     private Context context = this;
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private TextView itemName, itemState, itemPrice, itemDescription, itemDate;
+    private MaterialTextView itemName, itemState, itemPrice, itemDescription, itemDate;
     private MaterialButton contactUser;
     private ShapeableImageView itemPhoto;
 

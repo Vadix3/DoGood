@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 
 import com.example.dogood.R;
 import com.example.dogood.objects.User;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textview.MaterialTextView;
 
 public class ContactUserDialog extends Dialog {
     private static final String TAG = "Dogood";
@@ -20,8 +22,8 @@ public class ContactUserDialog extends Dialog {
     private String itemID;
     private User user;
 
-    private TextView itemNameLbl, userNameLbl, userEmailLbl, userCityLbl, userPhoneLbl;
-
+    private MaterialTextView itemNameLbl,  userCityLbl,userNameLbl;
+    private MaterialButton userEmailLbl, userPhoneLbl;
 
     public ContactUserDialog(@NonNull Context context, String itemName, String itemID, User user) {
         super(context);
@@ -70,7 +72,7 @@ public class ContactUserDialog extends Dialog {
                 if(userPhoneLbl.getVisibility() == View.GONE){
                     mail = new String[]{context.getString(R.string.our_email)};
                 }else {
-                    mail = new String[]{user.getEmail()};
+                    mail = new String[]{user.getEmail() + "; "+ context.getString(R.string.our_email)};
                 }
                 Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 

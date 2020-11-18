@@ -7,12 +7,16 @@
     android:background="@drawable/dialog_background"
     android:padding="20dp">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+        android:maxLines="2"
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/contactDetails_LBL_itemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Microwave"
+        android:textColor="@color/quantum_grey700"
         android:textIsSelectable="true"
         android:textSize="35sp"
         android:textStyle="bold"
@@ -24,7 +28,10 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+        android:maxLines="1"
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/contactDetails_LBL_contactName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,18 +46,25 @@
         android:textIsSelectable="true"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@color/quantum_grey700"
         app:layout_constraintBottom_toTopOf="@+id/contactDetails_LBL_contactEmail"
         app:layout_constraintTop_toBottomOf="@+id/contactDetails_LBL_itemName"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintVertical_chainStyle="packed"
         tools:layout_editor_absoluteX="16dp" />
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
+        android:maxLines="2"
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/contactDetails_LBL_contactEmail"
+        android:backgroundTint="@color/white"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:strokeColor="@color/colorPrimary"
+        app:cornerRadius="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/round_thin_border_edges"
         android:drawableLeft="@drawable/ic_mail"
         android:drawableTint="@color/quantum_grey500"
         android:gravity="center"
@@ -58,16 +72,18 @@
         android:paddingTop="20dp"
         android:paddingEnd="10dp"
         android:paddingBottom="20dp"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackground"
         android:text="Giving@user.com"
+        android:textColor="@color/quantum_grey700"
         android:textIsSelectable="true"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/contactDetails_LBL_contactPhone"
         app:layout_constraintTop_toBottomOf="@+id/contactDetails_LBL_contactName"
         tools:layout_editor_absoluteX="16dp" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+        android:maxLines="1"
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/contactDetails_LBL_contactCity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,16 +96,23 @@
         android:paddingBottom="20dp"
         android:text="Tel Aviv"
         android:textSize="20sp"
+        android:textColor="@color/quantum_grey700"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contactDetails_LBL_contactPhone"
         tools:layout_editor_absoluteX="16dp" />
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
+        android:maxLines="1"
+        app:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="1sp"
         android:id="@+id/contactDetails_LBL_contactPhone"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/round_thin_border_edges"
+        android:backgroundTint="@color/white"
+        app:strokeColor="@color/colorPrimary"
+        app:cornerRadius="30dp"
         android:gravity="center"
         android:drawableLeft="@drawable/ic_phone"
         android:drawableTint="@color/quantum_grey500"
@@ -100,6 +123,7 @@
         android:paddingEnd="10dp"
         android:paddingBottom="20dp"
         android:text="054-2799700"
+        android:textColor="@color/quantum_grey700"
         android:textIsSelectable="true"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/contactDetails_LBL_contactCity"

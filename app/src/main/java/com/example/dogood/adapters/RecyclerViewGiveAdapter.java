@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
@@ -147,7 +148,7 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
      */
     public class ViewHolder extends RecyclerView.ViewHolder { // To hold each row
 
-        TextView itemName, itemState, itemPrice, itemDescription, postDate;
+        MaterialTextView itemName, itemState, itemPrice, itemDescription, postDate;
         ShapeableImageView itemPhoto;
         MaterialCardView rowCard;
 

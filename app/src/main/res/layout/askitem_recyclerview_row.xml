@@ -48,7 +48,10 @@
                 app:layout_constraintStart_toEndOf="@+id/askRow_IMG_itemCategoryPic"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
+                    android:maxLines="1"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeStepGranularity="1sp"
                     android:id="@+id/askRow_LBL_itemName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -63,14 +66,20 @@
                     android:layout_marginTop="30dp"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
+                        android:maxLines="1"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeStepGranularity="1sp"
                         android:id="@+id/askRow_LBL_itemCity"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="Tel-Aviv"
                         android:textSize="18sp" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
+                        android:maxLines="1"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeStepGranularity="1sp"
                         android:id="@+id/askRow_LBL_postDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

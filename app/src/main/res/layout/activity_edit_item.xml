@@ -99,6 +99,7 @@
             android:layout_height="53dp"
             android:checked="true"
             android:text="@string/free_item"
+            android:lines="1"
             android:textColor="@color/colorPrimary"
             android:textSize="15sp" />
 
