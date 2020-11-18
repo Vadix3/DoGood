@@ -223,7 +223,6 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                 initListChangeListener(); // Init listener for item change detection
                 searchAction();
                 initBottomNavigationMenu(); // initialize bottom navigation menu
-                //TODO: Problem when I'm pressing tabs before data loads, maybe stall bottom menu somehow?
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -543,7 +542,6 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                 }
                 initPageFragments();
                 initBottomNavigationMenu(); // initialize bottom navigation menu
-                //TODO: Problem when I'm pressing tabs before data loads, maybe stall bottom menu somehow?
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -12,7 +12,7 @@ public class GiveItem implements Serializable {
     String state;
     String price;
     String description;
-    String pictures; // TODO: Save array of pictures
+    String pictures;
     String date;
     User giver;
 

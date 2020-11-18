@@ -18,7 +18,6 @@ public class User {
     }
 
     public User(String name, String email, String password, String city, String phone) {
-        //TODO: city? latlng? what else?
 
         this.name = name;
         this.email = email;
@@ -59,7 +58,6 @@ public class User {
     }
 
     public User(String name, String email, String password, String city, String phone,String photo) {
-        //TODO: city? latlng? what else?
 
         this.name = name;
         this.email = email;

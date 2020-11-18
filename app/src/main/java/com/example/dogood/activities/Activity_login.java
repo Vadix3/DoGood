@@ -218,7 +218,6 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
     }
 
     private void initFacebookLogin() {
-        //TODO: Problem with test accounts login, can login only with my account
 
         Log.d(TAG, "initFacebookLogin: ");
         callbackManager = CallbackManager.Factory.create();

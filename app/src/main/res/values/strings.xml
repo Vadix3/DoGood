@@ -59,7 +59,6 @@
     <string name="user_city">User city</string>
     <string name="user_phone">User phone</string>
     <string name="user_mail">User mail</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="welcome_to_do_good">Welcome To Do good!</string>
     <string name="welcome">Welcome!</string>

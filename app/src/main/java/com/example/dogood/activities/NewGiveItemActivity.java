@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +12,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -105,6 +108,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
         currentUser = gson.fromJson(userJson, User.class);
 
         initViews();
+        setViewListeners();
     }
 
     /**
@@ -168,6 +172,94 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
         });
     }
 
+    /**
+     * A method to set view listeners in case the user to enable the submit button after bad info
+     */
+    private void setViewListeners() {
+        Log.d(TAG, "setViewListeners: ");
+
+        condition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                submitBtn.setEnabled(true);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                submitBtn.setEnabled(true);
+            }
+        });
+
+        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                submitBtn.setEnabled(true);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                submitBtn.setEnabled(true);
+            }
+        });
+
+        itemName.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                itemName.setErrorEnabled(false); // disable error
+                submitBtn.setEnabled(true);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        itemDescription.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                itemDescription.setErrorEnabled(false); // disable error
+                submitBtn.setEnabled(true);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        itemPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                itemPrice.setError("false"); // disable error
+                submitBtn.setEnabled(true);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+    }
 
     /**
      * A method to open the camera
@@ -315,6 +407,9 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
         }
         if (userCustomImage == null) {
             Log.d(TAG, "checkForValidInput: User did not upload item photo");
+            Toast.makeText(this, "Please enter item photo!", Toast.LENGTH_SHORT).show();
+            itemPhoto.setStrokeColor(ColorStateList.valueOf(getColor(R.color.removeBtnColor)));
+            itemPhoto.setStrokeWidth(20f);
             submitBtn.setEnabled(true);
             return;
         }
@@ -407,7 +502,6 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.d(TAG, "onSuccess: Image upload successful!");
-                // TODO: Fix google and facebook photo issues
 
                 GiveItem temp = new GiveItem(itemID, itemName.getEditText().getText().toString(), categoriesUS.get((int) category.getSelectedItemId()).toString()
                         , conditionsUS.get((int) condition.getSelectedItemId()).toString(), itemPrice.getText().toString(), itemDescription.getEditText().getText().toString()
@@ -521,8 +615,6 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
         categoriesUS.add("Other");
 
 
-
-
         //create an ArrayAdapter from the String Array
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, categories);
@@ -562,6 +654,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
                     itemPhoto.setStrokeWidth(30);
                     itemPhoto.setStrokeColor(getColorStateList(R.color.colorPrimary));
                     itemPhoto.setImageBitmap(userCustomImage);
+                    submitBtn.setEnabled(true);
                 }
                 break;
             case STORAGE_PICTURE_REQUEST:
@@ -574,6 +667,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
                         itemPhoto.setStrokeWidth(30);
                         itemPhoto.setStrokeColor(getColorStateList(R.color.colorPrimary));
                         itemPhoto.setImageBitmap(bitmap);
+                        submitBtn.setEnabled(true);
                     } catch (IOException e) {
                         Log.i("TAG", "Some exception " + e);
                     }

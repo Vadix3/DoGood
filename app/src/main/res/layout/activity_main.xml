@@ -11,8 +11,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <!--TODO: Arrribute Good Ware,Flaticon,DinosoftLabs,Smartline-->
-
     <FrameLayout
         android:id="@+id/main_LAY_mainPageFragment"
         android:layout_width="match_parent"
