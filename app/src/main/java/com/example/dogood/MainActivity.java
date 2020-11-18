@@ -1054,7 +1054,11 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
             showAllItems();
         } else {
             Fragment fragment = getSupportFragmentManager().findFragmentById(fragment_profile.getId());
-            if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
+            if (!((IOnBackPressed) fragment).onBackPressed() && mainFragment.getVisibility() == View.GONE) {
+               showFragment(mainFragment);
+               return;
+            }
+            if (!((IOnBackPressed) fragment).onBackPressed()){
                 super.onBackPressed();
             }
         }

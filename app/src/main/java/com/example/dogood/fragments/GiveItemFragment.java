@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dogood.MainActivity;
 import com.example.dogood.R;
 import com.example.dogood.activities.NewAskItemActivity;
 import com.example.dogood.activities.NewGiveItemActivity;
@@ -25,7 +26,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-public class GiveItemFragment extends Fragment {
+public class GiveItemFragment extends Fragment implements MainActivity.IOnBackPressed {
     private static final String TAG = "Dogood";
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
     private static final String ITEM_COUNT = "itemCount";
@@ -40,6 +41,7 @@ public class GiveItemFragment extends Fragment {
     private ArrayList<GiveItem> giveItems;
     private FloatingActionButton addItem;
     private User myUser;
+    private Boolean pressBack = false;
 
 
     public GiveItemFragment() {
@@ -130,5 +132,10 @@ public class GiveItemFragment extends Fragment {
         } else {
             Log.d(TAG, "populateItemsList: Empty giveItem array");
         }
+    }
+
+    @Override
+    public boolean onBackPressed() {
+      return false;
     }
 }

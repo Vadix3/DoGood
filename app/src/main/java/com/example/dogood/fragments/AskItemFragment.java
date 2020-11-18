@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dogood.MainActivity;
 import com.example.dogood.R;
 import com.example.dogood.activities.NewAskItemActivity;
 import com.example.dogood.activities.NewGiveItemActivity;
@@ -22,7 +23,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-public class AskItemFragment extends Fragment {
+public class AskItemFragment extends Fragment implements MainActivity.IOnBackPressed {
     private static final String TAG = "Dogood";
     private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
     private static final String ITEM_COUNT = "itemCount";
@@ -33,7 +34,7 @@ public class AskItemFragment extends Fragment {
     private ArrayList<AskItem> askItems;
     private FloatingActionButton addItem;
     private User myUser;
-
+    private Boolean pressBack = false;
 
     public AskItemFragment() {
     }
@@ -108,5 +109,10 @@ public class AskItemFragment extends Fragment {
         intent.putExtra(CURRENT_USER, userJson);
         intent.putExtra(ITEM_COUNT, askItems.size());
         startActivityForResult(intent, NEW_ASK_ITEM_RESULT_CODE);
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 }

@@ -3,7 +3,7 @@
     <string name="app_name">DoGood</string>
     <string name="Dogood">Do Good</string>
     <string name="home">Accueil</string>
-    <string name="object_to_give">"Articles a donner"</string>
+    <string name="object_to_give">"Articles â donner"</string>
     <string name="object_to_ask">"Articles nécessaires"</string>
     <string name="profile">Profil</string>
     <string name="logout">Déconnecter</string>
@@ -14,7 +14,7 @@
     <string name="item_description">"Description de l'article"</string>
     <string name="item_price">Prix de l\'article</string>
     <string name="free_item">Gratuit</string>
-    <string name="submit">Envoyée</string>
+    <string name="submit">Envoyer</string>
     <string name="discrete_request">Demande discrète (le nom d\'utilisateur ne sera pas visible)</string>
     <string name="select_categories">"Choisir une catégorie "</string>
     <string name="clothes">Vêtements</string>
@@ -71,14 +71,14 @@
     <string name="size">0.94</string>
     <string name="update_profile">Mettre à jour le profil</string>
     <string name="show_ask_item">"Afficher articles nécessaires "</string>
-    <string name="show_give_item">"Afficher Articles a donnés "</string>
+    <string name="show_give_item">"Afficher Articles â donner "</string>
     <string name="sort">"Trier "</string>
     <string name="filter">Filtre</string>
     <string name="condition">État:</string>
     <string name="post_date">"Date de publication: "</string>
     <string name="price">Prix:</string>
     <string name="description">Description:</string>
-    <string name="remove_item">Retirer l\'objet</string>
+    <string name="remove_item">Retirer</string>
     <string name="edit_item">"Modifier "</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
@@ -90,7 +90,7 @@
     <string name="email2">"Email: "</string>
     <string name="phone2">Téléphone:</string>
     <string name="city2">Ville:</string>
-    <string name="contact_giver">Contacter le donneur</string>
+    <string name="contact_giver">Contacter</string>
     <string name="contact_asker">Contacter la personne</string>
     <string name="results">Résultats:</string>
     <string name="item_added_successfully">"Article ajouté avec succès! "</string>
@@ -117,8 +117,8 @@
     <string name="connection_timeout">"Délai de connection dépassé "</string>
     <string name="wrong_password">"Mauvais mot de passe "</string>
     <string name="email_address_does_not_exist">"L'adresse e-mail n'existe pas! "</string>
-    <string name="items_im_giving">"Articles que je donne "</string>
-    <string name="items_i_need">"Articles dont j'ai besoin "</string>
+    <string name="items_im_giving">"Articles â donner"</string>
+    <string name="items_i_need">"Articles Recherché"</string>
     <string name="hey_to_mail">Bonjour , je suis intéressé par</string>
     <string name="send">Envoyée</string>
     <string name="sent_rest_email">Email de réinitialisation envoyée!</string>

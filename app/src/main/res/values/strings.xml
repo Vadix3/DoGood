@@ -164,6 +164,8 @@
     <string name="hey_to_mail">Hey , I\'m interested by</string>
     <string name="send">send</string>
     <string name="sent_rest_email">Sent reset email!</string>
+    <string name="food">Food</string>
+    <string name="cosmetic">Cosmetic</string>
 
 
 </resources>

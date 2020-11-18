@@ -92,8 +92,8 @@
     <string name="email2">אימייל: </string>
     <string name="phone2">טלפון: </string>
     <string name="city2">עיר: </string>
-    <string name="contact_giver">"צרו קשר עם הנותן "</string>
-    <string name="contact_asker">"צור קשר עם השואל "</string>
+    <string name="contact_giver">"צרו קשר"</string>
+    <string name="contact_asker">"צור קשר"</string>
     <string name="results">תוצאה :</string>
     <string name="item_added_successfully">"הפריט נוסף בהצלחה ! "</string>
     <string name="updated_successfully">" עודכן בהצלחה ! "</string>

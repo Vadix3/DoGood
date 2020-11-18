@@ -27,6 +27,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.dogood.Dialogs.PhotoModeDialog;
+import com.example.dogood.MainActivity;
 import com.example.dogood.R;
 import com.example.dogood.Dialogs.UpdateAccountDialog;
 import com.example.dogood.activities.NewAskItemActivity;
@@ -46,7 +47,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 
-public class Fragment_profile extends Fragment {
+public class Fragment_profile extends Fragment implements MainActivity.IOnBackPressed {
 
     private static final String TAG = "Fragment_profile";
     private static final int ASK_FRAGMENT = 0;
@@ -75,7 +76,7 @@ public class Fragment_profile extends Fragment {
     private int giveItemsArraySize; // The size of the total give items
     private int askItemsArraySIze; // The size of the total ask items
 
-
+    private Boolean pressBack = false;
     public Fragment_profile() {
     }
 
@@ -313,5 +314,10 @@ public class Fragment_profile extends Fragment {
             Log.d(TAG, "StringToBitMap: exception" + e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public boolean onBackPressed() {
+       return false;
     }
 }

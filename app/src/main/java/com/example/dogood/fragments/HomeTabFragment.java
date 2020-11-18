@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.dogood.MainActivity;
 import com.example.dogood.R;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.GiveItem;
@@ -24,7 +25,7 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
-public class HomeTabFragment extends Fragment {
+public class HomeTabFragment extends Fragment implements MainActivity.IOnBackPressed {
     private static final String TAG = "Dogood";
     protected View view;
     private Context context;
@@ -134,5 +135,10 @@ public class HomeTabFragment extends Fragment {
         lastGiveFrame = view.findViewById(R.id.home_LAY_lastGift);
         lastAskFrame = view.findViewById(R.id.home_LAY_lastAsk);
 
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 }

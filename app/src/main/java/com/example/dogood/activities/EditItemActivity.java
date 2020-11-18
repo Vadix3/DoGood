@@ -375,6 +375,8 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
         categories.add(getString(R.string.appliances));
         categories.add(getString(R.string.gift_cards));
         categories.add(getString(R.string.lighting));
+        categories.add(getString(R.string.food));
+        categories.add(getString(R.string.cosmetic));
         categories.add(getString(R.string.games_and_toys));
         categories.add(getString(R.string.cellular));
         categories.add(getString(R.string.books));
@@ -392,6 +394,8 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
         categoriesUS.add("Appliances");
         categoriesUS.add("Gift cards");
         categoriesUS.add("Lighting");
+        categoriesUS.add("Food");
+        categoriesUS.add("Cosmetic");
         categoriesUS.add("Games and Toys");
         categoriesUS.add("Cellular");
         categoriesUS.add("Books");
