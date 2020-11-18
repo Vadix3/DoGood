@@ -39,12 +39,6 @@
             android:scaleType="fitXY"
             android:src="@drawable/ic_profile"
             android:layout_marginStart="5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/profile_IMG_font"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.1"
             app:strokeColor="@color/white"
             app:strokeWidth="5dp" />
 
@@ -53,13 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginStart="5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/profile_IMG_font"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.11"
-            app:layout_constraintStart_toEndOf="@+id/profile_IMG_picture"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.1">
+            android:layout_marginStart="5dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/profile_LBL_name"
@@ -131,9 +119,10 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/profile_LAY_tab"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:tabMode="scrollable"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed"
             android:elevation="20dp"
+            app:tabGravity="fill"
             app:tabIndicatorColor="@color/white"
             android:background="@color/colorPrimary"
             app:tabSelectedTextColor="@color/white">
