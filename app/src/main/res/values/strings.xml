@@ -145,8 +145,8 @@
 
 
     <string name="test_app_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="app_id" translatable="false">ca-app-pub-7740925847001376~9529536357</string>
-    <string name="bottom_banner_id" translatable="false">ca-app-pub-7740925847001376/7777470981</string>
+    <string name="app_id" translatable="false">ca-app-pub-1483180866214481~5226872413</string>
+    <string name="bottom_banner_id" translatable="false">ca-app-pub-1483180866214481/1372479196</string>
     <string name="be_reasonable">Please enter price (Be reasonable!)</string>
     <string name="please_select_a_condition">Please select a condition</string>
     <string name="please_select_a_category">Please select a category</string>

@@ -7,94 +7,63 @@
     android:background="@drawable/background">
 
 
-    <TextView
-        android:id="@+id/login_LBL_first"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_bold"
-        android:text="@string/welcome"
-        android:textSize="40sp"
+        android:src="@drawable/app_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.056" />
+        app:layout_constraintVertical_bias="0.015"
+         />
 
-
-    <TextView
-        android:id="@+id/login_LBL_second"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_italic"
-        android:text="@string/do_good_and_fell_good"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_LBL_first"
-        app:layout_constraintVertical_bias="0.016" />
-
-
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
         android:id="@+id/login_EDT_mail"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/colorBackroundLogin"
-        android:hint="@string/mail"
-        app:boxBackgroundColor="@color/white"
-        app:boxCornerRadiusBottomEnd="20dp"
-        app:boxCornerRadiusBottomStart="20dp"
-        app:boxCornerRadiusTopEnd="20dp"
-        app:boxCornerRadiusTopStart="20dp"
-        app:boxStrokeColor="@color/colorPrimary"
+        android:background="@drawable/round_thin_border_edges"
+        android:backgroundTint="@color/white"
+        android:gravity="center"
+        android:hint="@string/email"
+        android:padding="10dp"
+        android:textColorHint="@color/hintColor"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_LBL_second"
-        app:layout_constraintVertical_bias="0.11"
-        app:startIconDrawable="@drawable/ic_mail">
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        app:layout_constraintVertical_bias="0.05"
+        app:startIconDrawable="@drawable/ic_mail" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
         android:id="@+id/login_EDT_password"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:background="@drawable/round_thin_border_edges"
+        android:backgroundTint="@color/white"
+        android:gravity="center"
         android:hint="@string/password"
-        app:boxBackgroundColor="@color/white"
-        app:boxCornerRadiusBottomEnd="20dp"
-        app:boxCornerRadiusBottomStart="20dp"
-        app:boxCornerRadiusTopEnd="20dp"
-        app:boxCornerRadiusTopStart="20dp"
-        app:boxStrokeColor="@color/colorPrimary"
+        android:inputType="textPassword"
+        android:padding="10dp"
+        android:textColorHint="@color/hintColor"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_EDT_mail"
         app:layout_constraintVertical_bias="0.016"
-        app:startIconDrawable="@drawable/ic_password">
+        app:startIconDrawable="@drawable/ic_password" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/login_LBL_forgot"
@@ -103,6 +72,8 @@
         android:clickable="true"
         android:foreground="?attr/selectableItemBackground"
         android:text="@string/forgot_password"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -111,11 +82,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/login_BTN_login"
-        android:layout_width="150dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimaryDark"
         android:text="@string/login"
         android:textAllCaps="false"
+        android:textSize="15sp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:textStyle="bold"
         app:cornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -123,7 +95,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_LBL_forgot"
-        app:layout_constraintVertical_bias="0.029" />
+        app:layout_constraintVertical_bias="0.04" />
 
     <TextView
         android:id="@+id/textView"
@@ -143,9 +115,9 @@
         android:layout_height="40dp"
         android:layout_margin="10dp"
         android:clickable="true"
-        android:visibility="invisible"
         android:foreground="?attr/selectableItemBackground"
         android:src="@drawable/ic_facebook"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.428"
@@ -159,9 +131,9 @@
         android:layout_height="40dp"
         android:layout_margin="10dp"
         android:clickable="true"
-        android:visibility="invisible"
         android:foreground="?attr/selectableItemBackground"
         android:src="@drawable/ic_google"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.574"

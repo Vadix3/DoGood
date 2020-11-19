@@ -22,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class AskItemFragment extends Fragment implements MainActivity.IOnBackPressed {
     private static final String TAG = "Dogood";
@@ -78,7 +79,8 @@ public class AskItemFragment extends Fragment implements MainActivity.IOnBackPre
             Log.d(TAG, "populateItemsList: no askItems");
         } else {
             recyclerView = view.findViewById(R.id.askFragment_LST_mainRecycler);
-            RecyclerViewAskAdapter recyclerViewAskAdapter = new RecyclerViewAskAdapter(getContext(), askItems, myUser);
+            RecyclerViewAskAdapter recyclerViewAskAdapter = new RecyclerViewAskAdapter(getContext()
+                    , askItems, myUser);
             recyclerView.setAdapter(recyclerViewAskAdapter);
 
         }

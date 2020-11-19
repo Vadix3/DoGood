@@ -25,6 +25,8 @@ import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class RecyclerViewAskAdapter extends RecyclerView.Adapter<RecyclerViewAskAdapter.ViewHolder> {
     private static final String TAG = "Dogood";

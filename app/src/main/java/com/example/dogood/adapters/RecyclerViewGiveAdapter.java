@@ -32,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGiveAdapter.ViewHolder> {
     private static final String TAG = "Dogood";
@@ -85,7 +86,7 @@ public class RecyclerViewGiveAdapter extends RecyclerView.Adapter<RecyclerViewGi
      */
     private void openItemDetails(int position) {
         Log.d(TAG, "openItemDetails: ");
-        ((ItemDetailsListener) context).getSelectedItem(items.get(position),null,true);
+        ((ItemDetailsListener) context).getSelectedItem(items.get(position), null, true);
     }
 
     /**

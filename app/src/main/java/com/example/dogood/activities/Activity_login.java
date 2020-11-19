@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -69,8 +70,8 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
     private User myUser = new User(); // A user to move with to the main page
 
     // Views
-    private TextInputLayout login_EDT_mail;
-    private TextInputLayout login_EDT_password;
+    private EditText login_EDT_mail;
+    private EditText login_EDT_password;
     private TextView login_LBL_forgot;
     private MaterialButton login_BTN_login;
     private ImageView login_IMG_facebookLogin;
@@ -138,15 +139,15 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
         Log.d(TAG, "checkForValidLoginInfo: ");
 
         //Checking valid text
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(login_EDT_mail.getEditText().getText().toString()).matches()) {
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(login_EDT_mail.getText().toString()).matches()) {
             Log.d(TAG, "checkForValidInputs: Email invalid");
             login_EDT_mail.setError(getString(R.string.enter_email_error));
             login_BTN_login.setClickable(true);
             return;
         }
-        if (login_EDT_password.getEditText().getText().toString().equals("")
-                || login_EDT_password.getEditText().getText().toString().length() < 6) {
-            if (login_EDT_password.getEditText().getText().toString().length() < 6) {
+        if (login_EDT_password.getText().toString().equals("")
+                || login_EDT_password.getText().toString().length() < 6) {
+            if (login_EDT_password.getText().toString().length() < 6) {
                 Log.d(TAG, "checkForValidInputs: short password");
                 login_EDT_password.setError(getString(R.string.six_chars_password_error));
                 login_BTN_login.setClickable(true);
@@ -182,7 +183,7 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
         } else {
             Log.d(TAG, "onStart: FIREBASE: User logged in");
             int check = getIntent().getIntExtra(LOGOUT, 0);
-            if(check == LOGOUT_CODE){
+            if (check == LOGOUT_CODE) {
                 Log.d(TAG, "onStart: Came from main, not logging in");
                 mAuth.signOut();
                 onStart();
@@ -300,7 +301,7 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
         login_LBL_createCount = findViewById(R.id.login_LBL_createCount);
         login_EDT_password = findViewById(R.id.login_EDT_password);
         login_EDT_mail = findViewById(R.id.login_EDT_mail);
-        login_EDT_mail.getEditText().addTextChangedListener(new TextWatcher() {
+        login_EDT_mail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -308,7 +309,7 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                login_EDT_mail.setErrorEnabled(false); // disable error
+                login_EDT_mail.setError(null); // disable error
             }
 
             @Override
@@ -316,8 +317,8 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
 
             }
         });
-        
-        login_EDT_password.getEditText().addTextChangedListener(new TextWatcher() {
+
+        login_EDT_password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -325,7 +326,7 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                login_EDT_password.setErrorEnabled(false); // disable error
+                login_EDT_password.setError(null); // disable error
             }
 
             @Override
@@ -333,15 +334,15 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
 
             }
         });
-      
-        
+
+
         login_IMG_facebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LoginManager.getInstance().logInWithReadPermissions(Activity_login.this, Arrays.asList("public_profile", "user_friends", "email"));
             }
         });
-        
+
         login_LBL_forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -432,8 +433,8 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             setFirebaseUserParams(user);
-                            login_EDT_mail.getEditText().setText(myUser.getEmail());
-                            login_EDT_password.getEditText().setText(myUser.getPassword());
+                            login_EDT_mail.setText(myUser.getEmail());
+                            login_EDT_password.setText(myUser.getPassword());
                             Toast.makeText(Activity_login.this, getString(R.string.user_created_successfully)
                                     , Toast.LENGTH_SHORT).show();
                         }
@@ -443,12 +444,12 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
             public void onFailure(@NonNull Exception e) {
                 // If sign in fails, display a message to the user.
                 Log.d(TAG, "createUserWithEmail:failure" + e.getMessage());
-                login_EDT_mail.getEditText().setText("");
-                login_EDT_password.getEditText().setText("");
+                login_EDT_mail.setText("");
+                login_EDT_password.setText("");
                 if (e.getMessage().equalsIgnoreCase(getString(R.string.email_already_use))) {
                     Toast.makeText(Activity_login.this, getString(R.string.there_is_an_account_with_that_email)
                             , Toast.LENGTH_SHORT).show();
-                    login_EDT_mail.getEditText().setText(myUser.getEmail());
+                    login_EDT_mail.setText(myUser.getEmail());
                 }
                 if (e.getMessage().equalsIgnoreCase(getString(R.string.the_email_address_is_badly_formatted))) {
                     Log.d(TAG, "createUserWithEmail: Failure: email badly formatted");
@@ -487,6 +488,7 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
     private void fireBasePost() {
         Log.d(TAG, "fireBasePost: Posting user to firebase");
         String emailID = myUser.getEmail();
+        myUser.setPassword("");
         db.collection("users")
                 .document(emailID)
                 .set(myUser)
@@ -508,8 +510,8 @@ public class Activity_login extends AppCompatActivity implements NewAccountDialo
      */
     private void loginUserWithEmailAndPassword() {
         Log.d(TAG, "loginUserWithEmailAndPassword: Logging in user with email and password");
-        mAuth.signInWithEmailAndPassword(login_EDT_mail.getEditText().getText().toString()
-                , login_EDT_password.getEditText().getText().toString())
+        mAuth.signInWithEmailAndPassword(login_EDT_mail.getText().toString()
+                , login_EDT_password.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

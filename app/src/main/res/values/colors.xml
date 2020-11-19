@@ -14,6 +14,7 @@
     <color name="clear">#00BB86FC</color>
     <color name="light_teal">#A8FFFA</color>
     <color name="grey_text">#00222222</color>
+    <color name="grey_text2">#0091EA</color>
 
     <color name="editBtnColor">#FF6E40</color>
     <color name="removeBtnColor">#FF1744</color>
@@ -23,6 +24,8 @@
     <color name="colorBackroundLogin">#10002F</color>
 
     <color name="textColor">#808080</color>
+    <color name="hintColor">#59808080</color>
+
 
 
 </resources>
