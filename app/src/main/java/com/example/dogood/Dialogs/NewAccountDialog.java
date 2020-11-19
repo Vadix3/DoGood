@@ -242,7 +242,7 @@ public class NewAccountDialog extends Dialog {
         //Extracting information after check to a user object
 
         String name = newAccount_EDT_name.getEditText().getText().toString();
-        String email = newAccount_EDT_email.getEditText().getText().toString();
+        String email = newAccount_EDT_email.getEditText().getText().toString().toLowerCase();
         String city = newAccount_EDT_city.getEditText().getText().toString();
         String phone = newAccount_EDT_phone.getEditText().getText().toString();
         String password = newAccount_EDT_password.getEditText().getText().toString();
