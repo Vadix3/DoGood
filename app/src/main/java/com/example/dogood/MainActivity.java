@@ -914,7 +914,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
      * A method to upload picture to Firebase Storage
      */
     private void uploadBitmapToStorage(Bitmap bitmap) {
-
+        Log.d(TAG, "uploadBitmapToStorage: ");
         final String itemID = myUser.getEmail();
         // Create a storage reference from our app
         StorageReference storageRef = storage.getReferenceFromUrl("gs://" + getString(R.string.google_storage_bucket));

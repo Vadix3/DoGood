@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.015"
+        app:layout_constraintVertical_bias="0.01"
          />
 
     <EditText
@@ -38,7 +38,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo"
-        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintVertical_bias="0.06"
         app:startIconDrawable="@drawable/ic_mail" />
 
     <EditText
@@ -84,10 +84,9 @@
         android:id="@+id/login_BTN_login"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
         android:text="@string/login"
-        android:textAllCaps="false"
-        android:textSize="15sp"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:cornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
