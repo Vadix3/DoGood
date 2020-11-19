@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.dogood.Dialogs.PhotoModeDialog;
 import com.example.dogood.R;
@@ -17,6 +20,10 @@ import com.example.dogood.interfaces.EditProfileListener;
 import com.example.dogood.objects.User;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class UpdateAccountDialog extends Dialog {
     private static final String TAG = "UpdateAccountDialog";
@@ -91,6 +98,7 @@ public class UpdateAccountDialog extends Dialog {
         returnUpdate(updateAccount_EDT_city.getEditText().getText().toString()
                 , updateAccount_EDT_phone.getEditText().getText().toString()
                 , updateAccount_EDT_name.getEditText().getText().toString());
+
     }
 
     private void returnUpdate(String city, String phone, String name) {
@@ -98,6 +106,7 @@ public class UpdateAccountDialog extends Dialog {
         ((EditProfileListener) context).getDetails(name, city, phone);
         dismiss();
     }
+
 
 }
 

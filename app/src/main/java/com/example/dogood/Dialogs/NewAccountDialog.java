@@ -3,11 +3,14 @@ package com.example.dogood.Dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +24,10 @@ import com.example.dogood.interfaces.NewAccountDialogListener;
 import com.example.dogood.objects.User;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class NewAccountDialog extends Dialog {
     private static final String TAG = "Dogood";
@@ -223,9 +230,7 @@ public class NewAccountDialog extends Dialog {
             newAccount_EDT_confirmPassword.setError(getContext().getString(R.string.password_no_match));
             return;
         }
-        sendInfoToLoginActivity();
-
-
+            sendInfoToLoginActivity();
     }
 
     /**

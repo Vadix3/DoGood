@@ -129,5 +129,6 @@
     <string name="hey_to_mail">"היי, אני מתעניית/ן ב  "</string>
     <string name="send">לשלוח</string>
     <string name="sent_rest_email">"נשלח אימייל לאיפוס! "</string>
+    <string name = "check_internet_connection">נא לבדוק את חיבור האינטרנט!</string>
 
 </resources>

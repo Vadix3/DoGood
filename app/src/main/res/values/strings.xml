@@ -167,5 +167,6 @@
     <string name="food">Food</string>
     <string name="cosmetic">Cosmetic</string>
 
+    <string name = "check_internet_connection">Please check internet connection!</string>
 
 </resources>

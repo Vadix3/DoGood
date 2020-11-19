@@ -1,7 +1,10 @@
 package com.example.dogood.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +26,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Optional;
@@ -177,7 +184,7 @@ public class NewAskItemActivity extends AppCompatActivity {
             tempDiscrete = true;
         }
 
-        Log.d(TAG, "checkAndSendData: Current user: "+currentUser.toString());
+        Log.d(TAG, "checkAndSendData: Current user: " + currentUser.toString());
         AskItem temp = new AskItem("123", itemName.getEditText().getText().toString(), categoriesUS.get((int) itemCategory.getSelectedItemId()).toString()
                 , currentUser.getCity(), itemDescription.getEditText().getText().toString(), "20-12-20", currentUser, tempDiscrete);
 
@@ -188,5 +195,6 @@ public class NewAskItemActivity extends AppCompatActivity {
         setResult(NEW_ASK_ITEM_RESULT_CODE, resultIntent);
         finish();
     }
+
 
 }

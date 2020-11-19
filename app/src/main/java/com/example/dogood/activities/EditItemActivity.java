@@ -10,6 +10,8 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -59,6 +61,8 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class EditItemActivity extends AppCompatActivity implements PhotoModeListener {
@@ -265,7 +269,7 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
             drawable.setStrokeWidth(5f);
             drawable.start();
             submitBtn.setBackgroundDrawable(drawable);
-            submitBtn.setText( getString(R.string.uploading_item));
+            submitBtn.setText(getString(R.string.uploading_item));
             if (isPictureChanged) {
                 Log.d(TAG, "checkForValidInput: Picture changed!");
                 uploadBitmapToStorage();
@@ -273,6 +277,8 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
                 Log.d(TAG, "checkForValidInput: Picture didn't change!");
                 updateGiveItem();
             }
+
+
         } else {
 
             boolean tempDiscrete = false;
@@ -296,7 +302,6 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
                 Log.d(TAG, "checkAndSendData: discrete data is checked");
                 tempDiscrete = true;
             }
-
             askItem.setName(askItemName.getText().toString());
             askItem.setCategory(askCategorySpinner.getSelectedItem().toString());
             askItem.setDescription(askItemDescription.getText().toString());
@@ -308,6 +313,8 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
             resultIntent.putExtra(ASK_ITEM, jsonItems);
             setResult(ITEM_EDIT_RESULT_CODE, resultIntent);
             finish();
+
+
         }
 
     }
@@ -472,7 +479,7 @@ public class EditItemActivity extends AppCompatActivity implements PhotoModeList
             @Override
             public void onFailure(@NonNull Exception exception) {
                 Log.d(TAG, "onFailure: Upload failed: " + exception.getMessage());
-                // Handle unsuccessful uploads
+                Toast.makeText(EditItemActivity.this, getString(R.string.check_internet_connection), Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override

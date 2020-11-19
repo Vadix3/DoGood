@@ -2,6 +2,8 @@ package com.example.dogood.Dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
@@ -18,6 +21,10 @@ import com.bumptech.glide.Glide;
 import com.example.dogood.R;
 import com.example.dogood.interfaces.ItemDeleteListener;
 import com.google.android.material.button.MaterialButton;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class AreYouSureDialog extends Dialog {
     private static final String TAG = "Dogood";
@@ -52,6 +59,7 @@ public class AreYouSureDialog extends Dialog {
                 ItemDeleteListener itemDeleteListener = (ItemDeleteListener) context;
                 itemDeleteListener.deleteSelectedItem();
                 dismiss();
+
             }
         });
         no.setOnClickListener(new View.OnClickListener() {

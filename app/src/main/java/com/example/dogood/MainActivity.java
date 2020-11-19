@@ -39,6 +39,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.dogood.Dialogs.AboutUsDialog;
 import com.example.dogood.activities.Activity_login;
+import com.example.dogood.activities.EditItemActivity;
 import com.example.dogood.activities.ItemDetailsActivity;
 import com.example.dogood.fragments.AskItemFragment;
 import com.example.dogood.fragments.Fragment_profile;
@@ -259,10 +260,10 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     private void updateFragments() {
         Log.d(TAG, "updateFragments: Updating fragments");
         setProfileFragment();
-        Log.d(TAG, "updateFragments: give items: "+giveItems.toString());
+        Log.d(TAG, "updateFragments: give items: " + giveItems.toString());
         setGiveFragment(giveItems);
         setHomeFragment();
-        Log.d(TAG, "updateFragments: ask items: "+askItems.toString());
+        Log.d(TAG, "updateFragments: ask items: " + askItems.toString());
 
         setAskFragment(askItems);
     }
@@ -394,7 +395,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
      */
     private void setHomeFragment() {
         Log.d(TAG, "onNavigationItemSelected: home");
-        if(askItems.size()>0&&giveItems.size()>0){
+        if (askItems.size() > 0 && giveItems.size() > 0) {
             homeTabFragment = new HomeTabFragment(this, myUser, askItems.get(askItems.size() - 1)
                     , giveItems.get(giveItems.size() - 1));
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -474,7 +475,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     private void saveItemsToFirestore() {
         Log.d(TAG, "saveItemsToFirestore: Saving items to firestore: ");
 
-        Log.d(TAG, "saveItemsToFirestore: Saving: "+giveItems.toString()+"\n"+askItems.toString());
+        Log.d(TAG, "saveItemsToFirestore: Saving: " + giveItems.toString() + "\n" + askItems.toString());
         FirestoreDataContainer dataContainer = new FirestoreDataContainer(giveItems, askItems);
 
         // Save arrays
@@ -484,9 +485,13 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "onFailure: Exception: "+e.toString());
+                        Log.d(TAG, "onFailure: Exception: " + e.toString());
                     }
                 });
+
+//        for (AskItem maskItem : askItems) {
+//            Log.d(TAG, "onActivityResult: " + maskItem.toString());
+//        }
     }
 
     private void updateUserInFirestore() {
@@ -839,7 +844,12 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     }.getType();
                     GiveItem temp = gson.fromJson(gotNewItem, itemType);
                     temp.setDate(getCurrentDate());
-                    temp.setId("G" + this.giveItems.size());
+                    if (giveItems.size() != 0) {
+                        int lastId = Integer.valueOf(this.giveItems.get(this.giveItems.size() - 1).getId().substring(1));
+                        temp.setId("G" + (lastId + 1));
+                    } else {
+                        temp.setId("G" + 0);
+                    }
                     this.giveItems.add(temp);
                     myUser.addGiveItem(temp);
                     updateFragments();
@@ -860,9 +870,14 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     }.getType();
                     AskItem temp = gson.fromJson(gotNewItem, itemType);
                     temp.setDate(getCurrentDate());
-                    temp.setId("G" + this.askItems.size());
+                    if (askItems.size() != 0) {
+                        int lastId = Integer.valueOf(this.askItems.get(this.askItems.size() - 1).getId().substring(1));
+                        temp.setId("A" + (lastId + 1));
+                    } else {
+                        temp.setId("A" + 0);
+                    }
                     askItems.add(temp);
-                    Log.d(TAG, "onActivityResult: Ask items now: "+askItems.toString());
+                    Log.d(TAG, "onActivityResult: Ask items now: " + askItems.toString());
                     myUser.addAskItem(temp);
                     updateFragments();
                     updateUserInFirestore();
@@ -924,7 +939,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
             @Override
             public void onFailure(@NonNull Exception exception) {
                 Log.d(TAG, "onFailure: Upload failed: " + exception.getMessage());
-                // Handle unsuccessful uploads
+                Toast.makeText(MainActivity.this, getString(R.string.check_internet_connection), Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -1055,10 +1070,10 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
         } else {
             Fragment fragment = getSupportFragmentManager().findFragmentById(fragment_profile.getId());
             if (!((IOnBackPressed) fragment).onBackPressed() && mainFragment.getVisibility() == View.GONE) {
-               showFragment(mainFragment);
-               return;
+                showFragment(mainFragment);
+                return;
             }
-            if (!((IOnBackPressed) fragment).onBackPressed()){
+            if (!((IOnBackPressed) fragment).onBackPressed()) {
                 super.onBackPressed();
             }
         }

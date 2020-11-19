@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
@@ -46,6 +48,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 
 public class Fragment_profile extends Fragment implements MainActivity.IOnBackPressed {
 
@@ -77,6 +83,7 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
     private int askItemsArraySIze; // The size of the total ask items
 
     private Boolean pressBack = false;
+
     public Fragment_profile() {
     }
 
@@ -201,7 +208,7 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
         profile_LAY_tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.d(TAG, "onTabSelected: "+tab.getPosition());
+                Log.d(TAG, "onTabSelected: " + tab.getPosition());
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
@@ -316,8 +323,9 @@ public class Fragment_profile extends Fragment implements MainActivity.IOnBackPr
         }
     }
 
+
     @Override
     public boolean onBackPressed() {
-       return false;
+        return false;
     }
 }

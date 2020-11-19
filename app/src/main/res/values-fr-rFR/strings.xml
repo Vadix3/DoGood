@@ -122,4 +122,6 @@
     <string name="hey_to_mail">Bonjour , je suis intéressé par</string>
     <string name="send">Envoyée</string>
     <string name="sent_rest_email">Email de réinitialisation envoyée!</string>
+    <string name="check_internet_connection">Vérifier la connexion a internet</string>
+
 </resources>

@@ -1,6 +1,7 @@
 package com.example.dogood.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +9,8 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -61,6 +64,8 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeListener {
@@ -413,12 +418,15 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
             submitBtn.setEnabled(true);
             return;
         }
-
-        Log.d(TAG, "checkForValidInput: Passed all checks!");
-        Toast.makeText(this, getText(R.string.uploading_item), Toast.LENGTH_LONG).show();
+            Log.d(TAG, "checkForValidInput: Passed all checks!");
+            Toast.makeText(this, getText(R.string.uploading_item), Toast.LENGTH_LONG).show();
 //        checkForFirebaseAuthLogin(); TODO: Fix google and fb here
-        uploadBitmapToStorage();
+            uploadBitmapToStorage();
+
+
     }
+
+
 
     /**
      * A method to check if there is a firebase login instance.
@@ -496,7 +504,7 @@ public class NewGiveItemActivity extends AppCompatActivity implements PhotoModeL
             @Override
             public void onFailure(@NonNull Exception exception) {
                 Log.d(TAG, "onFailure: Upload failed: " + exception.getMessage());
-                // Handle unsuccessful uploads
+                Toast.makeText(NewGiveItemActivity.this, getString(R.string.check_internet_connection), Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
