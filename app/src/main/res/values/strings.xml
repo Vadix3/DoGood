@@ -169,4 +169,11 @@
 
     <string name = "check_internet_connection">Please check internet connection!</string>
 
+
+    <string name="ask_an_item">Ask for an item</string>
+    <string name="give_an_item">Give an item</string>
+
+    <string name="show_given_items">Show given items</string>
+    <string name="show_needed_items">Show needed items</string>
+
 </resources>

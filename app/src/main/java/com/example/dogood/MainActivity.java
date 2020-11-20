@@ -41,6 +41,8 @@ import com.example.dogood.Dialogs.AboutUsDialog;
 import com.example.dogood.activities.Activity_login;
 import com.example.dogood.activities.EditItemActivity;
 import com.example.dogood.activities.ItemDetailsActivity;
+import com.example.dogood.activities.NewAskItemActivity;
+import com.example.dogood.activities.NewGiveItemActivity;
 import com.example.dogood.fragments.AskItemFragment;
 import com.example.dogood.fragments.Fragment_profile;
 import com.example.dogood.fragments.GiveItemFragment;
@@ -48,6 +50,7 @@ import com.example.dogood.fragments.HomeTabFragment;
 import com.example.dogood.interfaces.EditProfileListener;
 import com.example.dogood.interfaces.ItemDetailsListener;
 import com.example.dogood.interfaces.PhotoModeListener;
+import com.example.dogood.interfaces.ShortcutSelectionListener;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.FirestoreDataContainer;
 import com.example.dogood.objects.GiveItem;
@@ -58,6 +61,7 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -87,7 +91,8 @@ import java.util.ArrayList;
 import guy4444.smartrate.SmartRate;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
-public class MainActivity extends AppCompatActivity implements ItemDetailsListener, PhotoModeListener, EditProfileListener {
+public class MainActivity extends AppCompatActivity implements ItemDetailsListener
+        , PhotoModeListener, EditProfileListener, ShortcutSelectionListener {
     private static final String TAG = "Dogood";
     private static final String NEW_GIVE_ITEM = "111";
     private static final String NEW_ASK_ITEM = "112";
@@ -101,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
     private static final String TO_DELETE = "to_delete";
     private static final String IS_GIVE_ITEM = "is_give_item";
     private static final String LOGOUT = "logout";
+    private static final String ITEM_COUNT = "itemCount";
+    private static final String CURRENT_USER = "currentUser";
 
 
     private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
@@ -344,6 +351,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
         });
     }
 
+
     /**
      * A method to show the selected fragment and hide all the others
      */
@@ -362,7 +370,18 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
      */
     private void setProfileFragment() {
         Log.d(TAG, "onNavigationItemSelected: profile ");
-        fragment_profile = new Fragment_profile(myUser, giveItems.size(), askItems.size(), this);
+        int lastGiveId, lastAskId;
+        if (giveItems.size() == 0) {
+            lastGiveId = 0;
+        } else {
+            lastGiveId = Integer.valueOf(this.giveItems.get(this.giveItems.size() - 1).getId().substring(1));
+        }
+        if (askItems.size() == 0) {
+            lastAskId = 0;
+        } else {
+            lastAskId = Integer.valueOf(this.askItems.get(this.askItems.size() - 1).getId().substring(1));
+        }
+        fragment_profile = new Fragment_profile(myUser, lastGiveId + 1, lastAskId + 1, this);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_LAY_profilePageFragment, fragment_profile);
         transaction.commit();
@@ -439,6 +458,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
      */
     private void initViews() {
         Log.d(TAG, "findViews: ");
+
         loadingBar = findViewById(R.id.main_BAR_progressBar);
         loadingBar.setIndeterminate(true);
 
@@ -993,6 +1013,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
      * A method to delete selected item from existence
      */
     private void deleteSelectedItem(String tempJson, boolean isGiveItem) {
+        //TODO: Delete from storage
         Log.d(TAG, "deleteSelectedItem: Deleting: " + tempJson);
         Gson gson = new Gson();
         if (isGiveItem) {
@@ -1070,16 +1091,52 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
         } else {
             Fragment fragment = getSupportFragmentManager().findFragmentById(fragment_profile.getId());
             if (!((IOnBackPressed) fragment).onBackPressed() && mainFragment.getVisibility() == View.GONE) {
-                showFragment(mainFragment);
+                searchItem.setVisible(false);
+                if (mainFragment != null) {
+                    bottomNavigationView.setSelectedItemId(R.id.bottom_menu_home);
+                    main_TLB_head.setTitle(getString(R.string.hello) + " " + myUser.getName().split(" ", 2)[0] + "!");
+                    showFragment(mainFragment);
+                    isProfileFragmentShowing = false;
+                    isGiveItemFragmentShowing = false;
+                    isAskItemFragmentShowing = false;
+                    isHomeFragmentShowing = true;
+                }
                 return;
             }
             if (!((IOnBackPressed) fragment).onBackPressed()) {
                 super.onBackPressed();
             }
         }
-
-
     }
+
+    /**
+     * A method to move to add item activity
+     */
+    private void openAddAskItemActivity() {
+        Log.d(TAG, "openAddItemActivity: ");
+        Intent intent = new Intent(this, NewAskItemActivity.class);
+        Gson gson = new Gson();
+        String userJson = gson.toJson(myUser);
+        intent.putExtra(CURRENT_USER, userJson);
+        int lastId = Integer.valueOf(this.askItems.get(this.askItems.size() - 1).getId().substring(1));
+        intent.putExtra(ITEM_COUNT, lastId + 1);
+        startActivityForResult(intent, NEW_ASK_ITEM_RESULT_CODE);
+    }
+
+    /**
+     * A method to move to add item activity
+     */
+    private void openAddGiveItemActivity() {
+        Log.d(TAG, "openAddItemActivity: ");
+        Intent intent = new Intent(this, NewGiveItemActivity.class);
+        Gson gson = new Gson();
+        String userJson = gson.toJson(myUser);
+        intent.putExtra(CURRENT_USER, userJson);
+        int lastId = Integer.valueOf(this.giveItems.get(this.giveItems.size() - 1).getId().substring(1));
+        intent.putExtra(ITEM_COUNT, lastId + 1);
+        startActivityForResult(intent, NEW_GIVE_ITEM_RESULT_CODE);
+    }
+
 
     @Override
     public void getSelectedItem(GiveItem gotGiveItem, AskItem gotAskItem, boolean isGiveItem) {
@@ -1253,6 +1310,53 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
 
         updateUserInFirestore();
         setProfileFragment();
+    }
+
+    @Override
+    public void shortcutSelection(boolean newAskItem, boolean newGiveItem, boolean askList, boolean giveList) {
+        if (newAskItem) {
+            Log.d(TAG, "shortcutSelection: new ask item");
+            openAddAskItemActivity();
+        }
+        if (newGiveItem) {
+            Log.d(TAG, "shortcutSelection: new give item");
+            openAddGiveItemActivity();
+        }
+        if (askList) {
+            Log.d(TAG, "shortcutSelection: ask list");
+            if (askFragment != null) {
+                bottomNavigationView.setSelectedItemId(R.id.bottom_menu_ask);
+                if (askFragment.getVisibility() != View.VISIBLE) {
+                    main_TLB_head.setTitle(getResources().getString(R.string.object_to_ask));
+                    main_TLB_head.setNavigationIcon(null);
+                    setAskFragment(askItems);
+                    showFragment(askFragment);
+
+                    isProfileFragmentShowing = false;
+                    isGiveItemFragmentShowing = false;
+                    isAskItemFragmentShowing = true;
+                    isHomeFragmentShowing = false;
+                }
+            }
+        }
+        if (giveList) {
+            Log.d(TAG, "shortcutSelection: give list");
+            bottomNavigationView.setSelectedItemId(R.id.bottom_menu_give);
+            searchItem.setVisible(true);
+            if (giveFragment != null) {
+                if (giveFragment.getVisibility() != View.VISIBLE) {
+                    main_TLB_head.setTitle(getResources().getString(R.string.object_to_give));
+                    main_TLB_head.setNavigationIcon(null);
+                    setGiveFragment(giveItems);
+                    showFragment(giveFragment);
+
+                    isProfileFragmentShowing = false;
+                    isGiveItemFragmentShowing = true;
+                    isAskItemFragmentShowing = false;
+                    isHomeFragmentShowing = false;
+                }
+            }
+        }
     }
 
     public interface IOnBackPressed {

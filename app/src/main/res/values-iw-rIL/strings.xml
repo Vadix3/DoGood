@@ -131,4 +131,10 @@
     <string name="sent_rest_email">"נשלח אימייל לאיפוס! "</string>
     <string name = "check_internet_connection">נא לבדוק את חיבור האינטרנט!</string>
 
+
+    <string name="ask_an_item">בקש חפץ</string>
+    <string name="give_an_item">תן חפץ</string>
+
+    <string name="show_given_items">הצג חפצים לנתינה</string>
+    <string name="show_needed_items">הצג חפצים מבוקשים</string>
 </resources>

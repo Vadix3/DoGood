@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dogood.MainActivity;
 import com.example.dogood.R;
+import com.example.dogood.interfaces.ShortcutSelectionListener;
 import com.example.dogood.objects.AskItem;
 import com.example.dogood.objects.GiveItem;
 import com.example.dogood.objects.User;
@@ -22,8 +23,8 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.shape.ShapeAppearanceModel;
 
 public class HomeTabFragment extends Fragment implements MainActivity.IOnBackPressed {
     private static final String TAG = "Dogood";
@@ -39,6 +40,12 @@ public class HomeTabFragment extends Fragment implements MainActivity.IOnBackPre
 
     private FrameLayout lastGiveFrame;
     private FrameLayout lastAskFrame;
+
+    private MaterialButton askItemsShortcut;
+    private MaterialButton giveItemsShortcut;
+    private MaterialButton askItemsListShortcut;
+    private MaterialButton giveItemsListShortcut;
+
 
     public HomeTabFragment() {
     }
@@ -63,14 +70,53 @@ public class HomeTabFragment extends Fragment implements MainActivity.IOnBackPre
         }
         findViews();
         initAd();
-        initFragmets();
+        initFragments();
+        initShortcuts();
         return view;
     }
 
     /**
+     * A method to initialize the shortcuts on the fragment
+     */
+    private void initShortcuts() {
+        Log.d(TAG, "initShortcuts: ");
+        askItemsShortcut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ShortcutSelectionListener) context).shortcutSelection(true, false, false, false);
+            }
+        });
+
+        giveItemsShortcut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ShortcutSelectionListener) context).shortcutSelection(false, true, false, false);
+            }
+        });
+
+        askItemsListShortcut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ShortcutSelectionListener) context).shortcutSelection(false, false, true, false);
+
+            }
+        });
+
+        giveItemsListShortcut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ShortcutSelectionListener) context).shortcutSelection(false, false, false, true);
+            }
+        });
+
+
+    }
+
+
+    /**
      * A method to init the page fragments
      */
-    private void initFragmets() {
+    private void initFragments() {
         Log.d(TAG, "initFragmets: ");
         LastAskFragment lastAskFragment = new LastAskFragment(context, lastAskItem);
         LastGiveFragment lastGiveFragment = new LastGiveFragment(context, lastGiveItem);
@@ -134,6 +180,12 @@ public class HomeTabFragment extends Fragment implements MainActivity.IOnBackPre
         helloLabel = view.findViewById(R.id.home_LAY_helloLabel);
         lastGiveFrame = view.findViewById(R.id.home_LAY_lastGift);
         lastAskFrame = view.findViewById(R.id.home_LAY_lastAsk);
+
+        askItemsShortcut = view.findViewById(R.id.home_BTN_askItemShortcut);
+        giveItemsShortcut = view.findViewById(R.id.home_BTN_giveItemShortcut);
+        askItemsListShortcut = view.findViewById(R.id.home_BTN_askItemListShortcut);
+        giveItemsListShortcut = view.findViewById(R.id.home_BTN_giveItemListShortcut);
+
 
     }
 
