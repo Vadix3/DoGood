@@ -91,7 +91,7 @@
     <string name="phone2">Téléphone:</string>
     <string name="city2">Ville:</string>
     <string name="contact_giver">Contacter</string>
-    <string name="contact_asker">Contacter la personne</string>
+    <string name="contact_asker">Contacter</string>
     <string name="results">Résultats:</string>
     <string name="item_added_successfully">"Article ajouté avec succès! "</string>
     <string name="updated_successfully">"Mis à jour avec succés ! "</string>
@@ -122,6 +122,11 @@
     <string name="hey_to_mail">Bonjour , je suis intéressé par</string>
     <string name="send">Envoyée</string>
     <string name="sent_rest_email">Email de réinitialisation envoyée!</string>
-    <string name="check_internet_connection">Vérifier la connexion a internet</string>
-
+    <string name="cosmetic">Cosmétique</string>
+    <string name="food">Nourriture</string>
+    <string name="check_internet_connection">Vérifier la connexion internet</string>
+    <string name="ask_an_item">Crée une demmande</string>
+    <string name="give_an_item">Donner un object</string>
+    <string name="show_given_items">Object à donner</string>
+    <string name="show_needed_items">Object demander</string>
 </resources>

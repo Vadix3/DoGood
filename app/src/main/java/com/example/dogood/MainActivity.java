@@ -990,7 +990,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     myUser.getGiveItems().set(i, tempItem);
                 }
             }
-            Toast.makeText(this, tempItem.getName() + getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, tempItem.getName()+" " + getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
         } else {
             AskItem tempItem = gson.fromJson(tempJson, AskItem.class);
             Log.d(TAG, "onActivityResult: Got ask item: " + tempItem.toString());
@@ -1005,7 +1005,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                     myUser.getAskItems().set(i, tempItem);
                 }
             }
-            Toast.makeText(this, tempItem.getName() + getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, tempItem.getName() +" "+ getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1047,7 +1047,7 @@ public class MainActivity extends AppCompatActivity implements ItemDetailsListen
                 }
             }
 
-            Toast.makeText(this, tempItem.getName() + getString(R.string.removed_successfully), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, tempItem.getName() + " "+getString(R.string.removed_successfully), Toast.LENGTH_SHORT).show();
         }
     }
 
