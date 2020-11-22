@@ -13,6 +13,8 @@ Including:
 - Profile page with your given / needed items
 - Homepage with last items and shortcuts
 - Real time updates for new items
+- English, French and Hebrew support
+
 
 
 Home Page:
