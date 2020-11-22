@@ -1,5 +1,6 @@
 # DoGood
 ![](https://img.shields.io/badge/Version-1.00.00-blue)
+[![GitHub license](https://img.shields.io/github/license/Vadix3/DoGood?style=plastic)](https://github.com/Vadix3/DoGood)
 
 ![alt text](https://github.com/Vadix3/DoGood/blob/master/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png?raw=true)
 
