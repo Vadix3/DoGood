@@ -1,9 +1,9 @@
 # DoGood
 ![alt text](https://github.com/Vadix3/DoGood/blob/master/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png?raw=true)
 
-Got a new microwave? 
-The kid is too big for his winter clothes?
-Need something and money is short?
+### Got a new microwave? 
+### The kid is too big for his winter clothes?
+### Need something and money is short?
 
 ### Post your request / gift and do good!
 
