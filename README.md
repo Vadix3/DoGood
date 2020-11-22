@@ -1,5 +1,6 @@
 # DoGood
-[![](https://img.shields.io/badge/Version-1.00.00-blue)]
+![](https://img.shields.io/badge/Version-1.00.00-blue)
+
 ![alt text](https://github.com/Vadix3/DoGood/blob/master/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png?raw=true)
 
 ## APK file: https://github.com/Vadix3/DoGood/blob/master/DoGood.apk
