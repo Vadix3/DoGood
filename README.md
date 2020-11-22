@@ -37,4 +37,7 @@ Items delete, edit and contact:
 
 <img src="https://github.com/Vadix3/DoGood/blob/master/readmeSrc/item_details_gif.gif" width="200" />
 
+About:
+
+<img src="https://github.com/Vadix3/DoGood/blob/master/readmeSrc/about_dialog.jpg" width="200" />
 
