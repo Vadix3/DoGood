@@ -3,7 +3,7 @@
     <string name="app_name">DoGood</string>
     <string name="Dogood">Do Good</string>
     <string name="home">Accueil</string>
-    <string name="object_to_give">"Articles â donner"</string>
+    <string name="object_to_give">"Articles à donner"</string>
     <string name="object_to_ask">"Articles nécessaires"</string>
     <string name="profile">Profil</string>
     <string name="logout">Déconnecter</string>
@@ -71,7 +71,7 @@
     <string name="size">0.94</string>
     <string name="update_profile">Mettre à jour le profil</string>
     <string name="show_ask_item">"Afficher articles nécessaires "</string>
-    <string name="show_give_item">"Afficher Articles â donner "</string>
+    <string name="show_give_item">"Afficher Articles à donner "</string>
     <string name="sort">"Trier "</string>
     <string name="filter">Filtre</string>
     <string name="condition">État:</string>
@@ -117,7 +117,7 @@
     <string name="connection_timeout">"Délai de connection dépassé "</string>
     <string name="wrong_password">"Mauvais mot de passe "</string>
     <string name="email_address_does_not_exist">"L'adresse e-mail n'existe pas! "</string>
-    <string name="items_im_giving">"Articles â donner"</string>
+    <string name="items_im_giving">"Articles à donner"</string>
     <string name="items_i_need">"Articles Recherché"</string>
     <string name="hey_to_mail">Bonjour , je suis intéressé par</string>
     <string name="send">Envoyée</string>
@@ -125,7 +125,7 @@
     <string name="cosmetic">Cosmétique</string>
     <string name="food">Nourriture</string>
     <string name="check_internet_connection">Vérifier la connexion internet</string>
-    <string name="ask_an_item">Crée une demmande</string>
+    <string name="ask_an_item">Demander un object</string>
     <string name="give_an_item">Donner un object</string>
     <string name="show_given_items">Object à donner</string>
     <string name="show_needed_items">Object demander</string>
