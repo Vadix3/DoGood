@@ -1,5 +1,5 @@
 # DoGood
-![alt text](https://github.com/Vadix3/DoGood/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png?raw=true)
+![alt text](https://github.com/Vadix3/DoGood/blob/master/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png?raw=true)
 
 Got a new microwave? 
 The kid is too big for his winter clothes?
