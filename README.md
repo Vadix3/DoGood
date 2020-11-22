@@ -14,7 +14,9 @@ Including:
 - Homepage with last items and shortcuts
 - Real time updates for new items
 
+
 Home Page:
+
 <img src="https://github.com/Vadix3/DoGood/blob/master/readmeSrc/homepage.jpg" width="200" />
 
 Given items:
