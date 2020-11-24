@@ -6,6 +6,9 @@
 
 ![alt text](https://github.com/Vadix3/DoGood/blob/master/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png?raw=true)
 
+USER : test@gmail.com
+PASSWORD : azertyu
+
 ## APK file: https://github.com/Vadix3/DoGood/blob/master/DoGood.apk
 
 ### Got a new microwave? 
