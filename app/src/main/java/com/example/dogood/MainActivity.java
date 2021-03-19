@@ -93,36 +93,36 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class MainActivity extends AppCompatActivity implements ItemDetailsListener
         , PhotoModeListener, EditProfileListener, ShortcutSelectionListener {
-    private static final String TAG = "Dogood";
-    private static final String NEW_GIVE_ITEM = "111";
-    private static final String NEW_ASK_ITEM = "112";
-    private static final String ITEMS_DATA_CONTAINER = "dataContainer";
-    private static final String USERS_COLLECTION = "users/";
-    private static final String LOGIN_USER_EXTRA = "loginUser";
-    private static final String OWNER_USER = "ownerUser";
-    private static final String GIVE_ITEM = "giveItem";
-    private static final String ASK_ITEM = "askItem";
-    private static final String ITEM_TO_DEAL_WITH = "item_to_deal_with";
-    private static final String TO_DELETE = "to_delete";
-    private static final String IS_GIVE_ITEM = "is_give_item";
-    private static final String LOGOUT = "logout";
-    private static final String ITEM_COUNT = "itemCount";
-    private static final String CURRENT_USER = "currentUser";
+    private final String TAG = "Dogood";
+    private final String NEW_GIVE_ITEM = "111";
+    private final String NEW_ASK_ITEM = "112";
+    private final String ITEMS_DATA_CONTAINER = "dataContainer";
+    private final String USERS_COLLECTION = "users/";
+    private final String LOGIN_USER_EXTRA = "loginUser";
+    private final String OWNER_USER = "ownerUser";
+    private final String GIVE_ITEM = "giveItem";
+    private final String ASK_ITEM = "askItem";
+    private final String ITEM_TO_DEAL_WITH = "item_to_deal_with";
+    private final String TO_DELETE = "to_delete";
+    private final String IS_GIVE_ITEM = "is_give_item";
+    private final String LOGOUT = "logout";
+    private final String ITEM_COUNT = "itemCount";
+    private final String CURRENT_USER = "currentUser";
 
 
-    private static final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
-    private static final int NEW_ASK_ITEM_RESULT_CODE = 1012;
-    private static final int UPDATE_PROFILE_RESULT_CODE = 1013;
-    private static final int ITEM_DETAILS_RESULT_CODE = 1014;
-    private static final int LOGOUT_CODE = 1015;
+    private final int NEW_GIVE_ITEM_RESULT_CODE = 1011;
+    private final int NEW_ASK_ITEM_RESULT_CODE = 1012;
+    private final int UPDATE_PROFILE_RESULT_CODE = 1013;
+    private final int ITEM_DETAILS_RESULT_CODE = 1014;
+    private final int LOGOUT_CODE = 1015;
 
-    private static final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
-    private static final int STORAGE_PERMISSION_SETTINGS_REQUSETCODE = 133;
-    private static final int CAMERA_PICTURE_REQUEST = 124;
-    private static final int STORAGE_PICTURE_REQUEST = 125;
+    private final int CAMERA_PERMISSION_SETTINGS_REQUSETCODE = 123;
+    private final int STORAGE_PERMISSION_SETTINGS_REQUSETCODE = 133;
+    private final int CAMERA_PICTURE_REQUEST = 124;
+    private final int STORAGE_PICTURE_REQUEST = 125;
 
-    private static final int SEARCH_IN_GIVE_ITEMS = 11;
-    private static final int SEARCH_IN_ASK_ITEMS = 12;
+    private final int SEARCH_IN_GIVE_ITEMS = 11;
+    private final int SEARCH_IN_ASK_ITEMS = 12;
 
     private boolean showingResults = false; // A boolean var to indicate that search results are showing.
 
